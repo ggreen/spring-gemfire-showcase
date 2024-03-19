@@ -8,11 +8,12 @@
     <artifactId>spring-gemfire-showcase-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    <name>spring-geode-showcase-parent</name>
+    <name>spring-gemfire-showcase-parent</name>
 
     <modules>
         <module>components/account-domain</module>
-	<module>applications/account-service</module>
+	    <module>applications/account-service</module>
+        <module>applications/account-location-event-service</module>
     </modules>
     <build>
         <pluginManagement>
