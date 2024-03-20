@@ -1,7 +1,5 @@
 package spring.gemfire.showcase.account.controller;
 
-import spring.gemfire.showcase.account.entity.Account;
-import spring.gemfire.showcase.account.repostories.AccountRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import spring.gemfire.showcase.account.domain.account.Account;
+import spring.gemfire.showcase.account.repostories.AccountRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

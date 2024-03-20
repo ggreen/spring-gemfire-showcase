@@ -1,0 +1,17 @@
+keyInterestRegExp: NY.*
+server:
+  port: -1
+spring:
+  application:
+    name: account-location-event-service
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
+      cache:
+        client:
+          durable-client-id: account-location-event-service
+          durable-client-timeout: 1000
+      pool:
+        subscription-redundancy: 1
+
+

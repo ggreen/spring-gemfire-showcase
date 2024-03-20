@@ -1,6 +1,6 @@
 package spring.gemfire.showcase.account.controller;
 
-import spring.gemfire.showcase.account.entity.Account;
+import spring.gemfire.showcase.account.domain.account.Account;
 import spring.gemfire.showcase.account.repostories.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package spring.gemfire.showcase.account;
 
-import spring.gemfire.showcase.account.entity.Account;
+import spring.gemfire.showcase.account.domain.account.Account;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
 import org.springframework.context.annotation.Bean;
