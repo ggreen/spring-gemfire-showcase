@@ -1,4 +1,7 @@
 
+cd $GEMFIRE_HOME/bin
+
+./gfsh -e "connect" -e "connect"  -e "create region --name=Account --type=PARTITION --enable-statistics=true"
 
 
 ```shell script

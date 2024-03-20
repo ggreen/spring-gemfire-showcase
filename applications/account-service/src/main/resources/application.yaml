@@ -1,0 +1,8 @@
+server:
+  port: 6001
+spring:
+  application:
+    name: account-rest-service
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
