@@ -16,7 +16,7 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 @EnableGemfireRepositories
 public class GemFireConf
 {
-    @Bean("Account")
+    @Bean("AccountDbCache")
     ClientRegionFactoryBean<String, Account> account(GemFireCache gemFireCache)
     {
         var bean = new ClientRegionFactoryBean<String,Account>();

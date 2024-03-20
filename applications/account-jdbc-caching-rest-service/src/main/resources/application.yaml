@@ -1,0 +1,20 @@
+management.endpoints.web.exposure.include: "*"
+flyway:
+  locations: "classpath:db/migration"
+server:
+  port: 6003
+spring:
+  application:
+    name: account-jdbc-caching-rest-service
+  flyway:
+    locations: "classpath:db/migration"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
