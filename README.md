@@ -1,4 +1,4 @@
-# Spring Geode Showcase
+# Spring GemFire Showcase
 
 The project contains various examples using the In-Memory [NO-SQL](https://en.wikipedia.org/wiki/NoSQL) data management solution [GemFire](https://gemfire.dev/)
 
@@ -14,7 +14,7 @@ This session will highlight and describe
 What are its characteristics?
 What are the data service challenges?
 
-How GemFire can be used to meet needs such as
+[GemFire can be used to meet the OLTP](https://www.youtube.com/watch?v=oy_Yq_mf45Y) needs such as:
 
 - Performance
 - Scalability
