@@ -24,4 +24,6 @@ public class GemFireConf
         bean.setDataPolicy(DataPolicy.EMPTY);
         return bean;
     }
+
+
 }

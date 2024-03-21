@@ -10,17 +10,12 @@ import org.springframework.stereotype.Component;
 
 import static java.lang.String.valueOf;
 
-@Component
 @Slf4j
+@Component
 public class VMwareAccountQueryListener {
-
-    private final GemfireTemplate locationTemplate;
-
-    public VMwareAccountQueryListener(@Qualifier("locationTemplate") GemfireTemplate locationTemplate) {
-        this.locationTemplate = locationTemplate;
-    }
-
-    @ContinuousQuery(name = "addVMwareLocation", query = "select * from /Account where name = 'VMware' ", durable = true)
+    @ContinuousQuery(
+            name = "addVMwareLocation",
+            query = "select * from /Account where name = 'VMware' ", durable = true)
     public void addVMwareLocation(CqEvent cqEvent) {
         log.info("==============Adding location!!!!!");
 
@@ -33,5 +28,12 @@ public class VMwareAccountQueryListener {
                 .zipCode("94304").build();
 
         locationTemplate.put(key,location);
+    }
+
+
+    private final GemfireTemplate locationTemplate;
+
+    public VMwareAccountQueryListener(@Qualifier("locationTemplate") GemfireTemplate locationTemplate) {
+        this.locationTemplate = locationTemplate;
     }
 }

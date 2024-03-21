@@ -12,19 +12,19 @@ import spring.gemfire.showcase.account.repostories.AccountRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class AccountDataService implements AccountService{
-    private final AccountRepository accountRepository;
+    private final AccountRepository accountJdbcRepository;
 
     @CacheEvict(value = {"AccountDbCache"}, key = "#account.id")
     @Override
     public Account save(Account account) {
-        return accountRepository.save(account);
+        return accountJdbcRepository.save(account);
     }
 
     @Cacheable(value = {"AccountDbCache"})
     @Override
     public Account findByAccountId(String id) {
         log.info("!!!!==============SEARCHING for Account Id:{}",id);
-        var optional = accountRepository.findById(id);
+        var optional = accountJdbcRepository.findById(id);
         if (optional.isEmpty())
             return null;
 
