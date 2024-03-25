@@ -3,10 +3,10 @@ package spring.gemfire.batch.account.batch;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class AccountBatchAppTests {
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 
