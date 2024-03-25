@@ -1,0 +1,14 @@
+batch:
+  read:
+    sql: "select * from account DELETE"
+    fetch:
+      size: 1000
+    chunk:
+      size: 20000
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
