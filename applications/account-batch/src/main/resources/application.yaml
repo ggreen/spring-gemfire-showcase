@@ -1,3 +1,5 @@
+db:
+  schema: cache_accounts
 batch:
   read:
     sql: "select * from account DELETE"
@@ -6,9 +8,19 @@ batch:
     chunk:
       size: 20000
 spring:
+  application:
+    name: account-batch
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres?searchpath=cache_accounts
     username: postgres
+    platform: postgres
   data:
     gemfire:
       pool.default.locators: localhost[10334]
+  sql:
+    init:
+      platform: postgres
+  liquibase:
+    # Required running: CREATE SCHEMA IF NOT EXISTS retail;
+    defaultSchema: ${db.schema}
+    change-log: "classpath:db/changelog/postgres/changelog-v1.sql"

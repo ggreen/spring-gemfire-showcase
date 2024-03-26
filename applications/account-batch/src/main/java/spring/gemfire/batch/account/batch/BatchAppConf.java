@@ -1,19 +1,22 @@
 package spring.gemfire.batch.account.batch;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.task.configuration.EnableTask;
 import org.springframework.context.annotation.Bean;
@@ -25,13 +28,14 @@ import spring.gemfire.showcase.account.domain.account.Account;
 
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Configuration
 @EnableTask
-@EnableBatchProcessing
+@EnableBatchProcessing(tablePrefix = "${db.schema}.BATCH_")
 @EnableAutoConfiguration
 public class BatchAppConf {
 
@@ -115,5 +119,15 @@ public class BatchAppConf {
                 .reader(itemReader)
                 .writer(itemWriter)
                 .build();
+    }
+
+    @Bean
+    CommandLineRunner runner(Job job,JobLauncher jobLauncher) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        return args -> {
+            String jobId = UUID.randomUUID().toString();
+            JobParameter<?> jobIdParam = new JobParameter<String>(jobId, String.class);
+            JobParameters jobParameters = new JobParameters(Map.of("jobId", jobIdParam));
+            jobLauncher.run(job, jobParameters);
+        };
     }
 }
