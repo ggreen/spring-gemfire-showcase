@@ -12,13 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Slf4j
 @Component
+@EnableJpaRepositories
+@EnableTransactionManagement
 public class JdbcConfig implements BeanPostProcessor {
     @Value("${db.schema}")
     private String schemaName;

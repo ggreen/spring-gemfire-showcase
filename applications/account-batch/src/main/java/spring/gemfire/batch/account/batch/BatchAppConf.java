@@ -18,15 +18,16 @@ import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuild
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cloud.task.configuration.EnableTask;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import spring.gemfire.showcase.account.domain.account.Account;
 
-import javax.sql.DataSource;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.BinaryOperator;
@@ -35,9 +36,11 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableTask
-@EnableBatchProcessing(tablePrefix = "${db.schema}.BATCH_")
+@EnableTransactionManagement
+@EnableBatchProcessing(tablePrefix = "${batch.job.repository.schema.prefix:}BATCH_")
 @EnableAutoConfiguration
 public class BatchAppConf {
+
 
     @Value("${batch.read.sql}")
     private String readSql;
@@ -47,6 +50,16 @@ public class BatchAppConf {
 
     @Value("${batch.read.chunk.size}")
     private int chunkSize;
+
+    @Value("${batch.jdbc.url}")
+    private String batchJdbcUrl;
+
+    @Value("${batch.jdbc.username}")
+    private String batchUsername;
+
+
+    @Value("${batch.jdbc.password:''}")
+    private String batchPassword;
 
 
     @Bean
@@ -67,8 +80,12 @@ public class BatchAppConf {
     }
 
     @Bean
-    ItemReader<Account> reader(DataSource dataSource)
+    ItemReader<Account> reader()
     {
+        var dataSource = DataSourceBuilder.create().
+        url(batchJdbcUrl).username(batchUsername)
+                .password(batchPassword).build();
+
         RowMapper<Account> rowMapper = (rs,i) ->   Account.builder()
                     .id(rs.getString(1))
                     .name(rs.getString(2))
