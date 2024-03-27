@@ -47,14 +47,13 @@ public class LoadDataConfig {
         insertSql = Text.format(insertSql,map);
         deleteSql  = Text.format(deleteSql,map);
 
-        FullNameCreator fullNameCreator = new FullNameCreator();
+        var fullNameCreator = new FullNameCreator();
 
         return args -> {
             log.info("Inserting accounts {}",insertSql);
 
             try (var conn = dataSource.getConnection();
                  var statement = conn.prepareStatement(insertSql); var deleteStatement = conn.createStatement()) {
-
 
                 log.info("Delete account data SQL: {}",deleteSql);
                 deleteStatement.execute(deleteSql);
