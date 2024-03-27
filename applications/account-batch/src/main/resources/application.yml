@@ -15,5 +15,6 @@ spring:
       pool.default.locators: localhost[10334]
   liquibase:
     # Required running: CREATE SCHEMA IF NOT EXISTS retail;
-    defaultSchema: ${db.schema}
+    default-schema: ${db.schema}
+    liquibase-schema: ${db.schema}
     change-log: "classpath:db/changelog/postgres/changelog-v1.sql"

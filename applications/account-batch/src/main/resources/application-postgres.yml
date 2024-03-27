@@ -1,0 +1,19 @@
+db:
+  schema: cache_accounts
+batch:
+  jdbc:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  read:
+    sql: "select * from ${db.schema}.account"
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?searchpath=cache_accounts
+    username: postgres
+    platform: postgres
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
+  sql:
+    init:
+      platform: postgres
