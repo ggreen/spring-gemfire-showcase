@@ -3,11 +3,64 @@
 Example running standalone
 
 ```shell
-java -jar applications/account-batch/target/account-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=postgres --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres
+
+docker network create gemfire-cache --driver bridge
+mkdir -p /Users/devtools/repositories/RDBMS/PostgreSQL/pg-docker
+docker  run --name postgresql  --network gemfire-cache --rm -it -p 5432:5432 -e ALLOW_EMPTY_PASSWORD=yes -v /Users/devtools/repositories/RDBMS/PostgreSQL/pg-docker:/bitnami/postgresql bitnami/postgresql:latest   
 ```
 
-
-Example running in Spring Cloud DataFlow
+Run Locator
 ```shell
-account-batch --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres
+docker run -it -e 'ACCEPT_TERMS=y' --rm --name gf-locator --network=gemfire-cache -p 10334:10334 -p 7070:7070 gemfire/gemfire:10.0.3 gfsh start locator --name=locator1
 ```
+
+Setup Pdx
+
+```shell
+docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "configure pdx --read-serialized=true --disk-store"
+```
+
+Setup GemFire Regions
+
+```shell
+docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "create region --name=Account --type=PARTITION"
+```
+
+Run Cache Server
+```shell
+docker run -it -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire-cache -p 40404:40404 gemfire/gemfire:10.0.3 gfsh start server --name=server1 --locators=gf-locator\[10334\]
+```
+
+Run initial to test and create database
+
+```shell
+docker run --name account-batch   --rm -it  --network=gemfire-cache -e "spring.profiles.active=postgres" -e "db.schema=cache_accounts" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" -e "batch.jdbc.url=jdbc:postgresql://postgresql:5432/postgres"  -e "batch.jdbc.username=postgres" -e "spring.sql.init.platform=postgres" -e "batch.job.repository.create=true" -e "spring.datasource.url=jdbc:postgresql://postgresql:5432/postgres" -e "spring.datasource.username=postgres" cloudnativedata/account-batch:0.0.1-SNAPSHOT  
+```
+
+
+
+
+--------
+
+# Spring Cloud DataFlow
+
+```shell
+account-batch --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres --spring.liquibase.url="jdbc:postgresql://localhost:5432/postgres" --spring.liquibase.user=postgres
+```
+
+
+
+--------------------------------------
+## Docker building image
+
+```shell
+mvn install
+cd applications/account-batch
+mvn spring-boot:build-image
+```
+
+```shell
+docker tag account-batch:0.0.1-SNAPSHOT cloudnativedata/account-batch:0.0.1-SNAPSHOT
+docker push cloudnativedata/account-batch:0.0.1-SNAPSHOT
+```
+

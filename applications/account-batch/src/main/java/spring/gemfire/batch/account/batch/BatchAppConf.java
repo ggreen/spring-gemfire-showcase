@@ -37,7 +37,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableTask
 @EnableTransactionManagement
-@EnableBatchProcessing(tablePrefix = "${batch.job.repository.schema.prefix:}BATCH_")
+//${batch.job.repository.schema.prefix:}BOOT3_BATCH_
+@EnableBatchProcessing(tablePrefix = "${batch.job.repository.schema.prefix:}BOOT3_BATCH_")
 @EnableAutoConfiguration
 public class BatchAppConf {
 
