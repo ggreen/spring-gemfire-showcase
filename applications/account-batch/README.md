@@ -1,4 +1,9 @@
-# Spring Batch + GemFire
+# account-batch
+
+The project is [Spring Batch](https://spring.io/batch) + [GemFire](https://gemfire.dev/) example.
+
+
+# Demo Instructions
 
 Example running standalone
 
