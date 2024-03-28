@@ -1,17 +1,24 @@
+# account-jdbc-caching-rest-service
 
-AccountDbCache
+[Postgres](https://www.postgresql.org/) + [Spring Caching](https://docs.spring.io/spring-boot/docs/current/reference/html/io.html#io.caching) Lookup Aside Cache + [Spring Data for GemFire](https://docs.vmware.com/en/Spring-Data-for-VMware-GemFire/index.html) example
 
 
+# Demo Instructions
 
+Under construction
+
+## Docker building image
+
+The following are the steps to build a docker image
 ```shell
-cd $GEMFIRE_HOME/bin
-./gfsh -e "connect" -e "connect"  -e "create region --name=AccountDbCache --type=PARTITION --enable-statistics=true"
+mvn install
+cd applications/account-jdbc-caching-rest-service
+mvn spring-boot:build-image
 ```
 
-
-
-```shell script
-docker tag account-rest-service:0.0.1-SNAPSHOT nyla/account-rest-service:0.0.1-SNAPSHOT 
-docker login
-docker push nyla/account-rest-service:0.0.1-SNAPSHOT
+Example for tagging and pushing to docker hub
+```shell
+docker tag account-jdbc-caching-rest-service:0.0.1-SNAPSHOT cloudnativedata/account-jdbc-caching-rest-service:0.0.1-SNAPSHOT
+docker push cloudnativedata/account-jdbc-caching-rest-service:0.0.1-SNAPSHOT
 ```
+
