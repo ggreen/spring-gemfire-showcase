@@ -37,28 +37,64 @@ Run initial to test and create database
 docker run --name account-batch   --rm -it  --network=gemfire-cache -e "spring.profiles.active=postgres" -e "db.schema=cache_accounts" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" -e "batch.jdbc.url=jdbc:postgresql://postgresql:5432/postgres"  -e "batch.jdbc.username=postgres" -e "spring.sql.init.platform=postgres" -e "batch.job.repository.create=true" -e "spring.datasource.url=jdbc:postgresql://postgresql:5432/postgres" -e "spring.datasource.username=postgres" -e "batch.load.accounts=true" -e "account.data.count=500"  -e "account.data.batch.size=50" cloudnativedata/account-batch:0.0.1-SNAPSHOT
 ```
 
+-------------------
 
+# GemFire Management Console (Gideon Console)
 
+1. Login
+```shell
+docker login registry.tanzu.vmware.com
+```
+
+2. Pull Image
+```shell
+docker pull registry.tanzu.vmware.com/gemfire-management-console/gemfire-management-console:1.2.0
+```
+```shell
+
+docker run -p 8080:8080 --rm -it --name gideon-console   --network=gemfire-cache registry.tanzu.vmware.com/gemfire-management-console/gemfire-management-console:1.2.0
+```
+
+Open Management Console
+```shell
+open http://localhost:8080/
+```
+
+1 - Click -> Connect 
+
+2 -  Enter Connection Setting
+
+- Enter cluster nickname: gemfire
+- Host: gf-locator
+- Port: 7070
+
+Then  connect to cluster
+
+3 - Use the Data Explore to view the loaded customer data
 
 --------
 
 # Spring Cloud DataFlow
 
-```shell
-account-batch --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres --spring.liquibase.url="jdbc:postgresql://localhost:5432/postgres" --spring.liquibase.user=postgres
-```
+The following is an example DSL to run the batch in Spring Cloud DataFlow
 
+```shell
+account-batch --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres --spring.liquibase.url="jdbc:postgresql://localhost:5432/postgres" --spring.liquibase.user=postgres  --batch.load.accounts=true --account.data.count=500  ---account.data.batch.size=50
+```
+![scdf-task.png](docs/imgs/scdf-task.png)
 
 
 --------------------------------------
 ## Docker building image
 
+The following are the steps to build a docker image
 ```shell
 mvn install
 cd applications/account-batch
 mvn spring-boot:build-image
 ```
 
+Example for tagging and pushing to docker hub
 ```shell
 docker tag account-batch:0.0.1-SNAPSHOT cloudnativedata/account-batch:0.0.1-SNAPSHOT
 docker push cloudnativedata/account-batch:0.0.1-SNAPSHOT
