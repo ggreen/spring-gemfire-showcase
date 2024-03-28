@@ -1,11 +1,38 @@
 
-cd $GEMFIRE_HOME/bin
+Run Script to run GemFire in Docker
 
-./gfsh -e "connect" -e "connect"  -e "create region --name=Account --type=PARTITION --enable-statistics=true"
-
-
-```shell script
-docker tag account-rest-service:0.0.1-SNAPSHOT nyla/account-rest-service:0.0.1-SNAPSHOT 
-docker login
-docker push nyla/account-rest-service:0.0.1-SNAPSHOT
+```shell
+./deployments/local/scripts/docker/start-docker-gemfire.sh
 ```
+
+
+Run Service in Docker
+
+```shell
+docker run -p 6001:6001 --rm -it --name account-service -e "server.port=6001" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" --network=gemfire-cache cloudnativedata/account-service:0.0.1-SNAPSHOT
+```
+
+Open Swagger UI for Testing
+
+```shell
+open http://localhost:6001
+```
+
+![swagger-ui.png](docs/img/swagger-ui.png)
+
+
+## Docker building image
+
+The following are the steps to build a docker image
+```shell
+mvn install
+cd applications/account-service
+mvn spring-boot:build-image
+```
+
+Example for tagging and pushing to docker hub
+```shell
+docker tag account-service:0.0.1-SNAPSHOT cloudnativedata/account-service:0.0.1-SNAPSHOT
+docker push cloudnativedata/account-service:0.0.1-SNAPSHOT
+```
+

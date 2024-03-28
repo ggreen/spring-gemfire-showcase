@@ -1,7 +1,7 @@
 
 
-```shell
-cd $GEMFIRE_HOME/bin
-./gfsh -e "connect" -e "connect"  -e "create region --name=Location --type=PARTITION --enable-statistics=true"
-```
+Run Script to run GemFire in Docker
 
+```shell
+./deployments/local/scripts/docker/start-docker-gemfire.sh
+```
