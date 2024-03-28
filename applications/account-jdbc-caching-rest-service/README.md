@@ -1,6 +1,6 @@
 # account-jdbc-caching-rest-service
 
-[Postgres](https://www.postgresql.org/) + [Spring Caching](https://docs.spring.io/spring-boot/docs/current/reference/html/io.html#io.caching) Lookup Aside Cache + [Spring Data for GemFire](https://docs.vmware.com/en/Spring-Data-for-VMware-GemFire/index.html) example
+The application is a [Postgres](https://www.postgresql.org/) + [Spring Caching](https://docs.spring.io/spring-boot/docs/current/reference/html/io.html#io.caching) Lookup Aside Cache + [Spring Data for GemFire](https://docs.vmware.com/en/Spring-Data-for-VMware-GemFire/index.html) example
 
 
 # Demo Instructions
