@@ -28,13 +28,12 @@ What are the data service challenges?
 ## Applications
 
 
-| Application                                                                         | Notes                                       | 
-|-------------------------------------------------------------------------------------|---------------------------------------------|
-| [account-service](applications/account-service)                                     | Sprint Boot for GemFire client application  |
-| [account-location-event-service](applications/account-location-event-service)       | Sprint Boot Continuous Query example        |
-| [account-jdbc-caching-rest-service](applications/account-jdbc-caching-rest-service) | Sprint Boot JDBC Lookup Aside Cache example |
-
-
+| Project                                                                               | Notes                                                                      |
+|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| [account-batch](applications%2Faccount-batch)                                         | Spring Batch + GemFire example                                             |
+| [account-jdbc-caching-rest-service](applications%2Faccount-jdbc-caching-rest-service) | Postgres + Spring Cache + Lookup Aside Cache + Spring Data GemFire example |
+| [account-location-event-service](applications%2Faccount-location-event-service)       | Continous Query Spring Data GemFire example                                |
+| [account-service](applications%2Faccount-service)                                     | Spring Web + Spring Data GemFire example                                   |
 
 ## Build Jar
 
@@ -45,12 +44,3 @@ See https://gemfire.dev/quickstart/java/
 export PIVOTAL_MAVEN_USERNAME=$HARBOR_USER
 export PIVOTAL_MAVEN_PASSWORD=$HARBOR_PASSWORD
 ```
-
-# Projects
-
-| Project                                                                               | Notes                                                                      |
-|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| [account-batch](applications%2Faccount-batch)                                         | Spring Batch + GemFire example                                             |
-| [account-jdbc-caching-rest-service](applications%2Faccount-jdbc-caching-rest-service) | Postgres + Spring Cache + Lookup Aside Cache + Spring Data GemFire example |
-| [account-location-event-service](applications%2Faccount-location-event-service)       | Continous Query Spring Data GemFire example                                |
-| [account-service](applications%2Faccount-service)                                     | Spring Web + Spring Data GemFire example                                   |
