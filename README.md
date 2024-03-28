@@ -3,7 +3,7 @@
 The project contains various examples using the In-Memory [NO-SQL](https://en.wikipedia.org/wiki/NoSQL) data management solution [GemFire](https://gemfire.dev/)
 
 
-This [spring-gemfire-showcase](https://github.com/ggreen/spring-gemfire-showcase) repository has [Spring](https://spring.io/) + [GemFire](https://tanzu.vmware.com/gemfire) examples with [Docker](https://www.docker.com/products/docker-desktop/)-based demo instructions see . This information can be shared with the customer.
+This [spring-gemfire-showcase](https://github.com/ggreen/spring-gemfire-showcase) repository has [Spring](https://spring.io/) + [GemFire](https://tanzu.vmware.com/gemfire) examples with [Docker](https://www.docker.com/products/docker-desktop/)-based demo instructions.
 
 It currently showcases
 
