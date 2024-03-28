@@ -46,17 +46,11 @@ export PIVOTAL_MAVEN_USERNAME=$HARBOR_USER
 export PIVOTAL_MAVEN_PASSWORD=$HARBOR_PASSWORD
 ```
 
-# Starting a GemFire Cluster Locally
+# Projects
 
-
-In GFfsh
-
-Start Locator
-```shell
-start locator --name=localhost --bind-address=127.0.0.1 --hostname-for-clients=127.0.0.1 --http-service-bind-address=127.0.0.1
-```
-
-Start Server
-```shell
-start server --name=server1 --server-bind-address=127.0.0.1 --hostname-for-clients=127.0.0.1 --jmx-manager-hostname-for-clients=127.0.0.1 --bind-address=127.0.0.1 --http-service-bind-address=127.0.0.1 --locators=127.0.0.1[10334]
-```
+| Project                                                                               | Notes                                                                      |
+|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| [account-batch](applications%2Faccount-batch)                                         | Spring Batch + GemFire example                                             |
+| [account-jdbc-caching-rest-service](applications%2Faccount-jdbc-caching-rest-service) | Postgres + Spring Cache + Lookup Aside Cache + Spring Data GemFire example |
+| [account-location-event-service](applications%2Faccount-location-event-service)       | Continous Query Spring Data GemFire example                                |
+| [account-service](applications%2Faccount-service)                                     | Spring Web + Spring Data GemFire example                                   |
