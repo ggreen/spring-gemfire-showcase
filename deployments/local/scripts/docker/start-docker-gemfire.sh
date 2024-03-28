@@ -12,5 +12,8 @@ docker run -it  -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0
 docker run -d  -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire-cache -p 40404:40404 gemfire/gemfire:10.0.3 gfsh start server --name=server1 --locators=gf-locator\[10334\]
 
 sleep 5
-# Setup GemFire Regions
+# Setup GemFire Account Region
 docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "create region --name=Account --type=PARTITION  --enable-statistics=true"
+
+# Setup GemFire Location Region
+docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "create region --name=Location --type=PARTITION --enable-statistics=true"
