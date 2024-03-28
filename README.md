@@ -3,6 +3,17 @@
 The project contains various examples using the In-Memory [NO-SQL](https://en.wikipedia.org/wiki/NoSQL) data management solution [GemFire](https://gemfire.dev/)
 
 
+This [spring-gemfire-showcase](https://github.com/ggreen/spring-gemfire-showcase) repository has [Spring](https://spring.io/) + [GemFire](https://tanzu.vmware.com/gemfire) examples with [Docker](https://www.docker.com/products/docker-desktop/)-based demo instructions see . This information can be shared with the customer.
+
+It currently showcases
+
+- Running [GemFire clusters](https://gemfire.dev/tutorials/java/gemfire_basics/), [GemFire Management Console](https://docs.vmware.com/en/VMware-GemFire-Management-Console/index.html), and [Spring Boot](https://spring.io/projects/spring-boot) applications in Docker
+- [Spring Data for GemFire](https://docs.vmware.com/en/Spring-Data-for-VMware-GemFire/index.html) Create Read Update Delete [(CRUD) repositories](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html)
+- [Spring Batch](https://spring.io/projects/spring-batch) with GemFire - moving data from a database like Postgres into GemFire
+- [GemFire Continuous Query](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-continuous_querying-how_continuous_querying_works.html) with Spring Data for GemFire
+- [Spring Caching](https://docs.spring.io/spring-boot/docs/current/reference/html/io.html#io.caching) with Spring Data for GemFire - caching data from Postgres with Spring Web Rest APIs
+
+
 ## OLTP GemFire Support
 
 Real-time transactions can be fast and furious. Just think about building the next big retail market app.
