@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -40,6 +41,7 @@ public class LoadDataConfig {
     private String accountNamePrefix;
 
     @ConditionalOnProperty( name= "batch.load.accounts", havingValue = "true")
+    @Order(9)
     @Bean
     CommandLineRunner loadData(DataSource dataSource)
     {

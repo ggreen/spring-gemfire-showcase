@@ -15,6 +15,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -123,6 +124,8 @@ public class JobRepositoryConfig implements BeanPostProcessor {
             -- rollback drop sequence BOOT3_BATCH_JOB_SEQ;
             """;
 
+
+    @Order(8)
     @ConditionalOnProperty( name= "batch.job.repository.create", havingValue = "true")
     @Bean
     CommandLineRunner setupJobRepository(DataSource dataSource)

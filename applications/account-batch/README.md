@@ -20,21 +20,21 @@ Setup Pdx
 docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "configure pdx --read-serialized=true --disk-store"
 ```
 
+Run Cache Server
+```shell
+docker run -it -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire-cache -p 40404:40404 gemfire/gemfire:10.0.3 gfsh start server --name=server1 --locators=gf-locator\[10334\]
+```
 Setup GemFire Regions
 
 ```shell
 docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "create region --name=Account --type=PARTITION"
 ```
 
-Run Cache Server
-```shell
-docker run -it -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire-cache -p 40404:40404 gemfire/gemfire:10.0.3 gfsh start server --name=server1 --locators=gf-locator\[10334\]
-```
 
 Run initial to test and create database
 
 ```shell
-docker run --name account-batch   --rm -it  --network=gemfire-cache -e "spring.profiles.active=postgres" -e "db.schema=cache_accounts" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" -e "batch.jdbc.url=jdbc:postgresql://postgresql:5432/postgres"  -e "batch.jdbc.username=postgres" -e "spring.sql.init.platform=postgres" -e "batch.job.repository.create=true" -e "spring.datasource.url=jdbc:postgresql://postgresql:5432/postgres" -e "spring.datasource.username=postgres" cloudnativedata/account-batch:0.0.1-SNAPSHOT  
+docker run --name account-batch   --rm -it  --network=gemfire-cache -e "spring.profiles.active=postgres" -e "db.schema=cache_accounts" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" -e "batch.jdbc.url=jdbc:postgresql://postgresql:5432/postgres"  -e "batch.jdbc.username=postgres" -e "spring.sql.init.platform=postgres" -e "batch.job.repository.create=true" -e "spring.datasource.url=jdbc:postgresql://postgresql:5432/postgres" -e "spring.datasource.username=postgres" -e "batch.load.accounts=true" -e "account.data.count=500"  -e "account.data.batch.size=50" cloudnativedata/account-batch:0.0.1-SNAPSHOT
 ```
 
 

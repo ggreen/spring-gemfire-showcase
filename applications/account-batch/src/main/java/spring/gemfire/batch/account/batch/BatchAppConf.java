@@ -22,6 +22,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cloud.task.configuration.EnableTask;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -140,6 +141,7 @@ public class BatchAppConf {
     }
 
     @Bean
+    @Order(10)
     CommandLineRunner runner(Job job,JobLauncher jobLauncher) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         return args -> {
             String jobId = UUID.randomUUID().toString();
