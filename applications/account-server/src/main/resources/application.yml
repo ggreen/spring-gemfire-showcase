@@ -1,0 +1,28 @@
+management.endpoints.web.exposure.include: "*"
+gemfire:
+  name: account-server-1
+  async:
+    event:
+      queue:
+        id: account-server-queue
+  start-locator: "localhost[10334]"
+  locators: "localhost[10334]"
+flyway:
+  locations: "classpath:db/migration"
+server:
+  port: 6003
+spring:
+  application:
+    name: account-server
+  flyway:
+    locations: "classpath:db/migration"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]

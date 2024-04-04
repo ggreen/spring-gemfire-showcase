@@ -12,10 +12,12 @@
 
     <modules>
         <module>components/account-domain</module>
+        <module>components/server/account-services</module>
 	    <module>applications/account-service</module>
         <module>applications/account-location-event-service</module>
         <module>applications/account-jdbc-caching-rest-service</module>
         <module>applications/account-batch</module>
+        <module>applications/account-server</module>
     </modules>
     <build>
         <pluginManagement>
