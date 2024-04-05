@@ -26,6 +26,12 @@
 			<artifactId>gemfire-core</artifactId>
 			<version>10.0.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.vmware.gemfire</groupId>
+			<artifactId>gemfire-logging</artifactId>
+			<version>10.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -33,11 +39,84 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.30</version>
+			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
+			<scope>import</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.nyla-solutions</groupId>
+			<artifactId>nyla.solutions.core</artifactId>
+			<version>2.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.24.2</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.5.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+<!--							<minimizeJar>true</minimizeJar>-->
+							<artifactSet>
+								<excludes>
+									<exclude>com.vmware.gemfire:*</exclude>
+									<exclude>com.fasterxml.jackson.core:*</exclude>
+									<exclude>com.fasterxml.jackson:*</exclude>
+									<exclude>jackson-datatype-joda:*</exclude>
+									<exclude>jackson-datatype-joda:*</exclude>
+									<exclude>antlr:*</exclude>
+									<exclude>io.micrometer:micrometer-core:*</exclude>
+									<exclude>javax.resource:*</exclude>
+									<exclude>org.apache.shiro:shiro-core:*</exclude>
+									<exclude>org.jgroups:jgroups:*</exclude>
+									<exclude>org.projectlombok:*</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>com/vmware/**</exclude>
+										<exclude>com/fasterxml/**</exclude>
+										<exclude>org/slf4j/**</exclude>
+										<exclude>org/apache/**</exclude>
+										<exclude>org/bson/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>gemfire-release-repo</id>

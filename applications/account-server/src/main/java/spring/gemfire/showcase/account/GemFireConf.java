@@ -1,8 +1,10 @@
 package spring.gemfire.showcase.account;
 
-import org.apache.geode.cache.*;
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionShortcut;
 import org.apache.geode.cache.asyncqueue.AsyncEventListener;
-import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
 import org.apache.geode.distributed.ServerLauncher;
 import org.apache.geode.pdx.PdxSerializer;
 import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
@@ -11,8 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 import spring.gemfire.showcase.account.domain.account.Account;
-
-import static java.lang.String.valueOf;
+import spring.gemfire.showcase.account.server.listeners.AccountAsyncEventListener;
 
 @Configuration
 @EnableGemfireRepositories
@@ -67,6 +68,11 @@ public class GemFireConf
         return serverLauncher;
     }
 
+    @Bean
+    AsyncEventListener listener()
+    {
+        return new AccountAsyncEventListener();
+    }
     @Bean
     Region<String, Account> region(Cache cache, AsyncEventListener listener)
     {

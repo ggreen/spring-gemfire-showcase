@@ -5,7 +5,7 @@ The project is [Spring Batch](https://spring.io/batch) + [GemFire](https://gemfi
 
 # Demo Instructions
 
-Example running standalone
+Example running standalone Postgres
 
 ```shell
 
@@ -14,27 +14,26 @@ mkdir -p /Users/devtools/repositories/RDBMS/PostgreSQL/pg-docker
 docker  run --name postgresql  --network gemfire-cache --rm -it -p 5432:5432 -e ALLOW_EMPTY_PASSWORD=yes -v /Users/devtools/repositories/RDBMS/PostgreSQL/pg-docker:/bitnami/postgresql bitnami/postgresql:latest   
 ```
 
-Run Locator
+In a new shell -> Run GemFire Locator
 ```shell
 docker run -it -e 'ACCEPT_TERMS=y' --rm --name gf-locator --network=gemfire-cache -p 10334:10334 -p 7070:7070 gemfire/gemfire:10.0.3 gfsh start locator --name=locator1
 ```
 
-Setup Pdx
-
+In a new shell -> Setup GemFire Pdx
 ```shell
 docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "configure pdx --read-serialized=true --disk-store"
 ```
 
-Run Cache Server
+Run GemFire Cache Server
 ```shell
 docker run -it -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire-cache -p 40404:40404 gemfire/gemfire:10.0.3 gfsh start server --name=server1 --locators=gf-locator\[10334\]
 ```
-Setup GemFire Regions
+
+In a new shell -> Setup GemFire Regions
 
 ```shell
 docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "create region --name=Account --type=PARTITION"
 ```
-
 
 Run initial to test and create database
 
@@ -47,6 +46,7 @@ docker run --name account-batch   --rm -it  --network=gemfire-cache -e "spring.p
 # GemFire Management Console (Gideon Console)
 
 1. Login
+
 ```shell
 docker login registry.tanzu.vmware.com
 ```

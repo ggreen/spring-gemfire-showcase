@@ -1,38 +1,51 @@
-# GemFire Functions Example
+mvn install
 
-A GemFire function is a body of code that resides on a server and that an application can invoke from a client or from another server without the need to send the function code itself. The caller can direct a data-dependent function to operate on a particular dataset, or can direct a data-independent function to operate on a particular server, member, or member group.
+cd components/server/account-services/
+
+```shell
+cd $GEMFIRE_HOME/bin
+```
+
+Start GemFire server
+
+```shell
+./gfsh -e "start locator --name=locator"
+```
+
+Configure Pdx
+
+```shell
+./gfsh -e "connect" -e "configure pdx --read-serialized=true --disk-store --auto-serializable-classes=.*"
+```
+
+Start Cache Server
+```shell
+./gfsh -e "start server --name=server1 --locators=localhost[10334]  --J=-Dconfig.properties=/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/components/server/account-services/src/main/resources/server.properties"
+```
+
+Deploy JAr
+
+```shell
+./gfsh -e "connect" -e "deploy --jar=/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/components/server/account-services/target/account-services-0.0.1-SNAPSHOT.jar"
+```
+
+```shell
+./gfsh -e "connect" -e "list deployed"
+```
+
+```shell
+./gfsh -e "connect" -e "list deployed"
+```
+
+```shell
+./gfsh -e "connect" -e "create async-event-queue --id=accountQueue --listener=spring.gemfire.showcase.account.server.listeners.AccountAsyncEventListener"
+```
+
+```shell
+./gfsh -e "connect" -e "create region --type=PARTITION --name=Account --async-event-queue-id=accountQueue"
+```
 
 
-You can deploy function thru a server GemFire cache XML or spring context.
-
-You can also use the deploy jar gfsh command to auto register functions.
-
-
-	deploy --jar=/Projects/solutions/gedi/dev/playground/spring-geode-showcase/demo-functions/target/demo-functions-0.0.1-SNAPSHOT.jar
-
-See function overview [https://gemfire.docs.pivotal.io/geode/developing/function_exec/chapter_overview.html](https://gemfire.docs.pivotal.io/geode/developing/function_exec/chapter_overview.html)
-
-
-##  Example Function
-
-See example code DownloadExampleFunction
-
-	io.pivotal.gemfire.demo.functions.DownloadExampleFunction
-
-This  demonstrates using a region aware function to download region data in JSON
-format to a local file.
-
-
-## Queries
-
-The only way to perform a join of a participated region is by using a Function.
-
-See example code: ExampleQueryFunction
-
-	io.pivotal.gemfire.demo.functions.ExampleQueryFunction
-
-
-
-
-
-
+```shell
+./gfsh -e "connect" -e "shutdown"
+```
