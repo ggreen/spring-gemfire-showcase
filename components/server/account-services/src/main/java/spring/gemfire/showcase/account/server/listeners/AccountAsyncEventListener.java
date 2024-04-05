@@ -25,7 +25,7 @@ public class AccountAsyncEventListener implements AsyncEventListener {
 
     private String saveAccountSql = """
             INSERT INTO account (id, name)
-            VALUES ("?,?")
+            VALUES (?,?)
             ON CONFLICT(id)
             DO UPDATE SET name = ?
             """;

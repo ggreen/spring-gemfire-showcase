@@ -54,16 +54,6 @@ class AccountAsyncEventListenerTest {
         subject = new AccountAsyncEventListener(dataSource);
     }
 
-    @Test
-    void toAccount_WithPdx() throws SQLException {
-
-        when(pdx.getObject()).thenReturn(account);
-        assertThat(subject.toAccount(pdx)).isNotNull();
-    }
-    @Test
-    void toAccount() throws SQLException {
-        assertThat(subject.toAccount(account)).isNotNull();
-    }
 
     @Test
     void processEvents() throws SQLException {
@@ -71,7 +61,6 @@ class AccountAsyncEventListenerTest {
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(event.getDeserializedValue()).thenReturn(pdx);
-        when(pdx.getObject()).thenReturn(account);
 
         subject.processEvents(events);
         verify(preparedStatement).executeBatch();
