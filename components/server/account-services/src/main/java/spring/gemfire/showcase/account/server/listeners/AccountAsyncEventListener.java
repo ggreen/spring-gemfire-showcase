@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import static java.lang.String.valueOf;
+
 public class AccountAsyncEventListener implements AsyncEventListener {
 
     private final DataSource dataSource;
@@ -51,11 +53,11 @@ public class AccountAsyncEventListener implements AsyncEventListener {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(saveAccountSql)) {
 
                     for (AsyncEvent event : events) {
-                        var account = toAccount(event.getDeserializedValue());
+                        PdxInstance account = (PdxInstance) event.getDeserializedValue();
 
-                        preparedStatement.setString(1, account.getId());
-                        preparedStatement.setString(2, account.getName());
-                        preparedStatement.setString(3, account.getName());
+                        preparedStatement.setString(1, valueOf(account.getField("id")));
+                        preparedStatement.setString(2, valueOf(account.getField("name")));
+                        preparedStatement.setString(3, valueOf(account.getField("name")));
                         preparedStatement.addBatch();
                     }
                     preparedStatement.executeBatch();
@@ -70,12 +72,5 @@ public class AccountAsyncEventListener implements AsyncEventListener {
         return true;
     }
 
-    @SneakyThrows
-    public Account toAccount(Object deserializedValue) {
-        if (deserializedValue instanceof PdxInstance pdxInstance)
-            return (Account) pdxInstance.getObject();
-
-        return (Account) deserializedValue;
-    }
 
 }
