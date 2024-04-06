@@ -15,6 +15,8 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 import spring.gemfire.showcase.account.domain.account.Account;
 import spring.gemfire.showcase.account.server.listeners.AccountAsyncEventListener;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableGemfireRepositories
 public class GemFireConf
@@ -56,6 +58,7 @@ public class GemFireConf
                 .set("jmx-manager-start", "true")
                 .set("log-file", "")
                 .set("locators",locators)
+                .setPdxReadSerialized(true)
                 .setPdxSerializer(pdxSerializer);
 
         if(startLocator != null && startLocator.length() > 0)
@@ -69,9 +72,9 @@ public class GemFireConf
     }
 
     @Bean
-    AsyncEventListener listener()
+    AsyncEventListener listener(DataSource dataSource)
     {
-        return new AccountAsyncEventListener();
+        return new AccountAsyncEventListener(dataSource);
     }
     @Bean
     Region<String, Account> region(Cache cache, AsyncEventListener listener)

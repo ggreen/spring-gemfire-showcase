@@ -15,6 +15,11 @@ buildNumber.properties
 .classpath
 .project
 .settings/
+*.if
+*.lk
+*.dat
+*.pid
+
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
