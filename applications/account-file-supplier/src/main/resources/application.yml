@@ -1,5 +1,5 @@
-file:
-  directory: "/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-file-supplier/src/test/resources"
+#file:
+#  directory: "/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-file-supplier/src/test/resources"
 server:
   port: 0
 spring:
@@ -19,13 +19,8 @@ spring:
       default:
         contentType: "application/json"
       bindings:
-        input:
-          destination: "file-input"
-          group: ${spring.application.name}
-          consumer:
-            concurrency: 1
         output:
-          destination: "file"
+          destination: "account-file"
       rabbit:
         default:
           group: ${spring.application.name}

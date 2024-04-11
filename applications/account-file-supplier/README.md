@@ -12,6 +12,12 @@ A simple developer defined supplier to publish lines in a file to RabbitMQ.
 | spring.rabbitmq.host       | The rabbitmq broker hostname                          | 127.0.0.1     |
 
 
+Start
+
+```shell
+mkdir -p /tmp/file-in
+java -jar applications/account-file-supplier/target/account-file-supplier-0.0.1-SNAPSHOT.jar --file.directory=/tmp/file-in
+```
 
 # SCDF Application Register
 

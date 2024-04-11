@@ -35,6 +35,7 @@ In a new shell -> Setup GemFire Regions
 docker run -it -e 'ACCEPT_TERMS=y' --network=gemfire-cache gemfire/gemfire:10.0.3 gfsh -e "connect --jmx-manager=gf-locator[1099]" -e "create region --name=Account --type=PARTITION"
 ```
 
+
 Run initial to test and create database
 
 ```shell

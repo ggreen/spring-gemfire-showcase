@@ -40,37 +40,120 @@ open http://localhost:9393/dashboard
 
 Goto Click [Apps](http://localhost:9393/dashboard/index.html#/apps) ->[Add](http://localhost:9393/dashboard/index.html#/apps/add)
 
+- Click import application starters -> RabbitMQ/Maven -> Import Applications
 - Click App as Properties
 
 Paste the following with the locations of GemFire SCDF and custom apps
 
+#sink.gemfire.metadata=file:///Users/devtools/repositories/IMDG/gemfire/scdf/apps/gemfire-sink-rabbit-1.0.0-metadata.jar
+
 ```properties
 sink.gemfire=file:///Users/devtools/repositories/IMDG/gemfire/scdf/apps/gemfire-sink-rabbit-1.0.0.jar
-sink.gemfire.metadata=file:///Users/devtools/repositories/IMDG/gemfire/scdf/apps/gemfire-sink-rabbit-1.0.0-metadata.jar
 source.account-file=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-file-supplier/target/account-file-supplier-0.0.1-SNAPSHOT.jar
 processor.account-csv-json=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-csv-processor/target/account-csv-processor-0.0.1-SNAPSHOT.jar
 ```
 
 Note: please build the custom apps and download the GemFire for Spring Cloud DataFlow applications
 
-
-## Create Stream Pipeline
+--------------------------------
+# RabbitMQ Queue with CSV lines to GemFire Example
 
 - Click [Streams](http://localhost:9393/dashboard/index.html#/streams/list) ->  [Create](http://localhost:9393/dashboard/index.html#/streams/list/create)
 - Paste the following example
 
-```shell
-account-file --file.directory="/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-csv-processor/src/test/resources/csv/account/"  | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json=true --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
+
+In RabbitMQ Dashboard
+
+
+Create CSV Quorum Queue
+
+```
+account-file.csv
 ```
 
-![csv-account-gemfire-scdf.png](docs/img/csv-account-gemfire-scdf.png)
+
+```shell
+csv=rabbit  --queues=account-file.csv | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
+```
+
+
+
+```shell
+csv-file=file --directory=/tmp/input --filename-pattern=account.csv --mode=lines | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334"
+```
+
+Use the RabbitMQ dashboard to add CSV lines in the account-file.csv queue
+
+```csv
+"C1","CSV Account 99"
+```
+
+
+------------------
+
+# CSV File to GemFire  Example
+
 
 Click Create stream(s)
 - type name
 - Click the ":" next to the stream 
 - Click Deploy -> Deploy Stream 
 
-##
+
+You also deploy the following
+
+```shell
+csv=file  --queues=account-file.csv | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
+```
+
+Test with CSV File
+
+```shell
+echo '"99","Account 99"' > /tmp/input/account.csv
+```
+
+```shell
+echo '"ABC","Account ABC"' >> /tmp/input/account.csv
+```
+
+-----------------------
+
+# Postgres to GemFire
+
+```shell
+docker  run --name postgresql  --network gemfire-cache --rm -it -p 5432:5432 -e ALLOW_EMPTY_PASSWORD=yes -v /Users/devtools/repositories/RDBMS/PostgreSQL/pg-docker:/bitnami/postgresql bitnami/postgresql:latest
+```
+
+Run initial to test and create database
+
+```shell
+docker run -it --rm  --network gemfire-cache bitnami/postgresql:latest psql -h postgresql -U postgres
+```
+
+```sql
+CREATE TABLE IF NOT EXISTS account_queue (
+	id varchar(100) NOT NULL,
+	"name" varchar(255) NOT NULL,
+	"processed" varchar(1) not null DEFAULT 'N',
+	CONSTRAINT account_queue_pk PRIMARY KEY (id)
+);
+```
+
+Deploy the following SCDF definition
+
+```shell
+database=jdbc --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres" --spring.datasource.username=postgres --update="UPDATE account_queue SET processed = 'Y' where processed = 'N'" --query="select id,name from account_queue where processed = 'N'" | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334"
+```
+
+Test with the following
+
+```sql
+INSERT INTO account_queue (id, "name") VALUES('DBAccount', 'Account');
+```
+
+
+-------------------------
+# Notes
 
 Update or create New File in the directory (ex: [/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-csv-processor/src/test/resources/csv/account/account.csv](https://github.com/ggreen/spring-gemfire-showcase/blob/main/applications/account-csv-processor/src/test/resources/csv/account/account.csv))
 
