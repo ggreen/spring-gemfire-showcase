@@ -70,6 +70,18 @@ Click Create stream(s)
 
 ##
 
+Update or New File
+
+Example data
+
+```csv
+"1","First Account"
+"2","Second Account"
+"3","Third Account"
+"4","Fourth Account"
+```
+
+
 View data in GemFire
 
 ```shell
