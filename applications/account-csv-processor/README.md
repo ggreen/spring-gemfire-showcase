@@ -1,10 +1,11 @@
 # account-csv-processor
 
-A simple developer defined function to convert CSV data to a domain object.
+A simple developer defined [spring cloud stream](https://spring.io/projects/spring-cloud-stream) processor app to convert CSV data to a domain object.
+This app can be added to a library of apps to be used within [SCDF](https://spring.io/projects/spring-cloud-dataflow). 
 
 -----------------------
 
-# Location Testing
+# Local Testing
 
 ## Start GemFire
 
@@ -66,3 +67,12 @@ Click Create stream(s)
 - type name
 - Click the ":" next to the stream 
 - Click Deploy -> Deploy Stream 
+
+##
+
+View data in GemFire
+
+```shell
+cd $GEMFIRE_HOME/bin
+./gfsh -e "connect"  -e "query --query='select * from /Account'"
+```
