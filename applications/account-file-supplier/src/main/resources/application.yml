@@ -1,0 +1,44 @@
+file:
+  directory: "/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-file-supplier/src/test/resources"
+server:
+  port: 0
+spring:
+  application:
+    name: account-file-supplier
+  config:
+    import: "optional:configserver:http://localhost:8888/"
+  cloud:
+    function:
+      definition: fileSupplier
+    stream:
+      function:
+        bindings:
+          fileSupplier-in-0: input
+          fileSupplier-out-0: output
+      #
+      default:
+        contentType: "application/json"
+      bindings:
+        input:
+          destination: "file-input"
+          group: ${spring.application.name}
+          consumer:
+            concurrency: 1
+        output:
+          destination: "file"
+      rabbit:
+        default:
+          group: ${spring.application.name}
+          requiredGroups: true
+          dlqQuorum:
+            enabled:  true
+          quorum:
+            enabled: true
+        bindings:
+          input:
+            consumer:
+              autoBindDlq: true
+              quorum.enabled: true
+              dlqQuorum:
+                enabled: true
+              prefetch: 10000
