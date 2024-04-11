@@ -76,12 +76,6 @@ account-file.csv
 csv=rabbit  --queues=account-file.csv | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
 ```
 
-
-
-```shell
-csv-file=file --directory=/tmp/input --filename-pattern=account.csv --mode=lines | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334"
-```
-
 Use the RabbitMQ dashboard to add CSV lines in the account-file.csv queue
 
 ```csv
@@ -102,9 +96,11 @@ Click Create stream(s)
 
 You also deploy the following
 
+
+
 ```shell
-csv=file  --queues=account-file.csv | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
-```
+csv-file=file --directory=/tmp/input --filename-pattern=account.csv --mode=lines | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334"
+````
 
 Test with CSV File
 
