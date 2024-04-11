@@ -63,6 +63,8 @@ Note: please build the custom apps and download the GemFire for Spring Cloud Dat
 account-file --file.directory="/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-csv-processor/src/test/resources/csv/account/"  | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json=true --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
 ```
 
+![csv-account-gemfire-scdf.png](docs/img/csv-account-gemfire-scdf.png)
+
 Click Create stream(s)
 - type name
 - Click the ":" next to the stream 
