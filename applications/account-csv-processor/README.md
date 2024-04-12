@@ -32,7 +32,7 @@ Start DataFlow
 java -jar $SCDF_HOME/spring-cloud-dataflow-server-2.11.2.jar --server.port=9393  --spring.cloud.dataflow.features.skipper-enabled=true 
 ```
 
-Access Dashboard
+Access the Spring DataFlow Dashboard
 
 ```shell
 open http://localhost:9393/dashboard
@@ -45,7 +45,6 @@ Goto Click [Apps](http://localhost:9393/dashboard/index.html#/apps) ->[Add](http
 
 Paste the following with the locations of GemFire SCDF and custom apps
 
-#sink.gemfire.metadata=file:///Users/devtools/repositories/IMDG/gemfire/scdf/apps/gemfire-sink-rabbit-1.0.0-metadata.jar
 
 ```properties
 sink.gemfire=file:///Users/devtools/repositories/IMDG/gemfire/scdf/apps/gemfire-sink-rabbit-1.0.0.jar
@@ -53,7 +52,7 @@ source.account-file=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/d
 processor.account-csv-json=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/account-csv-processor/target/account-csv-processor-0.0.1-SNAPSHOT.jar
 ```
 
-Note: please build the custom apps and download the GemFire for Spring Cloud DataFlow applications
+Note: please update the URI based on built the custom apps and location of the downloaded GemFire for Spring Cloud DataFlow applications
 
 --------------------------------
 # RabbitMQ Queue with CSV lines to GemFire Example
@@ -65,12 +64,19 @@ Note: please build the custom apps and download the GemFire for Spring Cloud Dat
 In RabbitMQ Dashboard
 
 
-Create CSV Quorum Queue
-
+Create CSV Quorum Queue the following name:
 ```
 account-file.csv
 ```
 
+Access the Spring DataFlow Dashboard
+
+```shell
+open http://localhost:9393/dashboard
+```
+
+
+Create Stream the following definition
 
 ```shell
 csv=rabbit  --queues=account-file.csv | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334" --spring.rabbitmq.host=localhost
@@ -78,13 +84,15 @@ csv=rabbit  --queues=account-file.csv | account-csv-json | gemfire --gemfire.reg
 
 Use the RabbitMQ dashboard to add CSV lines in the account-file.csv queue
 
+![docs/img/rabbit-dashboard-push-csv.png](docs/img/rabbit-dashboard-push-csv.png)
+
+
 ```csv
 "C1","CSV Account 99"
 ```
 
 
 ------------------
-
 # CSV File to GemFire  Example
 
 
@@ -96,11 +104,12 @@ Click Create stream(s)
 
 You also deploy the following
 
-
-
 ```shell
 csv-file=file --directory=/tmp/input --filename-pattern=account.csv --mode=lines | account-csv-json | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334"
 ````
+
+![docs/img/scdf-define-csv.png](docs/img/scdf-define-csv.png)
+
 
 Test with CSV File
 
@@ -140,6 +149,8 @@ Deploy the following SCDF definition
 ```shell
 database=jdbc --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres" --spring.datasource.username=postgres --update="UPDATE account_queue SET processed = 'Y' where processed = 'N'" --query="select id,name from account_queue where processed = 'N'" | gemfire --gemfire.region.regionName=Account --gemfire.consumer.keyExpression="payload.getField('id')" --gemfire.consumer.json="true" --gemfire.pool.host-addresses="localhost:10334"
 ```
+
+![docs/img/scdf-jdbc.png](docs/img/scdf-jdbc.png)
 
 Test with the following
 
