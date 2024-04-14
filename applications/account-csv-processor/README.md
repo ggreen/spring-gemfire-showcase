@@ -88,7 +88,7 @@ Use the RabbitMQ dashboard to add CSV lines in the account-file.csv queue
 
 
 ```csv
-"C1","CSV Account 99"
+"C2","CSV Account C2"
 ```
 
 
@@ -114,11 +114,11 @@ csv-file=file --directory=/tmp/input --filename-pattern=account.csv --mode=lines
 Test with CSV File
 
 ```shell
-echo '"99","Account 99"' > /tmp/input/account.csv
+echo '"77","Account 77"' > /tmp/input/account.csv
 ```
 
 ```shell
-echo '"ABC","Account ABC"' >> /tmp/input/account.csv
+echo '"ABC66","Account ABC66"' >> /tmp/input/account.csv
 ```
 
 -----------------------
@@ -155,7 +155,7 @@ database=jdbc --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres
 Test with the following
 
 ```sql
-INSERT INTO account_queue (id, "name") VALUES('DBAccount', 'Account');
+INSERT INTO account_queue (id, "name") VALUES('DB3', 'Account DB3');
 ```
 
 
