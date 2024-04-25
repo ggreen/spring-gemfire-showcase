@@ -1,12 +1,12 @@
 package spring.gemfire.showcase.account.listener.query;
 
-import spring.gemfire.showcase.account.domain.account.Location;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.geode.cache.query.CqEvent;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.listener.annotation.ContinuousQuery;
 import org.springframework.stereotype.Component;
+import spring.gemfire.showcase.account.domain.account.Location;
 
 import static java.lang.String.valueOf;
 

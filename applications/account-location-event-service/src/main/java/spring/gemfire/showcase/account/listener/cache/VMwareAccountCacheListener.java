@@ -1,9 +1,9 @@
 package spring.gemfire.showcase.account.listener.cache;
 
-import spring.gemfire.showcase.account.domain.account.Account;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.geode.cache.EntryEvent;
 import org.apache.geode.cache.util.CacheListenerAdapter;
+import spring.gemfire.showcase.account.domain.account.Account;
 
 @Slf4j
 public class VMwareAccountCacheListener extends CacheListenerAdapter<String, Account> {

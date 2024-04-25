@@ -3,7 +3,6 @@ package spring.gemfire.showcase.account.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.gemfire.mapping.annotation.Region;
 
 @Data
 @AllArgsConstructor

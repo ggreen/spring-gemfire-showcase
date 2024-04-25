@@ -1,10 +1,11 @@
 package spring.gemfire.showcase.account.controller;
 
-import spring.gemfire.showcase.account.domain.account.Account;
-import spring.gemfire.showcase.account.repostories.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import spring.gemfire.showcase.account.domain.account.Account;
+import spring.gemfire.showcase.account.repostories.AccountRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -29,5 +30,11 @@ public class AccountController
     public void deleteById(@PathVariable String id)
     {
         accountRepository.deleteById(id);
+    }
+
+
+    @GetMapping("accounts/names/{name}")
+    public List<Account> findByName(@PathVariable String name) {
+        return accountRepository.findByNameContaining(name);
     }
 }

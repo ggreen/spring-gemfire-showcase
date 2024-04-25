@@ -1,8 +1,7 @@
 package spring.gemfire.showcase.account.repostories;
 
-import spring.gemfire.showcase.account.entity.Account;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import spring.gemfire.showcase.account.entity.Account;
 
 import java.util.Optional;
 

@@ -1,6 +1,5 @@
 package spring.gemfire.showcase.account.listener.query;
 
-import spring.gemfire.showcase.account.domain.account.Location;
 import org.apache.geode.cache.query.CqEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.gemfire.GemfireTemplate;
+import spring.gemfire.showcase.account.domain.account.Location;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;

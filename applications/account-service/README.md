@@ -25,6 +25,43 @@ open http://localhost:6001
 ![swagger-ui.png](docs/img/swagger-ui.png)
 
 
+
+
+------------
+
+# Access Gfsh
+
+
+```shell
+docker run -it -e 'ACCEPT_TERMS=y' --network=gf-network gemfire/gemfire:9.15.6 gfsh -e "connect jmx-manager=gf-locator[1099]" -e "list members"
+```
+
+In gfsh connect to the locator
+
+```shell
+connect --jmx-manager=gf-locator[1099]
+```
+
+In a Terminal post account data
+
+```shell
+curl -X 'POST' \
+  'http://localhost:6001/accounts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "name": "Acct 001"
+}'
+
+```
+
+Query data in gfsh
+```shell
+query --query="select * from /Account"
+```
+
+
 ## Docker building image
 
 The following are the steps to build a docker image
@@ -39,4 +76,3 @@ Example for tagging and pushing to docker hub
 docker tag account-service:0.0.1-SNAPSHOT cloudnativedata/account-service:0.0.1-SNAPSHOT
 docker push cloudnativedata/account-service:0.0.1-SNAPSHOT
 ```
-

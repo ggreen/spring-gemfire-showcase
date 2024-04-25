@@ -2,13 +2,9 @@ package spring.gemfire.showcase.account.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import spring.gemfire.showcase.account.entity.Account;
-import spring.gemfire.showcase.account.repostories.AccountRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import spring.gemfire.showcase.account.entity.Account;
 import spring.gemfire.showcase.account.service.AccountService;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController

@@ -1,12 +1,12 @@
 package spring.gemfire.showcase.account.listener.cache;
 
-import spring.gemfire.showcase.account.domain.account.Account;
 import org.apache.geode.cache.EntryEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import spring.gemfire.showcase.account.domain.account.Account;
 
 import static org.mockito.Mockito.verify;
 

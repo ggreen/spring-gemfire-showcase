@@ -1,8 +1,5 @@
 package spring.gemfire.showcase.account;
 
-import spring.gemfire.showcase.account.domain.account.Account;
-import spring.gemfire.showcase.account.domain.account.Location;
-import spring.gemfire.showcase.account.listener.cache.VMwareAccountCacheListener;
 import org.apache.geode.cache.CacheListener;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
@@ -16,9 +13,14 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.Interest;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableContinuousQueries;
+import org.springframework.data.gemfire.config.annotation.EnablePdx;
+import spring.gemfire.showcase.account.domain.account.Account;
+import spring.gemfire.showcase.account.domain.account.Location;
+import spring.gemfire.showcase.account.listener.cache.VMwareAccountCacheListener;
 
 @ClientCacheApplication(subscriptionEnabled = true, readyForEvents = true) //seconds
 @EnableContinuousQueries
+@EnablePdx
 @Configuration
 public class GemFireConf {
     @Value("${spring.data.gemfire.cache.client.durable-client-id}")

@@ -10,7 +10,6 @@ package spring.gemfire.showcase.account.csv;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import nyla.solutions.core.io.csv.CsvReader;
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +18,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.support.MessageBuilder;
-
-import java.nio.charset.StandardCharsets;
 
 @Configuration
 @Slf4j
