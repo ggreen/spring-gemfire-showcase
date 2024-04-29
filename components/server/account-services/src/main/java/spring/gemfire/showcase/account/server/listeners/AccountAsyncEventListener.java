@@ -1,16 +1,12 @@
 package spring.gemfire.showcase.account.server.listeners;
 
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import nyla.solutions.core.patterns.jdbc.dataSource.ConnectionCreator;
 import nyla.solutions.core.patterns.jdbc.dataSource.ConnectionDataSource;
 import org.apache.geode.cache.asyncqueue.AsyncEvent;
 import org.apache.geode.cache.asyncqueue.AsyncEventListener;
-import org.apache.geode.logging.internal.log4j.LogWriterLogger;
 import org.apache.geode.pdx.PdxInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import spring.gemfire.showcase.account.domain.account.Account;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -3,7 +3,6 @@ package spring.gemfire.showcase.account.server.listeners;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.asyncqueue.AsyncEvent;
 import org.apache.geode.pdx.PdxInstance;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +17,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

@@ -1,4 +1,4 @@
-package spring.gemfire.showcase.account;
+package spring.gemfire.showcase.account.sink;
 
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
@@ -11,7 +11,7 @@ import org.springframework.data.gemfire.config.annotation.EnableSecurity;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 import spring.gemfire.showcase.account.domain.account.Account;
 
-@ClientCacheApplication(prSingleHopEnabled = true)
+@ClientCacheApplication
 @EnableSecurity
 @Configuration
 @EnablePdx

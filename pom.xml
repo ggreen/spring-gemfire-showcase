@@ -19,6 +19,7 @@
         <module>applications/account-csv-processor</module>
         <module>applications/account-file-supplier</module>
         <module>applications/account-batch</module>
+        <module>applications/account-sink</module>
         <module>applications/account-server</module>
     </modules>
     <build>

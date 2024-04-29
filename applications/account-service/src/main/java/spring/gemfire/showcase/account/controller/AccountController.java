@@ -6,7 +6,6 @@ import spring.gemfire.showcase.account.domain.account.Account;
 import spring.gemfire.showcase.account.repostories.AccountRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
