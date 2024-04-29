@@ -21,9 +21,9 @@ public class AccountController
     }
 
     @GetMapping("accounts/{id}")
-    public Optional<Account> findById(@PathVariable String id)
+    public Account findById(@PathVariable String id)
     {
-        return accountRepository.findById(id);
+        return accountRepository.findById(id).orElse(null);
     }
 
     @DeleteMapping("accounts/{id}")

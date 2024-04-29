@@ -180,3 +180,4 @@ View data in GemFire
 cd $GEMFIRE_HOME/bin
 ./gfsh -e "connect"  -e "query --query='select * from /Account'"
 ```
+
