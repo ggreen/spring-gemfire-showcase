@@ -114,6 +114,7 @@ csv-file=file --directory=/tmp/input --filename-pattern=account.csv --mode=lines
 Test with CSV File
 
 ```shell
+mkdir -p /tmp/input
 echo '"77","Account 77"' > /tmp/input/account.csv
 ```
 
@@ -124,6 +125,10 @@ echo '"ABC66","Account ABC66"' >> /tmp/input/account.csv
 -----------------------
 
 # Postgres to GemFire
+
+```shell
+docker network create gemfire-cache
+```
 
 ```shell
 docker  run --name postgresql  --network gemfire-cache --rm -it -p 5432:5432 -e ALLOW_EMPTY_PASSWORD=yes -v /Users/devtools/repositories/RDBMS/PostgreSQL/pg-docker:/bitnami/postgresql bitnami/postgresql:latest
@@ -142,6 +147,8 @@ CREATE TABLE IF NOT EXISTS account_queue (
 	"processed" varchar(1) not null DEFAULT 'N',
 	CONSTRAINT account_queue_pk PRIMARY KEY (id)
 );
+
+delete from account_queue;
 ```
 
 Deploy the following SCDF definition
@@ -155,7 +162,13 @@ database=jdbc --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres
 Test with the following
 
 ```sql
+INSERT INTO account_queue (id, "name") VALUES('DB1', 'Account DB1');
 INSERT INTO account_queue (id, "name") VALUES('DB3', 'Account DB3');
+INSERT INTO account_queue (id, "name") VALUES('DB2', 'Account DB2');
+INSERT INTO account_queue (id, "name") VALUES('DB4', 'Account DB4');
+INSERT INTO account_queue (id, "name") VALUES('DB5', 'Account DB5');
+INSERT INTO account_queue (id, "name") VALUES('DB6', 'Account DB6');
+
 ```
 
 
