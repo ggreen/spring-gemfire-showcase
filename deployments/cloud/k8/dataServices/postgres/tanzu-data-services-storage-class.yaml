@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: tanzu-data-services
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+  creationTimestamp: "2024-02-28T15:09:35Z"
+  resourceVersion: "297"
+provisioner: k8s.io/tanzu-data-services
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
