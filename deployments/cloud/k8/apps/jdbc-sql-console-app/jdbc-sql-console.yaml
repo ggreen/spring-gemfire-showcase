@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  jdbc-sql-console-app
+    app.kubernetes.io/name: jdbc-sql-console-app
+  name:  jdbc-sql-console-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  jdbc-sql-console-app
+  template:
+    metadata:
+      labels:
+        name:  jdbc-sql-console-app
+    spec:
+      containers:
+        - env:
+            - name: server.port
+              value: "8080"
+            - name: spring.datasource.url
+#              value: jdbc:postgresql://postgres-db:5432/postgres-db?currentSchema=retail
+              value: jdbc:postgresql://postgres-db:5432/postgres-db
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-db-app-user-db-secret
+                  key: username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-db-app-user-db-secret
+                  key: password
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            initialDelaySeconds: 40 #wait seconds before performing the first probe
+#            periodSeconds: 10 #pecifies that the kubelet should perform a liveness probe every X seconds
+#            timeoutSeconds: 15 # Number of seconds after which the probe times out.
+#            failureThreshold: 20
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            initialDelaySeconds: 40 #wait seconds before performing the first probe
+#            periodSeconds: 10 #pecifies that the kubelet should perform a liveness probe every X seconds
+#            timeoutSeconds: 15 # Number of seconds after which the probe times out.
+#            failureThreshold: 20
+          image: cloudnativedata/jdbc-sql-console-app:0.0.2-SNAPSHOT
+          name: jdbc-sql-console-app
+#          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jdbc-sql-console-app-service
+spec:
+  selector:
+    name:  jdbc-sql-console-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+#  type: LoadBalancer
