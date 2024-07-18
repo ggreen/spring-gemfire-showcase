@@ -35,8 +35,8 @@ spec:
           name: gemfire-management-console
       volumes:
         - name: gemfire-management-console-persistence
-          persistentVolumeClaim:
-            claimName: gemfire-management-console-pvc
+#          persistentVolumeClaim:
+#            claimName: gemfire-management-console-pvc
 #          imagePullPolicy: Always
 #          imagePullPolicy: IfNotPresent
 ---
