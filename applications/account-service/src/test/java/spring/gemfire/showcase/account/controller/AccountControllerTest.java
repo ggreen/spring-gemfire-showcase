@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import spring.gemfire.showcase.account.domain.account.Account;
 import spring.gemfire.showcase.account.repostories.AccountRepository;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -74,5 +77,19 @@ class AccountControllerTest
 
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    void paging() {
+
+        var pageNumber = 0;
+        var pageSize= 1;
+        List<Account> list = asList(account);
+
+        when(accountRepository.findAll(any(Pageable.class))).thenReturn(page);
+        when(page.getContent()).thenReturn(list);
+        var actual = subject.findAll(pageNumber, pageSize);
+
+        assertEquals(list, actual);
     }
 }
