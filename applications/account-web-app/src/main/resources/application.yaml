@@ -1,0 +1,35 @@
+server:
+  port: 8081
+app:
+  account:
+    search:
+      index:
+        name: "FavoriteAccountsNameIndex"
+      region:
+        name: "FavoriteAccounts"
+      default:
+        field: "name"
+spring:
+  application:
+    name: account-web-app
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
+      cache:
+        name: "${spring.application.name}"
+      pool:
+        default:
+          read-timeout: 15000
+          subscription-enabled: "true"
+  session:
+    data:
+      gemfire:
+        session:
+          expiration:
+            max-inactive-interval-seconds: 30
+          region:
+            name: "ClusteredSpringSessions"
+        cache:
+          client:
+            pool:
+              name: "DEFAULT"

@@ -22,6 +22,7 @@
         <module>applications/account-sink</module>
         <module>applications/account-server</module>
         <module>applications/multi-cluster-demo-app</module>
+        <module>applications/account-web-app</module>
     </modules>
     <build>
         <pluginManagement>
