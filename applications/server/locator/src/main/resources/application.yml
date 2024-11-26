@@ -1,0 +1,13 @@
+management.endpoints.web.exposure.include: "*"
+gemfire:
+  locator:
+    name: account-locator-1
+server:
+  port: 0
+spring:
+  application:
+    name:locator-server
+  data:
+    gemfire:
+      pool:
+        locators: localhost[10334]
