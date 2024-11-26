@@ -7,7 +7,7 @@ server:
 spring:
   application:
     name:locator-server
-  data:
-    gemfire:
-      pool:
-        locators: localhost[10334]
+#  data:
+#    gemfire:
+#      pool:
+#        locators: localhost[10334]

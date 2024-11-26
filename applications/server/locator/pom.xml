@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.1.12</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.ggreen</groupId>
@@ -16,26 +16,31 @@
     <properties>
         <java.version>17</java.version>
         <springBootForGemFire.version>1.0.0</springBootForGemFire.version>
-        <vmwareGemFire.version>10.0.0</vmwareGemFire.version>
+        <vmwareGemFire.version>10.0.2</vmwareGemFire.version>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.vmware.gemfire</groupId>
-            <artifactId>spring-boot-3.0-gemfire-10.0</artifactId>
-            <version>${springBootForGemFire.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vmware.gemfire</groupId>
-            <artifactId>gemfire-cq</artifactId>
-            <version>${vmwareGemFire.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.vmware.gemfire</groupId>-->
+<!--            <artifactId>spring-boot-3.0-gemfire-10.0</artifactId>-->
+<!--            <version>${springBootForGemFire.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.vmware.gemfire</groupId>
             <artifactId>gemfire-core</artifactId>
             <version>${vmwareGemFire.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-server-all</artifactId>
+            <version>${vmwareGemFire.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vmware.gemfire</groupId>
+                    <artifactId>gemfire-log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.vmware.gemfire</groupId>
             <artifactId>gemfire-logging</artifactId>
@@ -84,12 +89,22 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.vmware.gemfire</groupId>-->
-<!--            <artifactId>gemfire-testcontainers</artifactId>-->
-<!--            <version>1.1</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <!--- ==================== -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

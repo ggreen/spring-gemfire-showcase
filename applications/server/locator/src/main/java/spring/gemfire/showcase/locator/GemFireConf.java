@@ -1,14 +1,11 @@
 package spring.gemfire.showcase.locator;
 
 import org.apache.geode.distributed.LocatorLauncher;
-import org.apache.geode.pdx.PdxSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
 @Configuration
-@EnableGemfireRepositories
 public class GemFireConf
 {
     @Value("${gemfire.locator.name}")
@@ -33,6 +30,7 @@ public class GemFireConf
         var locatorLauncher = new LocatorLauncher.Builder()
                 .setMemberName(locatorName)
                 .setPort(locatorPort)
+                .set("jmx-manager-start","true")
                 .build();
 
         locatorLauncher.start();
