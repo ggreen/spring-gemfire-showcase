@@ -3,6 +3,10 @@ package spring.gemfire.showcase.locator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * GemFire Locator Main Application
+ * @author gregory green
+ */
 @SpringBootApplication
 public class LocatorServer
 {

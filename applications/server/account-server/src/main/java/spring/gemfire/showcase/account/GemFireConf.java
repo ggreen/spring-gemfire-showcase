@@ -42,6 +42,9 @@ public class GemFireConf
     @Value("${gemfire.read.pdx.serialize:false}")
     private boolean readPdxSerialized;
 
+    @Value("${gemfire.working.dir}")
+    private String workingDirectory;
+
     @Bean
     Cache cacheFactory(ServerLauncher launcher)
     {
@@ -57,17 +60,14 @@ public class GemFireConf
     @Bean
     ServerLauncher builder(PdxSerializer pdxSerializer)
     {
-        var builder = new ServerLauncher.Builder()
+        var serverLauncher = new ServerLauncher.Builder()
                 .setMemberName(serverName)
                 .setServerPort(serverPort)
                 .set("locators",locators)
+                .setWorkingDirectory(workingDirectory)
                 .setPdxReadSerialized(readPdxSerialized)
-                .setPdxSerializer(pdxSerializer);
-
-//        if(startLocator != null && startLocator.length() > 0)
-//            builder = builder.set("start-locator", startLocator);
-
-        var serverLauncher =  builder.build();
+                .setPdxSerializer(pdxSerializer)
+                .build();
 
         serverLauncher.start();
 
