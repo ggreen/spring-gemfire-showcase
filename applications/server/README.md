@@ -3,13 +3,13 @@
 ![peer-to-peer.png](docs/peer-to-peer.png)
 
 This directory provides an example of a Peer-To-Peer GemFire cluster
-that using Spring Data GemFire.
+that uses Spring Data GemFire.
 
 
 The majority of the [Spring Data GemFire annotations have been **DEPRACTED** or removed](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/spring-data-for-tanzu-gemfire/2-0/gf-sd-2-0/upgrading-1-x-to-2-x.html)  (ex: @CacheServerApplication).
 You can still leverage Spring Data GemFire for your Tanzu GemFire client applications.  
 
-The applications in this folder uses the GemFire API independently of the Spring Data for GemFire annotation to enable a Peer-to-Peer 
+The applications in this folder uses the GemFire API independently of the previous annotations to enable a Peer-to-Peer 
 GemFire deployment. For detailed instructions for starting and managing Tanzu GemFire servers, see the [Tanzu GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-1/gf/configuring-running-running_the_cacheserver.html).
 
 
