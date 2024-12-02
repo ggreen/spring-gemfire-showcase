@@ -79,6 +79,12 @@
             <artifactId>account-services</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- ====================== -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>11.0.24</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
