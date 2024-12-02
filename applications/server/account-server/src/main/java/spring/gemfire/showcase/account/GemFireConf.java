@@ -4,21 +4,16 @@ import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.CacheFactory;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.RegionShortcut;
-import org.apache.geode.cache.asyncqueue.AsyncEventListener;
 import org.apache.geode.distributed.ServerLauncher;
 import org.apache.geode.pdx.PdxSerializer;
 import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 import spring.gemfire.showcase.account.domain.account.Account;
-import spring.gemfire.showcase.account.server.listeners.AccountAsyncEventListener;
 
-import javax.sql.DataSource;
 
 @Configuration
-@EnableGemfireRepositories
 public class GemFireConf
 {
     @Value("${gemfire.server.name}")
