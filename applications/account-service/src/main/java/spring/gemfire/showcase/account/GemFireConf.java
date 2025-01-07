@@ -11,7 +11,7 @@ import org.springframework.data.gemfire.config.annotation.EnableSecurity;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 import spring.gemfire.showcase.account.domain.account.Account;
 
-@ClientCacheApplication(prSingleHopEnabled = true)
+@ClientCacheApplication
 @EnableSecurity
 @Configuration
 @EnablePdx

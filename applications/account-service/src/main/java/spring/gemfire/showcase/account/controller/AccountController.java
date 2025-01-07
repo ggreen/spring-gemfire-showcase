@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import spring.gemfire.showcase.account.domain.account.Account;
+import spring.gemfire.showcase.account.function.AccountNameToUpperCase;
 import spring.gemfire.showcase.account.repostories.AccountRepository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class AccountController
 {
     private final AccountRepository accountRepository;
+    private final AccountNameToUpperCase accountNameToUpperCase;
 
     @PostMapping
     public <S extends Account> S save(@RequestBody S account)
@@ -49,5 +51,10 @@ public class AccountController
     public List<Account> findFirst2ByNameLikeOrderByByName(@RequestBody String nameLike){
         ScrollPosition offset = ScrollPosition.keyset();
         return accountRepository.findFirst2ByNameLikeOrderByName(nameLike, offset).getContent();
+    }
+
+    @PutMapping("functions/upperCase/name/{accountId}")
+    public Account toUpperCaseName(@PathVariable String accountId) {
+        return this.accountNameToUpperCase.toUpperCaseName(accountId);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import spring.gemfire.showcase.account.domain.account.Account;
+import spring.gemfire.showcase.account.function.AccountNameToUpperCase;
 import spring.gemfire.showcase.account.repostories.AccountRepository;
 
 import java.util.List;
@@ -36,6 +37,9 @@ class AccountControllerTest
     @Mock
     private Page<Account> page;
 
+    @Mock
+    private AccountNameToUpperCase accountNameToUpperCase;
+
     private AccountController subject;
     private Account account;
     private String name = "Josiah";
@@ -44,7 +48,7 @@ class AccountControllerTest
     void setUp()
     {
         account = JavaBeanGeneratorCreator.of(Account.class).create();
-        subject = new AccountController(accountRepository);
+        subject = new AccountController(accountRepository,accountNameToUpperCase);
     }
 
     @Test
@@ -91,5 +95,16 @@ class AccountControllerTest
         var actual = subject.findAll(pageNumber, pageSize);
 
         assertEquals(list, actual);
+    }
+
+    @Test
+    void toUpperCase() {
+
+        when(accountNameToUpperCase.toUpperCaseName(anyString())).thenReturn(account);
+
+        var actual = subject.toUpperCaseName(account.getId());
+
+        assertEquals(account, actual);
+
     }
 }
