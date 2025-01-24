@@ -5,19 +5,19 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.ggreen</groupId>
-    <artifactId>account-server</artifactId>
+    <artifactId>web-session-listener</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>account-server</name>
-    <description>account-server</description>
+    <name>web-session-listener</name>
+    <description>web-session-listener</description>
     <properties>
         <java.version>17</java.version>
-        <vmwareGemFire.version>10.0.2</vmwareGemFire.version>
-        <testcontainers.version>1.19.3</testcontainers.version>
-    </properties>
+        <springBootForGemFire.version>1.0.0</springBootForGemFire.version>
+        <vmwareGemFire.version>10.0.0</vmwareGemFire.version>
+        <testcontainers.version>1.19.3</testcontainers.version>    </properties>
     <dependencies>
         <dependency>
             <groupId>com.github.ggreen</groupId>
@@ -25,35 +25,39 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.vmware.gemfire</groupId>
-            <artifactId>gemfire-server-all</artifactId>
-            <version>${vmwareGemFire.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.vmware.gemfire</groupId>
-                    <artifactId>gemfire-log4j</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>2.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.nyla-solutions</groupId>
+            <artifactId>nyla.solutions.core</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>spring-boot-3.3-gemfire-10.1</artifactId>
+            <version>${springBootForGemFire.version}</version>
+        </dependency>
+        <!--if using continuous queries-->
         <dependency>
             <groupId>com.vmware.gemfire</groupId>
             <artifactId>gemfire-cq</artifactId>
             <version>${vmwareGemFire.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.4.0</version>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-core</artifactId>
+            <version>${vmwareGemFire.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -75,20 +79,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.ggreen</groupId>
-            <artifactId>account-services</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.nyla-solutions</groupId>
-            <artifactId>nyla.solutions.core</artifactId>
-            <version>2.2.3</version>
-        </dependency>
-        <!-- ====================== -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>11.0.24</version>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-testcontainers</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -107,11 +101,11 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>gemfire-repository-broadcom</id>
-            <name>Broadcom GemFire Release Repository</name>
-            <url>https://packages.broadcom.com/artifactory/gemfire/</url>
-        </repository>
-    </repositories>
+<repositories>
+    <repository>
+        <id>gemfire-repository-broadcom</id>
+        <name>Broadcom GemFire Release Repository</name>
+        <url>https://packages.broadcom.com/artifactory/gemfire/</url>
+    </repository>
+</repositories>
 </project>

@@ -16,6 +16,8 @@ buildNumber.properties
 .project
 .settings/
 *.if
+*.crf
+*.drf
 *.lk
 *.dat
 *.pid

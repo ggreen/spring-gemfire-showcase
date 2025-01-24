@@ -21,11 +21,13 @@
         <module>applications/account-file-supplier</module>
         <module>applications/account-batch</module>
         <module>applications/account-sink</module>
+        <module>applications/web/web-session-listener</module>
         <module>applications/server/account-server</module>
         <module>applications/server/account-jdbc-async-server</module>
         <module>applications/multi-cluster-demo-app</module>
         <module>applications/account-web-app</module>
         <module>applications/server/locator</module>
+
     </modules>
     <build>
         <pluginManagement>

@@ -1,0 +1,17 @@
+keyInterestRegExp: .*
+server:
+  port: -1
+spring:
+  application:
+    name: web-session-listener
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
+      cache:
+        client:
+          durable-client-id: web-session-listener
+          durable-client-timeout: 1000
+      pool:
+        subscription-redundancy: 1
+
+

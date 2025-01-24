@@ -19,4 +19,10 @@ public class AccountSessionController {
     {
         return (Account) httpSession.getAttribute(id);
     }
+
+    @DeleteMapping
+    public void invalidateSession(HttpSession httpSession)
+    {
+        httpSession.invalidate();
+    }
 }
