@@ -14,6 +14,10 @@ import java.time.Instant;
 
 import static java.lang.String.valueOf;
 
+/**
+ * Listens for events on the GemFire region contains the session details
+ * @author gregory green
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -22,15 +26,16 @@ public class SpringWebSessionListener extends CacheListenerAdapter<String,PdxIns
     private final UserSessionReportService service;
 
     /**
+     * Process a session creation event
+     *
+     * @param event the key is the session id and the value of contains session details in PDX format.
      * Pdx Instance value field names
-     * 0 = "id"
-     * 1 = "creationTime"
-     * 2 = "lastAccessedTime"
-     * 3 = "maxInactiveIntervalInSeconds"
-     * 4 = "principalName"
-     * @param event
+     *      * 0 = "id"
+     *      * 1 = "creationTime"
+     *      * 2 = "lastAccessedTime"
+     *      * 3 = "maxInactiveIntervalInSeconds"
+     *      * 4 = "principalName"
      */
-
     @Override
     public void afterCreate(EntryEvent<String,PdxInstance> event) {
 
@@ -38,14 +43,21 @@ public class SpringWebSessionListener extends CacheListenerAdapter<String,PdxIns
     }
 
 
+    /**
+     * Process a session logout
+     * @param event the key contains the session id, the value is blank
+     */
     @Override
     public void afterDestroy(EntryEvent<String,PdxInstance> event) {
 
-        service.reportDestoredSession(event.getKey());
+        service.reportDestroyedSession(event.getKey());
 
     }
 
-
+    /**
+     * Provide the session this to a service
+     * @param event the session event
+     */
     private void reportSession(EntryEvent<String, PdxInstance> event) {
 
         log.info("Created SESSION ID: {} ",event.getKey());

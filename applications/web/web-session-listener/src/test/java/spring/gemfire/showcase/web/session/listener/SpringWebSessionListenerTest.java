@@ -97,6 +97,6 @@ class SpringWebSessionListenerTest {
 
         subject.afterDestroy(event);
 
-        verify(repository).reportDestoredSession(anyString());
+        verify(repository).reportDestroyedSession(anyString());
     }
 }
