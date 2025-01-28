@@ -14,16 +14,24 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig  {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // @formatter:off
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().authenticated()
+                        .requestMatchers("/session**")
+                        .permitAll()
+                        .requestMatchers("/cacheable**")
+                        .permitAll()
+                        .requestMatchers("/**")
+                        .authenticated()
                 )
                 .httpBasic(withDefaults())
+                .cors(security -> {
+                    security.disable();
+                })
                 .formLogin(withDefaults());
         // @formatter:on
         return http.build();

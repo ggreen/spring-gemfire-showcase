@@ -13,5 +13,12 @@ spring:
           durable-client-timeout: 1000
       pool:
         subscription-redundancy: 1
-
-
+  jpa:
+    #    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.default_schema: web_sessions
+  liquibase:
+    defaultSchema: web_sessions

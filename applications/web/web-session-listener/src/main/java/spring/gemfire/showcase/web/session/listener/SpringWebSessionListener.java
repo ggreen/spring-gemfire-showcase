@@ -3,16 +3,15 @@ package spring.gemfire.showcase.web.session.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nyla.solutions.core.util.Text;
 import org.apache.geode.cache.EntryEvent;
 import org.apache.geode.cache.util.CacheListenerAdapter;
 import org.apache.geode.pdx.PdxInstance;
 import org.springframework.stereotype.Component;
-import spring.gemfire.showcase.web.session.domain.UserSessionRecord;
-import spring.gemfire.showcase.web.session.service.UserSessionReportService;
+import spring.gemfire.showcase.web.session.domain.UserSessionStartEvent;
+import spring.gemfire.showcase.web.session.service.UserSessionService;
 
 import java.time.Instant;
-
-import static java.lang.String.valueOf;
 
 /**
  * Listens for events on the GemFire region contains the session details
@@ -23,7 +22,7 @@ import static java.lang.String.valueOf;
 @RequiredArgsConstructor
 public class SpringWebSessionListener extends CacheListenerAdapter<String,PdxInstance> {
 
-    private final UserSessionReportService service;
+    private final UserSessionService service;
 
     /**
      * Process a session creation event
@@ -39,7 +38,24 @@ public class SpringWebSessionListener extends CacheListenerAdapter<String,PdxIns
     @Override
     public void afterCreate(EntryEvent<String,PdxInstance> event) {
 
-        reportSession(event);
+        log.info("Created SESSION ID: {} ",event.getKey());
+
+        var pdxInstance = event.getNewValue();
+        if(pdxInstance == null)
+            return;
+
+        var userSessionStartEventBuilder = UserSessionStartEvent.builder();
+
+        userSessionStartEventBuilder.userId(Text.toString(pdxInstance.getField("principalName")));
+
+        userSessionStartEventBuilder.sessionId(event.getKey());
+        var creationTimeFromPdx = pdxInstance.getField("creationTime");
+        userSessionStartEventBuilder.startTimeMs(System.currentTimeMillis());
+
+        if(creationTimeFromPdx instanceof Instant createInstance)
+            userSessionStartEventBuilder.startTimeMs(createInstance.getEpochSecond());
+
+        service.saveStart(userSessionStartEventBuilder.build());
     }
 
 
@@ -50,38 +66,10 @@ public class SpringWebSessionListener extends CacheListenerAdapter<String,PdxIns
     @Override
     public void afterDestroy(EntryEvent<String,PdxInstance> event) {
 
-        service.reportDestroyedSession(event.getKey());
-
-    }
-
-    /**
-     * Provide the session this to a service
-     * @param event the session event
-     */
-    private void reportSession(EntryEvent<String, PdxInstance> event) {
-
-        log.info("Created SESSION ID: {} ",event.getKey());
-        var serializedNewValue =  event.getSerializedNewValue();
-        if(serializedNewValue == null)
-            return;
-
-        var pdxInstance = serializedNewValue.getDeserializedValue();
-
-        if(pdxInstance == null)
-            return;;
-
-        var userName = valueOf(pdxInstance.getField("principalName"));
         var sessionId = event.getKey();
-        var creationTimeFromPdx = pdxInstance.getField("creationTime");
-        var creationTimeEpoc = System.currentTimeMillis();
 
-        if(creationTimeFromPdx instanceof Instant createInstance)
-            creationTimeEpoc = createInstance.getEpochSecond();
+        log.info("Destroyed session: {}",sessionId);
+        service.saveEnd(sessionId);
 
-        service.reportCreate(UserSessionRecord.builder()
-                .sessionId(sessionId)
-                .userId(userName)
-                .creationEpoc(creationTimeEpoc)
-                .build());
     }
 }

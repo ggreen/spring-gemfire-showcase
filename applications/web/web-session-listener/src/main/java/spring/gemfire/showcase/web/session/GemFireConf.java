@@ -16,18 +16,6 @@ import spring.gemfire.showcase.web.session.listener.SpringWebSessionListener;
 @EnablePdx(readSerialized = true)
 @Configuration
 public class GemFireConf {
-    @Value("${spring.data.gemfire.cache.client.durable-client-id}")
-    private String durableClientId;
-
-    @Value("${spring.data.gemfire.cache.client.durable-client-timeout}")
-    private int durableClientTimeout;
-
-
-    @Value("${spring.data.gemfire.pool.subscription-redundancy}")
-    private int subscriptionRedundancy;
-
-    @Value("${keyInterestRegExp}")
-    private String keyInterestRegExp;
 
     @Value("${spring.session.data.gemfire.session.region.name:ClusteredSpringSessions}")
     private String regionName;

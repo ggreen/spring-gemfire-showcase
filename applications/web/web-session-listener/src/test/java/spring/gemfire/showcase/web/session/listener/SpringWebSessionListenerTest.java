@@ -2,7 +2,6 @@ package spring.gemfire.showcase.web.session.listener;
 
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.EntryEvent;
-import org.apache.geode.cache.SerializedCacheValue;
 import org.apache.geode.pdx.PdxInstance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,16 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import spring.gemfire.showcase.web.session.domain.UserSessionRecord;
-import spring.gemfire.showcase.web.session.service.UserSessionReportService;
+import spring.gemfire.showcase.web.session.domain.UserSession;
+import spring.gemfire.showcase.web.session.service.UserSessionService;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SpringWebSessionListenerTest {
@@ -30,35 +29,31 @@ class SpringWebSessionListenerTest {
     private EntryEvent<String, PdxInstance> event;
 
     @Mock
-    private UserSessionReportService repository;
+    private UserSessionService service;
 
-    private UserSessionRecord userSessionRecord = JavaBeanGeneratorCreator.of(UserSessionRecord.class)
+    private UserSession userSession = JavaBeanGeneratorCreator.of(UserSession.class)
             .create();
-
-    @Mock
-    private SerializedCacheValue<PdxInstance> serializeNewValue;
 
     @Mock
     private PdxInstance pdxInstance;
     private String sessionId = "test";
+    private String userName = "user";
 
 
     @BeforeEach
     void setUp() {
-        subject = new SpringWebSessionListener(repository);
+        subject = new SpringWebSessionListener(service);
     }
 
     @Test
-    @DisplayName("Given a event when afterCreate Then rpeort to service")
     void storeUserSessionOnCreate() {
-        when(event.getSerializedNewValue()).thenReturn(serializeNewValue);
-        when(serializeNewValue.getDeserializedValue()).thenReturn(pdxInstance);
+        when(event.getNewValue()).thenReturn(pdxInstance);
         when(pdxInstance.getField(anyString())).thenReturn(sessionId)
                         .thenReturn(Instant.now());
 
         subject.afterCreate(event);
 
-        verify(repository).reportCreate(any(UserSessionRecord.class));
+        verify(service).saveStart(any());
 
     }
 
@@ -67,36 +62,41 @@ class SpringWebSessionListenerTest {
 
        assertDoesNotThrow( () -> subject.afterCreate(event));
 
+        verify(service,never()).saveStart(any());
+
 
     }
 
     @Test
-    void storeUserSessionOnCreateOnlyserializeNewValueAndPdx() {
-        when(event.getSerializedNewValue()).thenReturn(serializeNewValue);
-        when(serializeNewValue.getDeserializedValue()).thenReturn(pdxInstance);
+    void storeUserSessionSaves() {
+        when(event.getNewValue()).thenReturn(pdxInstance);
+        when(pdxInstance.getField(anyString())).thenReturn(userName);
 
         assertDoesNotThrow( () -> subject.afterCreate(event));
 
+        verify(service).saveStart(any());
+
     }
+
+
+
 
     @Test
-    void storeUserSessionOnCreateOnlyserializeNewValueNoOPdx() {
-        when(event.getSerializedNewValue()).thenReturn(serializeNewValue);
+    void destroy_noExceptions() {
 
-        assertDoesNotThrow( () -> subject.afterCreate(event));
+        when(event.getKey()).thenReturn(sessionId);
+
+        assertDoesNotThrow( () -> subject.afterDestroy(event));
 
     }
-
-
 
 
     @Test
     void destroy() {
 
         when(event.getKey()).thenReturn(sessionId);
-
         subject.afterDestroy(event);
 
-        verify(repository).reportDestroyedSession(anyString());
+        verify(service).saveEnd(any());
     }
 }
