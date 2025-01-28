@@ -102,6 +102,19 @@ The following will same the details in Postgres
 java -jar applications/web/web-session-listener/target/web-session-listener-0.0.1-SNAPSHOT.jar --spring.profiles.active="postgres" --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres" --spring.datasource.username="postgres"
 ```
 
+The following is the Postgres Table definition
+
+```sql
+CREATE TABLE web_sessions.user_session (
+	session_id  text PRIMARY KEY,
+	user_id text NOT NULL,
+	start_time_ms bigint NOT NULL,
+	duration_ms bigint NULL,
+	end_time_ms bigint NULL
+);
+```
+
+
 Example data in Postgres using DBeaver
 
 ![postgres-user-sessions.png](docs/images/postgres-user-sessions.png)
