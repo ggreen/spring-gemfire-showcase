@@ -12,7 +12,8 @@ Version 2.x of Spring Boot for Tanzu GemFire or Spring Data for Tanzu GemFire ha
 See the following docs for more details
 
 https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/spring-boot-for-tanzu-gemfire/2-0/gf-sb-2-0/upgrading-1-x-to-2-x.html
-Server Migration Guides
+
+# Server Migration Guides
 
 For each of the following Spring Features, the following table identifies whether the feature is for clients or servers. It also provides guidance notes on how to migrate any server-related components using gfsh and or Java.
 
