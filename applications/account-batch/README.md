@@ -3,6 +3,13 @@
 The project is [Spring Batch](https://spring.io/batch) + [GemFire](https://gemfire.dev/) example.
 
 
+
+## Running the accounts
+
+```shell
+java -jar applications/account-batch/target/account-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=postgres  --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres --batch.job.repository.create=true --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres" --spring.datasource.username=postgres --batch.load.accounts=true --account.data.count=10000  --account.data.batch.size=50 
+```
+
 # Demo Instructions
 
 Example running standalone Postgres

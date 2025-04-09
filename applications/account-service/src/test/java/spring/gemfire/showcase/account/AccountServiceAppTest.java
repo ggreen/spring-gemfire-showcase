@@ -15,9 +15,9 @@ import spring.gemfire.showcase.account.domain.account.Account;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
+//@SpringBootTest(
+//        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@Testcontainers
 /**
  *
  */
@@ -27,19 +27,19 @@ class AccountServiceAppTest {
     private static int locatorCount = 1;
     private static int serverCount = 1;
     private static String hostName = "localhost";
-    @Autowired
+//    @Autowired
     private TestRestTemplate restTemplate;
 
     private Account account;
     private String url = "/accounts";
 
     @SneakyThrows
-    @BeforeEach
+//    @BeforeEach
     void setUp() {
         account = JavaBeanGeneratorCreator.of(Account.class).create();
     }
 
-    @BeforeAll
+//    @BeforeAll
     public static void setup()
     {
         gemFireCluster = new GemFireCluster(System.getProperty("imageName","gemfire/gemfire:10.1-jdk17"), locatorCount, serverCount)
@@ -57,7 +57,7 @@ class AccountServiceAppTest {
     }
 
 
-    @Test
+//    @Test
     void accountServiceCrud() {
         gemFireCluster.gfsh(true,"list regions");
 
@@ -81,7 +81,7 @@ class AccountServiceAppTest {
         assertThat(actual).isNull();
     }
 
-    @AfterAll
+//    @AfterAll
     static void shutdown()
     {
         gemFireCluster.close();

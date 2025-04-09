@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableTask
 @EnableTransactionManagement
-//${batch.job.repository.schema.prefix:}BOOT3_BATCH_
 @EnableBatchProcessing(tablePrefix = "${batch.job.repository.schema.prefix:}BOOT3_BATCH_")
 @EnableAutoConfiguration
 public class BatchAppConf {
@@ -47,16 +46,16 @@ public class BatchAppConf {
     @Value("${batch.read.sql}")
     private String readSql;
 
-    @Value("${batch.read.fetch.size}")
+    @Value("${batch.read.fetch.size:100}")
     private int fetchSize;
 
-    @Value("${batch.read.chunk.size}")
+    @Value("${batch.read.chunk.size:100}")
     private int chunkSize;
 
     @Value("${batch.jdbc.url}")
     private String batchJdbcUrl;
 
-    @Value("${batch.jdbc.username}")
+    @Value("${batch.jdbc.username:}")
     private String batchUsername;
 
 
@@ -82,16 +81,12 @@ public class BatchAppConf {
     }
 
     @Bean
-    ItemReader<Account> reader()
+    ItemReader<Account> reader(RowMapper<Account> rowMapper)
     {
         var dataSource = DataSourceBuilder.create().
         url(batchJdbcUrl).username(batchUsername)
                 .password(batchPassword).build();
 
-        RowMapper<Account> rowMapper = (rs,i) ->   Account.builder()
-                    .id(rs.getString(1))
-                    .name(rs.getString(2))
-                    .build();
 
         return new JdbcCursorItemReaderBuilder<Account>()
                 .dataSource(dataSource)

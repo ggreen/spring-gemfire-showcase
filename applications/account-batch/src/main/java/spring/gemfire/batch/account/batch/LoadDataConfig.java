@@ -2,6 +2,7 @@ package spring.gemfire.batch.account.batch;
 
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.creational.generator.FullNameCreator;
+import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import nyla.solutions.core.util.Text;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import spring.gemfire.showcase.account.domain.account.Customer;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -24,7 +26,15 @@ public class LoadDataConfig {
     private String schemaName;
 
     private String insertSql  = """
-                INSERT INTO ${schemaName}.account (id, "name") VALUES(?, ?)
+                INSERT INTO ${schemaName}.account (
+                    id, 
+                    "name",
+                    "first_nm",
+                    "last_nm",
+                    "email",
+                    "phone"
+                ) 
+                VALUES(?,?,?,?,?,?)
                 """;
 
     private String deleteSql  = """
@@ -51,6 +61,8 @@ public class LoadDataConfig {
 
         var fullNameCreator = new FullNameCreator();
 
+        JavaBeanGeneratorCreator<Customer> customerCreator = JavaBeanGeneratorCreator.of(Customer.class);
+
         return args -> {
             log.info("Inserting accounts {}",insertSql);
 
@@ -61,8 +73,14 @@ public class LoadDataConfig {
                 deleteStatement.execute(deleteSql);
 
                 for (int i = 0; i < accountCount; i++) {
+                    Customer customer = customerCreator.create();
                     statement.setString(1, valueOf(i));
                     statement.setString(2, accountNamePrefix +" "+i+" "+fullNameCreator.create());
+                    statement.setString(3,customer.getFirstName());
+                    statement.setString(4,customer.getLastName());
+                    statement.setString(5,customer.getContact().getEmail());
+                    statement.setString(6,customer.getContact().getPhone());
+
                     statement.addBatch();
 
                     if((i+1) % batchSize == 0)

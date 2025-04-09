@@ -1,6 +1,15 @@
-shu # account-service
+# account-service
 
 The application is a [Spring Web](https://spring.io/web-applications) + [Spring Data for GemFire](https://docs.vmware.com/en/Spring-Data-for-VMware-GemFire/index.html) example
+
+
+
+## Running 
+
+
+```shell
+java -jar applications/account-service/target/account-service-0.0.2-SNAPSHOT.jar --server.port=6001 --spring.data.gemfire.pool.default.locators="localhost[10334]"
+```
 
 # Demo Instructions 
 
