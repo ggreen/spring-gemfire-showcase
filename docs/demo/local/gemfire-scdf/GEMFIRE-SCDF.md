@@ -1,5 +1,8 @@
 # SCDF for GemFire
 
+This demo illustrates how to use SCDF to read, process, and load data into GemFire.
+
+
 A simple developer defined [spring cloud stream](https://spring.io/projects/spring-cloud-stream) processor app to convert CSV data to a domain object.
 This app can be added to a library of apps to be used within [SCDF](https://spring.io/projects/spring-cloud-dataflow).
 

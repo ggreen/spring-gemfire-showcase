@@ -57,3 +57,10 @@ What are the data service challenges?
 Set Broadcom Maven Repository user credentials
 See https://gemfire.dev/quickstart/java/
 
+
+# Demos
+
+| Demo                                                                               | Notes                                                                                                        |
+|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| [Database Batch Load Caching](docs/demo/local/Database-Caching.md)                 | This demo will demonstrate using GemFire as cache for data that does not change often using a batch process. | 
+| [GemFire with Spring Cloud DataFlow](docs/demo/local/gemfire-scdf/GEMFIRE-SCDF.md) | This demo illustrates how to use SCDF to read, process, and load data into GemFire. |

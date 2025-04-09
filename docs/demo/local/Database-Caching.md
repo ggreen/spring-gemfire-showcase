@@ -1,9 +1,9 @@
 # GemFire as a Database Cache
 
-This demo will demonstrate using GemFire as cache.
+This demo will demonstrate using GemFire as cache for data that does not change often. 
 
-In this example, data loaded into a relationship database
-in loaded into GemFire using [Spring Batch](https://spring.io/projects/spring-batch).
+In this example, using data in a relationship databases
+and loads it into GemFire using [Spring Batch](https://spring.io/projects/spring-batch).
 
 
 ## Getting Started
