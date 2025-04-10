@@ -16,12 +16,12 @@ podman run --name postgresql --network tanzu -it --rm -p 5432:5432 -e ALLOW_EMPT
 ```
 - Start GemFire
 ```shell
-./deployments/local/scripts/gemfire/start.sh
+./deployments/local/scripts/gemfire/start-2-data-nodes.sh
 ```
 
 - Start Batch Load with 10K generated records
 ```shell
-java -jar applications/account-batch/target/account-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=postgres  --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres --batch.job.repository.create=true --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres" --spring.datasource.username=postgres --batch.load.accounts=true --account.data.count=10000  --account.data.batch.size=50 
+java -jar applications/account-batch/target/account-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=postgres  --db.schema=cache_accounts --spring.data.gemfire.pool.default.locators="localhost[10334]" --batch.jdbc.url="jdbc:postgresql://localhost:5432/postgres"  --batch.jdbc.username=postgres --spring.sql.init.platform=postgres --batch.job.repository.create=true --spring.datasource.url="jdbc:postgresql://localhost:5432/postgres" --spring.datasource.username=postgres --batch.load.accounts=true --account.data.count=10000  --account.data.batch.size=50 --spring.data.gemfire.pool.default.locators="localhost[10334]" 
 ```
 - Start Account Service
 ```shell
