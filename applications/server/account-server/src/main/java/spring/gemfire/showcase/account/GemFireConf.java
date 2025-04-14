@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import spring.gemfire.showcase.account.domain.account.Account;
 import spring.gemfire.showcase.account.function.NoOpFunction;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 /**
  * Provides examples Spring configurations from embedding GemFire
  *
@@ -48,7 +51,7 @@ public class GemFireConf
     @Value("${gemfire.pdx.disk.store:PDX_DS}")
     private String pdxDiskStore;
 
-    @Value("${gemfire.statistic.archive.file}")
+    @Value("${gemfire.statistic.archive.file:${gemfire.server.name}.gfs}")
     private String statisticArchiveFile;
 
     @Value("${gemfire.pdx.archive.disk.space.limit:5}")
@@ -79,16 +82,16 @@ public class GemFireConf
     ServerLauncher builder(PdxSerializer pdxSerializer)
     {
         var serverLauncher = new ServerLauncher.Builder()
+                .setWorkingDirectory(workingDirectory)
                 .setMemberName(serverName)
                 .setServerPort(serverPort)
                 .set("locators",locators)
                 .set("statistic-sampling-enabled","true")
-                .set("statistic-archive-file",statisticArchiveFile)
+                .set("statistic-archive-file",workingDirectory+"/"+statisticArchiveFile)
                 .set("archive-disk-space-limit",archiveDiskSpaceLimit)
                 .set("archive-file-size-limit",archiveFileSizeLimit)
-                .setWorkingDirectory(workingDirectory)
                 .setPdxReadSerialized(readPdxSerialized)
-                .setPdxDiskStore(pdxDiskStore)
+                .setPdxDiskStore(workingDirectory+"/"+pdxDiskStore)
                 .setPdxSerializer(pdxSerializer)
                 .build();
 
@@ -109,7 +112,7 @@ public class GemFireConf
     @Bean
     DiskStoreFactory diskStoreFactory(Cache cache)
     {
-        return cache.createDiskStoreFactory();
+        return cache.createDiskStoreFactory().setDiskDirs(new File[]{Paths.get(workingDirectory).toFile()});
     }
 
     @Bean

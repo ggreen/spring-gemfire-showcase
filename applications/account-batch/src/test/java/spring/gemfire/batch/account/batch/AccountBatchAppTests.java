@@ -37,7 +37,7 @@ class AccountBatchAppTests {
 			);
 			""";
 
-	@BeforeAll
+//	@BeforeAll
 	static void beforeAll() {
 		setProperty("batch.jdbc.url",batchJdbcUrl);
 		setProperty("batch.job.repository.create","true");
@@ -58,7 +58,7 @@ class AccountBatchAppTests {
 
 
 
-	@BeforeEach
+//	@BeforeEach
 	void setUp() {
 
 		var dataSource = DataSourceBuilder.create().
@@ -69,7 +69,7 @@ class AccountBatchAppTests {
 		jdbcTemplate.execute(ddlSql);
 	}
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 

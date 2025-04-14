@@ -16,7 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <springBootForGemFire.version>1.0.0</springBootForGemFire.version>
-        <vmwareGemFire.version>10.0.2</vmwareGemFire.version>
+        <vmwareGemFire.version>10.1.2</vmwareGemFire.version>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
     <dependencies>

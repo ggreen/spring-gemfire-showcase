@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.3.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.ggreen</groupId>
@@ -15,7 +15,7 @@
     <description>account-server</description>
     <properties>
         <java.version>17</java.version>
-        <vmwareGemFire.version>10.0.2</vmwareGemFire.version>
+        <vmwareGemFire.version>10.1.2</vmwareGemFire.version>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
     <dependencies>
@@ -33,6 +33,10 @@
                     <groupId>com.vmware.gemfire</groupId>
                     <artifactId>gemfire-log4j</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.vmware.gemfire</groupId>
+                    <artifactId>prometheus-metrics</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -44,7 +48,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.13.9</version>
+        </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
