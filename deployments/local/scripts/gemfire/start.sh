@@ -4,7 +4,7 @@ cd $GEMFIRE_HOME/bin
 
 curl http://localhost:7777/metrics
 ./gfsh -e "connect" -e "configure pdx --read-serialized=true --auto-serializable-classes=.* --disk-store"
-./gfsh -e "start server --name=server1 --locators=localhost[10334] --server-port=1880 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7778 --J=-Dgemfire.prometheus.metrics.host=localhost --J=-Dgemfire.prometheus.metrics.interval=15s --bind-address=127.0.0.1"
+./gfsh -e "start server --name=server1 --locators=localhost[10334] --server-port=5880 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7778 --J=-Dgemfire.prometheus.metrics.host=localhost --J=-Dgemfire.prometheus.metrics.interval=15s --bind-address=127.0.0.1"
 curl http://localhost:7778/metrics
 
 ./gfsh -e "connect" -e "connect"  -e "create region --name=Account --type=PARTITION --enable-statistics=true"

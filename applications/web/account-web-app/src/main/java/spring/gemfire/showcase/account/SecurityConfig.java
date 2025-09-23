@@ -16,9 +16,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig  {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // @formatter:off
+    /*]
+   // @formatter:off
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/session**")
@@ -35,7 +34,20 @@ public class SecurityConfig  {
                 .formLogin(withDefaults());
         // @formatter:on
         return http.build();
-    }
+     */
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http
+                .authorizeHttpRequests((authorize) -> authorize
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(withDefaults())
+                .formLogin(withDefaults());
+        // @formatter:on
+        return http.build();
+       }
 
     // @formatter:off
     @Bean

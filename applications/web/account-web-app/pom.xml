@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>spring.gemfire.showcase</groupId>
 	<artifactId>account-web-app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>account-web-app</name>
 	<description>account-web-app</description>
 	<properties>

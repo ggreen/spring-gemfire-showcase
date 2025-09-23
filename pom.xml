@@ -14,6 +14,7 @@
         <module>components/account-domain</module>
         <module>components/server/account-services</module>
         <module>components/server/account-functions</module>
+        <module>components/server/account-listeners</module>
 	    <module>applications/account-service</module>
         <module>applications/account-location-event-service</module>
         <module>applications/account-jdbc-caching-rest-service</module>
@@ -25,7 +26,7 @@
         <module>applications/server/account-server</module>
         <module>applications/server/account-jdbc-async-server</module>
         <module>applications/multi-cluster-demo-app</module>
-        <module>applications/account-web-app</module>
+        <module>applications/web/account-web-app</module>
         <module>applications/server/locator</module>
 
     </modules>
