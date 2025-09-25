@@ -1,13 +1,12 @@
 package spring.gemfire.vector.sink.function;
 
-import ch.qos.logback.classic.pattern.CallerDataConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.conversion.Converter;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
-import spring.gemfire.vector.sink.demo.DocumentSource;
+import spring.gemfire.vector.sink.domain.DocumentSource;
 
 import java.util.List;
 import java.util.function.Consumer;

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GemfireVectorSinkApp {
+public class GemFireVectorSinkApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GemfireVectorSinkApp.class, args);
+		SpringApplication.run(GemFireVectorSinkApp.class, args);
 	}
 
 }

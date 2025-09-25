@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
-import spring.gemfire.vector.sink.demo.DocumentSource;
+import spring.gemfire.vector.sink.domain.DocumentSource;
 
 import java.util.List;
 

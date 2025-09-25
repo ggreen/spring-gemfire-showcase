@@ -148,11 +148,11 @@ contentType = application/json
 
 ```shell
 mvn install
-cd applications/multi-cluster-demo-app
+cd applications/multi-cluster-domain-app
 mvn spring-boot:build-image
 
-docker tag multi-cluster-demo-app:0.0.1-SNAPSHOT cloudnativedata/multi-cluster-demo-app:0.0.1-SNAPSHOT
-docker push cloudnativedata/multi-cluster-demo-app:0.0.1-SNAPSHOT
+docker tag multi-cluster-domain-app:0.0.1-SNAPSHOT cloudnativedata/multi-cluster-domain-app:0.0.1-SNAPSHOT
+docker push cloudnativedata/multi-cluster-domain-app:0.0.1-SNAPSHOT
 ```
 
 ### Reference Documentation
