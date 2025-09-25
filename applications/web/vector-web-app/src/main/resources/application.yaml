@@ -1,0 +1,16 @@
+server:
+  port: 8088
+spring:
+  application:
+    name:  vector-web-app
+  ai:
+    vectorstore:
+      gemfire:
+        host: localhost
+        port: 7080
+        initialize-schema: true
+    ollama:
+      base-url: http://localhost:11434
+      model: llama3
+      init:
+        pull-model-strategy: always

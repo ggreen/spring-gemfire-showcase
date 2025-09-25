@@ -29,7 +29,7 @@
         <module>applications/web/account-web-app</module>
         <module>applications/server/locator</module>
         <module>applications/gemfire-vector-sink</module>
-
+        <module>applications/web/vector-web-app</module>
     </modules>
     <build>
         <pluginManagement>

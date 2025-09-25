@@ -33,3 +33,5 @@ spring:
           group: ${spring.application.name}
       binder:
         connection-name-prefix: ${spring.application.name}
+server:
+    port: 0
