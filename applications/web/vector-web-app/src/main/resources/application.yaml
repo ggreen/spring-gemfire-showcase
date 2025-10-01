@@ -13,4 +13,4 @@ spring:
       base-url: http://localhost:11434
       model: llama3
       init:
-        pull-model-strategy: always
+        pull-model-strategy: WHEN_MISSING

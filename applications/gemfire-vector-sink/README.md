@@ -1,4 +1,15 @@
 
+Configuration for GemFire Vector Sink
+
+| Configuration                      | Notes         | Example   |
+|------------------------------------|---------------|-----------|
+| spring.rabbitmq.username           | ex: guest     | guest     |
+| spring.rabbitmq.password           | ex: guest     | guest     |
+| spring.rabbitmq.host               | ex: localhost | localhost |
+| spring.ai.vectorstore.gemfire.host | ex: localhost | localhost |
+| spring.ai.vectorstore.gemfire.port | ex: 7080      | 7080      |
+
+
 START ollama in Podman
 
 ```shell

@@ -18,6 +18,9 @@ spring:
     function:
       definition: saveToVectorStore
     stream:
+      function:
+        bindings:
+          saveToVectorStore-in-0: input
       rabbit:
         bindings:
           saveToVectorStore-in-0:

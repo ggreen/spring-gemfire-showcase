@@ -27,8 +27,10 @@ public class VectorSearchController {
                 .advisors(advisor)
                 .call();
 
-        log.info("responseText: {}",responseText);
+        var content = responseText.content();
 
-        return responseText.content();
+        log.info("responseText: {}",content);
+
+        return content;
     }
 }
