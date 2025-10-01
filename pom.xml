@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.vmware</groupId>
     <artifactId>spring-gemfire-showcase-parent</artifactId>
     <packaging>pom</packaging>
@@ -15,20 +14,20 @@
         <module>components/server/account-services</module>
         <module>components/server/account-functions</module>
         <module>components/server/account-listeners</module>
-	    <module>applications/account-service</module>
-        <module>applications/account-location-event-service</module>
-        <module>applications/account-jdbc-caching-rest-service</module>
-        <module>applications/account-csv-processor</module>
-        <module>applications/account-file-supplier</module>
-        <module>applications/account-batch</module>
-        <module>applications/account-sink</module>
+	    <module>applications/service/account-service</module>
+        <module>applications/service/account-location-event-service</module>
+        <module>applications/service/account-jdbc-caching-rest-service</module>
+        <module>applications/processor/account-csv-processor</module>
+        <module>applications/source/account-file-supplier</module>
+        <module>applications/batch/account-batch</module>
+        <module>applications/sink/account-sink</module>
         <module>applications/web/web-session-listener</module>
         <module>applications/server/account-server</module>
         <module>applications/server/account-jdbc-async-server</module>
-        <module>applications/multi-cluster-demo-app</module>
+        <module>applications/web/multi-cluster-demo-app</module>
         <module>applications/web/account-web-app</module>
         <module>applications/server/locator</module>
-        <module>applications/gemfire-vector-sink</module>
+        <module>applications/sink/gemfire-vector-sink</module>
         <module>applications/web/vector-web-app</module>
     </modules>
     <build>
