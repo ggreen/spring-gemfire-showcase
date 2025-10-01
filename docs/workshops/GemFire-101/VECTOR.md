@@ -32,6 +32,13 @@ Create Region
 podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "create region --name=DocumentSource --type=PARTITION"
 ```
 
+
+```shell
+podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "create region --name=SearchResults --type=PARTITION"
+```
+
+
+
 --------------
 
 Download SCDF Jars (optional first time only)
@@ -127,4 +134,11 @@ Add document source
 
 ```shell
 podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "put --region=DocumentSource --key=1 --value='{\"content\" : \"This is a sample document content.\",\"urls\" : [ \"https://healthmapsolutions.com/about-us/\",\"https://github.com/ggreen?fg_force_rendering_mode=Images&fireglass_rsn=true#fireglass_params&tabid=a2c8ae713fb7ae4e&start_with_session_counter=2&application_server_address=isolation-3-us-east4.prod.fire.glass\"]}'"
+```
+
+
+Gfsh 
+
+```shell
+query --query="select * from /SearchResults.entries"
 ```
