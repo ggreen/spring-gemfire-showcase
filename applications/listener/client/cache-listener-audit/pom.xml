@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>spring.gemfire.showcase</groupId>
 	<artifactId>cache-listener-audit</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>cache-listener-audit</name>
 	<description>cache-listener-audit</description>
 	<properties>

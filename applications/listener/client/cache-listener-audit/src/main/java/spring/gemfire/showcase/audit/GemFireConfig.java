@@ -22,8 +22,8 @@ public class GemFireConfig {
     @Value("${audit.region.key.reg.expression:.*}")
     private String keyRegularExpression;
 
-    @Bean("Employees")
-    ClientRegionFactoryBean<Object,Object> employees(ClientCache clientCache, AuditCacheListener auditCacheListener){
+    @Bean("AuditRegion")
+    ClientRegionFactoryBean<Object,Object> auditRegion(ClientCache clientCache, AuditCacheListener auditCacheListener){
         var region = new ClientRegionFactoryBean<Object,Object>();
         region.setCache(clientCache);
         region.setRegionName(regionName);
