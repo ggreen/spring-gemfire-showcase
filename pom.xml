@@ -30,6 +30,7 @@
         <module>applications/sink/gemfire-vector-sink</module>
         <module>applications/web/vector-web-app</module>
         <module>applications/listener/client/cache-listener-audit</module>
+        <module>applications/listener/client/cq-listener-audit</module>
     </modules>
     <build>
         <pluginManagement>
