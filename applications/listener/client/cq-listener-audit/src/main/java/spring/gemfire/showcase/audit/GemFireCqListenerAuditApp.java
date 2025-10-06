@@ -4,8 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GemFireListenerAuditApp {
+public class GemFireCqListenerAuditApp {
+
     public static void main(String[] args) {
-        SpringApplication.run(GemFireListenerAuditApp.class,args);
+        SpringApplication.run(GemFireCqListenerAuditApp.class,args);
     }
 }

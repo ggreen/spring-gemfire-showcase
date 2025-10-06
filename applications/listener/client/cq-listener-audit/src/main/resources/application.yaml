@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 0
 spring:
   application:
-    name:  cache-listener-audit
+    name:  cq-listener-audit
