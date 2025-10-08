@@ -1,5 +1,6 @@
 package spring.gemfire.showcase.audit;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.query.*;
@@ -10,6 +11,7 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import spring.gemfire.showcase.audit.listener.CqAuditListener;
 
+@Slf4j
 @Configuration
 @ClientCacheApplication(subscriptionEnabled = true, readyForEvents = true)
 public class GemFireConfig {
@@ -18,8 +20,11 @@ public class GemFireConfig {
     @Value("${spring.application.name:cq-listener-audit}")
     private String cqName;
 
-    @Value("${gemfire.cq.oql}")
+    @Value("${audit.cq.oql}")
     private String oql;
+
+    @Value("${gemfire.cq.durable:true}")
+    private boolean durable;
 
     @Bean
     CqQuery cqQuery(ClientCache clientCache,CqAuditListener cqAuditListener) throws CqException, CqExistsException, RegionNotFoundException
@@ -34,7 +39,8 @@ public class GemFireConfig {
             // Name of the CQ and its query
 
             // Create the CqQuery
-            var cqQuery = queryService.newCq(cqName, oql, cqa);
+            log.info("Creating CQ '{}' with OQL: {}, durable: {}", cqName, oql,durable);
+            var cqQuery = queryService.newCq(cqName, oql, cqa,durable);
 
             // Execute CQ, getting the optional initial result set
             // Without the initial result set, the call is priceTracker.execute();
