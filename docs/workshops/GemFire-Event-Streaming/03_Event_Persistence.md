@@ -16,6 +16,9 @@ Create region in GemFire
 podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "create region --name=EmployeesPersisted --type=PARTITION_PERSISTENT --enable-statistics=true"
 ```
 
+```shell
+podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "create region --name=EmployeesCqPersisted --type=PARTITION_PERSISTENT --enable-statistics=true"
+```
 
 -------------
 
@@ -49,32 +52,34 @@ mkdir -p runtime/logs
 java -jar applications/listener/client/cache-listener-audit/target/cache-listener-audit-0.0.1.jar --audit.region.name=EmployeesPersisted --audit.region.key.reg.expression=".*" --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --spring.data.gemfire.cache.client.durable-client-timeout=10800 --logging.file.name=runtime/logs/audit.log --spring.data.gemfire.pool.subscription-redundancy=1
 ```
 
+Stop Cache Lister Auditor Application (Ctrl-C)
+
 -------------
 
 Start CQ Lister Auditor Application Hold events for 1 hour 10800
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
+java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesCqPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.application.name=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
 ```
 
 **Insert Employee 1**
 
 ```shell
-curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"John","lastName":"Doe","employeeId":"P001","department":"Engineering","salary":85000}' http://localhost:7080/gemfire-api/v1/EmployeesPersisted/P001
+curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"John","lastName":"Doe","employeeId":"P001","department":"Engineering","salary":85000}' http://localhost:7080/gemfire-api/v1/EmployeesCqPersisted/P001
 ```
 
 Stop CQ Lister Auditor Application (Ctrl-C) then restart to see events that were missed
 
 ```shell
-curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Jill","lastName":"Smith","employeeId":"P002","department":"Engineering","salary":85000}' http://localhost:7080/gemfire-api/v1/EmployeesPersisted/P002
+curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Jill","lastName":"Smith","employeeId":"P002","department":"Engineering","salary":85000}' http://localhost:7080/gemfire-api/v1/EmployeesCqPersisted/P002
 ```
 
 Start CQ Lister Auditor Application Hold events for 1 hour 10800
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
+java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesCqPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.application.name=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
 ````
 
 

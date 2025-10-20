@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: gemfire-vector-sink
+  ai:
+    vectorstore:
+      gemfire:
+        host: localhost
+        port: 7080
+        initialize-schema: true
+    ollama:
+      init:
+        pull-model-strategy: always
+        embedding:
+          additional-models:
+            - mxbai-embed-large
+            - nomic-embed-text
+  cloud:
+    function:
+      definition: saveToVectorStore
+    stream:
+      function:
+        bindings:
+          saveToVectorStore-in-0: input
+      rabbit:
+        bindings:
+          saveToVectorStore-in-0:
+            consumer:
+              prefetch: 10000
+              autoBindDlq: true
+              dlqQuorum:
+                enabled: true
+              republishToDlq: true
+      bindings:
+        saveToVectorStore-in-0:
+          destination: saveToVectorStore
+          group: ${spring.application.name}
+      binder:
+        connection-name-prefix: ${spring.application.name}
+server:
+    port: 0

@@ -8,6 +8,13 @@ Configuration for GemFire Vector Sink
  | server.port                         | ex: 8088                   |
 
 
+
+Start GemFire
+
+```shell
+deployments/local/scripts/podman/start-gemfire-external-clients.sh
+```
+
 START ollama in Podman
 
 ```shell
@@ -20,6 +27,15 @@ Start GemFire Cluster
 ./deployments/local/scripts/podman/start-gemfire.sh
 ```
 
+Create region 
+
+```shell 
+$GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=PARTITION"
+```
+
+ Build Web Application
+
+```shell
 
 Start Web Application
 
