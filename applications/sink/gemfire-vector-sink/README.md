@@ -60,3 +60,32 @@ Vector Database API: http://localhost:7080/gemfire-vectordb
   ]
 }
 ```
+
+
+Example shell
+
+```shell
+curl -X 'POST' \
+  'http://localhost:7088/functions/saveToVectorStore' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "content" : "This is a sample document content.",
+  "urls" : [ 
+    "https://healthmapsolutions.com/about-us/",
+    "https://github.com/ggreen?fg_force_rendering_mode=Images&fireglass_rsn=true#fireglass_params&tabid=a2c8ae713fb7ae4e&start_with_session_counter=2&application_server_address=isolation-3-us-east4.prod.fire.glass"
+  ]
+}'
+```
+
+Example shell
+
+```shell
+curl -X 'POST' \
+  'http://localhost:7088/functions/saveToVectorStore' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "content" : "This capital of Wakanda is Birnin Zana. It is known for its advanced technology and rich deposits of Vibranium."
+}'
+```

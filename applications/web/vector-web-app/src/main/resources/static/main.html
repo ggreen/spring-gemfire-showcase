@@ -91,6 +91,9 @@
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        responseText.textContent = "...loading";
+        requestTime.textContent = "";
+
         const identifier = document.getElementById('identifier').value;
         const question = document.getElementById('question').value;
 
