@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import spring.gemfire.vector.sink.domain.DocumentSource;
+import spring.gemfire.vector.sink.service.CleanupService;
 
 import java.util.List;
 
@@ -23,6 +24,10 @@ class SaveToVectorStoreTest {
     private SaveToVectorStore subject;
     @Mock
     private VectorStore vectorDataStore;
+
+    @Mock
+    CleanupService cleanupService;
+
     @Mock
     private Converter<DocumentSource, List<Document>> converter;
 
@@ -32,7 +37,7 @@ class SaveToVectorStoreTest {
 
     @BeforeEach
     void setUp() {
-        subject = new SaveToVectorStore(vectorDataStore,converter);
+        subject = new SaveToVectorStore(vectorDataStore,converter, cleanupService);
     }
 
     @Test
@@ -42,6 +47,7 @@ class SaveToVectorStoreTest {
 
         subject.accept(documentSource);
 
+        verify(cleanupService).removeSimilarDocs(any(DocumentSource.class));
         verify(vectorDataStore).add(any(List.class));
     }
 }

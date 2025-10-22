@@ -7,6 +7,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import spring.gemfire.vector.sink.domain.DocumentSource;
+import spring.gemfire.vector.sink.service.CleanupService;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,10 +19,13 @@ public class SaveToVectorStore implements Consumer<DocumentSource> {
 
     private final VectorStore vectorDataStore;
     private final Converter<DocumentSource, List<Document>> ToDocs;
+    private final CleanupService cleanupService;
 
     @Override
     public void accept(DocumentSource documentSource) {
         log.info("doc source: {}", documentSource);
+
+        cleanupService.removeSimilarDocs(documentSource);
 
         vectorDataStore.add(ToDocs.convert(documentSource));
     }
