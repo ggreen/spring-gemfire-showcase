@@ -2,14 +2,19 @@ package spring.gemfire.showcase.vector.search.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nyla.solutions.core.patterns.integration.Publisher;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import spring.gemfire.showcase.vector.search.domain.PromptContext;
 
+
+/**
+ * * Vector Search Controller for search and evicting caching search results
+ * @author Gregory Green
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("vector/search")
@@ -18,7 +23,7 @@ public class VectorSearchController {
 
     private final ChatClient chatClient;
     private final Advisor advisor;
-
+    private final Publisher<PromptContext> publisher;
 
     @PostMapping
     @Cacheable("SearchResults")
@@ -35,4 +40,20 @@ public class VectorSearchController {
 
         return content;
     }
+
+    /**
+     * Publish prompt context and evict cache for prompt
+     * @param prompt the prompt
+     * @param context the context
+     */
+    @PostMapping("prompt/context")
+    @CacheEvict(value = "SearchResults", key = "#prompt")
+    public void publishPromptContext(@RequestParam String prompt, @RequestParam String context) {
+
+        publisher.send(PromptContext.builder()
+                .promptText(prompt)
+                .context(context).build());
+    }
+
+
 }

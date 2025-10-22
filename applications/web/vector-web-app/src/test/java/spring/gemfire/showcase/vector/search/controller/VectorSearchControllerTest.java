@@ -1,5 +1,6 @@
 package spring.gemfire.showcase.vector.search.controller;
 
+import nyla.solutions.core.patterns.integration.Publisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,10 +8,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
+import spring.gemfire.showcase.vector.search.domain.PromptContext;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,10 +33,12 @@ class VectorSearchControllerTest {
     private ChatClient.CallResponseSpec callResponse;
     @Mock
     private ChatClient.ChatClientRequestSpec advisors;
+    @Mock
+    private Publisher<PromptContext> publisher;
 
     @BeforeEach
     void setUp() {
-        subject = new VectorSearchController(chatClient,advisor);
+        subject = new VectorSearchController(chatClient,advisor,publisher);
     }
 
     @Test
@@ -50,5 +55,14 @@ class VectorSearchControllerTest {
         var actual = subject.searchPrompt("What is java?");
 
         assertNotNull(actual);
+    }
+
+    @Test
+    void publishContext() {
+        var promptText = "This is the question";
+        var context = "This is the answer";
+        subject.publishPromptContext(promptText,context);
+
+        verify(publisher).send(any());
     }
 }

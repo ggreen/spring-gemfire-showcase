@@ -11,6 +11,7 @@ spring:
         initialize-schema: true
     ollama:
       base-url: http://localhost:11434
-      model: llama3
+#      model: llama3
+      model: wizardlm2:7b
       init:
         pull-model-strategy: WHEN_MISSING
