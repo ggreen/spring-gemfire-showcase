@@ -8,8 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.document.Document;
 import spring.gemfire.showcase.vector.search.domain.PromptContext;
+import spring.gemfire.showcase.vector.search.services.SimilaritiesService;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -35,10 +40,14 @@ class VectorSearchControllerTest {
     private ChatClient.ChatClientRequestSpec advisors;
     @Mock
     private Publisher<PromptContext> publisher;
+    @Mock
+    private SimilaritiesService similaritiesService;
+    @Mock
+    private Document document;
 
     @BeforeEach
     void setUp() {
-        subject = new VectorSearchController(chatClient,advisor,publisher);
+        subject = new VectorSearchController(chatClient,advisor,publisher, similaritiesService);
     }
 
     @Test
@@ -55,6 +64,17 @@ class VectorSearchControllerTest {
         var actual = subject.searchPrompt("What is java?");
 
         assertNotNull(actual);
+    }
+
+    @Test
+    void findSimilarities() {
+
+        when(similaritiesService.findSimilarities(anyString())).thenReturn(List.of(document));
+
+        var question = "Who";
+        List<Document> actual = subject.findSimilarities(question);
+
+        assertThat(actual).isNotEmpty();
     }
 
     @Test

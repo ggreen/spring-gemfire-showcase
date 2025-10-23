@@ -5,10 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.integration.Publisher;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.document.Document;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import spring.gemfire.showcase.vector.search.domain.PromptContext;
+import spring.gemfire.showcase.vector.search.services.SimilaritiesService;
+
+import java.util.List;
 
 
 /**
@@ -24,6 +28,7 @@ public class VectorSearchController {
     private final ChatClient chatClient;
     private final Advisor advisor;
     private final Publisher<PromptContext> publisher;
+    private final SimilaritiesService similaritiesService;
 
     @PostMapping
     @Cacheable("SearchResults")
@@ -56,4 +61,8 @@ public class VectorSearchController {
     }
 
 
+    @PostMapping("similarities")
+    public List<Document> findSimilarities(@RequestBody String question) {
+        return similaritiesService.findSimilarities(question);
+    }
 }
