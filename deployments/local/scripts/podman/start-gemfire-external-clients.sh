@@ -3,7 +3,7 @@ podman network create gemfire --driver bridge
 
 
 # Run Locator
-podman run -d -e 'ACCEPT_TERMS=y' --rm --name gf-locator --network=gemfire -p 10334:10334 -p 1099:1099 -p 7070:7070 -p 7777:7777 gemfire/gemfire-all:10.1 gfsh start locator --name=locator1 --jmx-manager-hostname-for-clients=127.0.0.1 --hostname-for-clients=127.0.0.1 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7777  --J=-Duser.timezone=America/New_York --J=-Dgemfire.prometheus.metrics.interval=15s
+podman run -d -e 'ACCEPT_TERMS=y' --rm --name gf-locator --network=gemfire -p 10334:10334 -p 1099:1099 -p 7070:7070 -p 7999:7999 -p 7777:7777 gemfire/gemfire-all:10.1 gfsh start locator --name=locator1 --jmx-manager-hostname-for-clients=127.0.0.1 --hostname-for-clients=127.0.0.1 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7777  --J=-Duser.timezone=America/New_York --J=-Dgemfire.prometheus.metrics.interval=15s --J=-Djava.rmi.server.hostname=127.0.0.1 --J=-Dgemfire.tcp-port=7999
 
 until podman exec -it  gf-locator  gfsh -e "connect --jmx-manager=gf-locator[1099]" >/dev/null 2>&1; do
   echo "Waiting for locator to start..."

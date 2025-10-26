@@ -5,7 +5,7 @@ Configuration for GemFire Vector Sink
 | spring.ai.vectorstore.gemfire.host | ex: localhost              |
 | spring.ai.vectorstore.gemfire.port | ex: 7080                   |
 | spring.ai.ollama.base-url          | ex: http://localhost:11434 |
- | server.port                         | ex: 8088                   |
+| server.port                         | ex: 8088                   |
 
 
 
@@ -35,12 +35,11 @@ $GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=
 
  Build Web Application
 
-```shell
 
 Start Web Application
 
 ```shell
-java -jar applications/web/vector-web-app/target/vector-web-app-0.0.2-SNAPSHOT.jar --spring.ai.vectorstore.gemfire.host=localhost --spring.ai.vectorstore.gemfire.port=7080 --spring.ai.ollama.base-url=http://localhost:11434 --server.port=8088
+java -jar applications/web/vector-web-app/target/vector-web-app-0.0.2-SNAPSHOT.jar --spring.ai.vectorstore.gemfire.host=localhost --spring.ai.vectorstore.gemfire.port=7080 --spring.ai.ollama.base-url=http://localhost:11434 --server.port=8088 --spring.ai.ollama.model="llama3"
 ```
 
 Open Web Application
