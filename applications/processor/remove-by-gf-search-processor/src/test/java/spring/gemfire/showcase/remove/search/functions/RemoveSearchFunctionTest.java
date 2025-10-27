@@ -1,6 +1,5 @@
 package spring.gemfire.showcase.remove.search.functions;
 
-import nyla.solutions.core.patterns.conversion.Converter;
 import nyla.solutions.core.patterns.creational.Maker;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneQuery;
@@ -18,8 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RemoveSearchFunctionTest {
@@ -39,19 +37,16 @@ class RemoveSearchFunctionTest {
     @Mock
     private LuceneResultStruct<Object, Object> result;
 
-    @Mock
-    private Converter<String,String> converter;
     private final static Object key = "key";
 
     @BeforeEach
     void setUp() {
-        subject = new RemoveSearchFunction(maker,converter,region);
+        subject = new RemoveSearchFunction(maker,region);
     }
 
     @Test
     void apply() throws LuceneQueryException {
 
-        when(converter.convert(anyString())).thenReturn(prompt);
         when(maker.make(anyString())).thenReturn(query);
         List<Object> results = List.of(key);
         when(query.findKeys()).thenReturn(results);
@@ -63,5 +58,16 @@ class RemoveSearchFunctionTest {
 
     }
 
+    @Test
+    void doNotRemoveWhenEmptyKeys() throws LuceneQueryException {
 
+        when(maker.make(anyString())).thenReturn(query);
+        List<Object> results = List.of();
+        when(query.findKeys()).thenReturn(results);
+
+        var actual = subject.apply(prompt);
+
+        assertThat(actual).isEqualTo(prompt);
+        verify(region,never()).removeAll(any(Collection.class));
+    }
 }

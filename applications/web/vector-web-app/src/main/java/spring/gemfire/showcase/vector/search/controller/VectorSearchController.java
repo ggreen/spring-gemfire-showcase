@@ -38,12 +38,8 @@ public class VectorSearchController {
                 .user(prompt)
                 .advisors(advisor)
                 .call();
+        return responseText.content();
 
-        var content = responseText.content();
-
-        log.info("responseText: {}",content);
-
-        return content;
     }
 
     /**
