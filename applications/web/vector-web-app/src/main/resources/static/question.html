@@ -61,6 +61,38 @@
             background-color: #f0fff0;
         }
     </style>
+    <script>
+        async function clearAnswer(){
+
+             const responseDiv = document.getElementById('response');
+             const responseText = document.getElementById('responseText');
+             const requestTime = document.getElementById('requestTime');
+
+
+             const startTime = performance.now();
+             const apiUrl = 'vector/search/prompt';
+             const question = document.getElementById('question').value;
+             const promptContextParam = "prompt="+question;
+
+             try{
+                 const res = await fetch(apiUrl, {
+                     method: 'DELETE',
+                     headers: {
+                         'accept' : '*/*'
+                     },
+                      body: new URLSearchParams({
+                         prompt: question
+                       })
+                 });
+             } catch (error) {
+                 const endTime = performance.now();
+                 responseText.textContent = `Error: ${error}`;
+                 requestTime.textContent = (endTime - startTime).toFixed(2);
+                 responseDiv.style.display = 'block';
+             }
+         }
+
+    </script>
 </head>
 <body>
 <header style="color:black">Ask the Service</header>
@@ -72,7 +104,7 @@
         <label for="question">Question:</label>
         <textarea id="question" name="question" rows="5" placeholder="Type your question here..." required></textarea>
 
-        <button type="submit">Ask Question</button>
+        <button type="submit">Ask Question</button> <button type="button" onclick="clearAnswer()">Clear Answer</button>
     </form>
 
     <form id="addContextForm">

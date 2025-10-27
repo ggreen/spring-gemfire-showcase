@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>spring.gemfire.showcase</groupId>
 	<artifactId>vector-web-app</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>vector-web-app</name>
 	<description>vector-web-app</description>
 	<properties>

@@ -48,12 +48,17 @@ public class VectorSearchController {
      * @param context the context
      */
     @PostMapping("prompt/context")
-    @CacheEvict(value = "SearchResults", key = "#prompt")
     public void publishPromptContext(@RequestParam String prompt, @RequestParam String context) {
 
         publisher.send(PromptContext.builder()
                 .promptText(prompt)
                 .context(context).build());
+    }
+
+    @DeleteMapping("prompt")
+    @CacheEvict(value = "SearchResults", key = "#prompt")
+    public void evictPrompt(@RequestParam String prompt) {
+        log.info("Deleted: {} using Spring Cache @CacheEvict",prompt);
     }
 
 
