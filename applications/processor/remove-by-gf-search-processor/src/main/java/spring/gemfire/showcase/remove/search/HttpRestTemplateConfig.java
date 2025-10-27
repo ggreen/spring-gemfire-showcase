@@ -12,7 +12,7 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 
 @Configuration
-public class RestTemplateConfig {
+public class HttpRestTemplateConfig {
     @Bean
     public RestTemplate createUnsafeRestTemplate() throws Exception {
         TrustManager[] trustAllCerts = new TrustManager[]{

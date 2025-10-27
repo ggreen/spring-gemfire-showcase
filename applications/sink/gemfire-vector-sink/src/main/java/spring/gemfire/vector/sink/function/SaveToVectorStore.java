@@ -6,7 +6,6 @@ import nyla.solutions.core.patterns.conversion.Converter;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
-import spring.gemfire.vector.sink.domain.DocumentSource;
 import spring.gemfire.vector.sink.service.CleanupService;
 
 import java.util.List;
@@ -15,18 +14,18 @@ import java.util.function.Consumer;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SaveToVectorStore implements Consumer<DocumentSource> {
+public class SaveToVectorStore implements Consumer<String> {
 
     private final VectorStore vectorDataStore;
-    private final Converter<DocumentSource, List<Document>> ToDocs;
+    private final Converter<String, List<Document>> ToDocs;
     private final CleanupService cleanupService;
 
     @Override
-    public void accept(DocumentSource documentSource) {
-        log.info("doc source: {}", documentSource);
+    public void accept(String contentOrUrl) {
+        log.info("doc source: {}", contentOrUrl);
 
-        cleanupService.removeSimilarDocs(documentSource);
+        cleanupService.removeSimilarDocs(contentOrUrl);
 
-        vectorDataStore.add(ToDocs.convert(documentSource));
+        vectorDataStore.add(ToDocs.convert(contentOrUrl));
     }
 }

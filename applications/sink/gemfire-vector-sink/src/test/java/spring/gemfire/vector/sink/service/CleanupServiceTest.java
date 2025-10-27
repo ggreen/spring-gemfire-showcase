@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
-import spring.gemfire.vector.sink.domain.DocumentSource;
 
 import java.util.List;
 
@@ -37,14 +36,13 @@ class CleanupServiceTest {
     void checkNullsAnEmpty() {
 
         assertThat(subject.removeSimilarDocs(null)).isNullOrEmpty();
-        assertThat(subject.removeSimilarDocs(DocumentSource.builder().build())).isNullOrEmpty();
+        assertThat(subject.removeSimilarDocs("")).isNullOrEmpty();
     }
 
     @Test
     void removeSimilarDocs() {
 
-        var documentSource = DocumentSource
-                .builder().content("content").build();
+        var documentSource ="content";
 
         List<Document> docLists = List.of(document);
         when(document.getId()).thenReturn(docId);

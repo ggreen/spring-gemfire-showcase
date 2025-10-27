@@ -1,7 +1,6 @@
 package spring.gemfire.vector.sink.function;
 
 import nyla.solutions.core.patterns.conversion.Converter;
-import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
-import spring.gemfire.vector.sink.domain.DocumentSource;
 import spring.gemfire.vector.sink.service.CleanupService;
 
 import java.util.List;
@@ -29,9 +27,9 @@ class SaveToVectorStoreTest {
     CleanupService cleanupService;
 
     @Mock
-    private Converter<DocumentSource, List<Document>> converter;
+    private Converter<String, List<Document>> converter;
 
-    private final static DocumentSource documentSource = JavaBeanGeneratorCreator.of(DocumentSource.class).create();
+    private final static String documentSource = "junit";
     private final static Document document = new Document("JUNIT");
     private final static List<Document> docs = List.of(document);
 
@@ -47,7 +45,7 @@ class SaveToVectorStoreTest {
 
         subject.accept(documentSource);
 
-        verify(cleanupService).removeSimilarDocs(any(DocumentSource.class));
+        verify(cleanupService).removeSimilarDocs(any());
         verify(vectorDataStore).add(any(List.class));
     }
 }

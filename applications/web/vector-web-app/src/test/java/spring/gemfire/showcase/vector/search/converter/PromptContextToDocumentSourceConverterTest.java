@@ -16,7 +16,7 @@ class PromptContextToDocumentSourceConverterTest {
         var actual = subject.convert(sourceObject);
 
         assertThat(actual).isNotNull();
-        assertThat(actual.content()).isEqualTo(sourceObject.context());
+        assertThat(actual).isEqualTo(sourceObject.context());
     }
 
     @Test

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
-import spring.gemfire.vector.sink.domain.DocumentSource;
 
 import java.util.List;
 
@@ -15,17 +14,13 @@ import java.util.List;
 public class CleanupService {
     private final VectorStore vectorStore;
 
-    public List<String> removeSimilarDocs(DocumentSource documentSource) {
-        if(documentSource == null)
+    public List<String> removeSimilarDocs(String contentOrUrl) {
+
+        if(contentOrUrl ==null || contentOrUrl.isEmpty())
             return null;
 
-        var content = documentSource.content();
-
-        if(content ==null || content.isEmpty())
-            return null;
-
-        log.info("Searching for similar documents to remove based on content: {}",content);
-        var results = vectorStore.similaritySearch(content);
+        log.info("Searching for similar documents to remove based on content: {}",contentOrUrl);
+        var results = vectorStore.similaritySearch(contentOrUrl);
 
         if(results == null  || results.isEmpty())
             return null;

@@ -7,20 +7,11 @@
 
 package spring.gemfire.showcase.remove.search;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import nyla.solutions.core.io.csv.CsvReader;
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.converter.MessageConverter;
-import org.springframework.messaging.support.MessageBuilder;
-
-import java.nio.charset.StandardCharsets;
 
 @Configuration
 @Slf4j
@@ -42,22 +33,6 @@ public class RabbitConfig {
     @Bean
     ConnectionNameStrategy connectionNameStrategy(){
         return (connectionFactory) -> applicationName;
-    }
-
-    @Bean
-    public MessageConverter converter(ObjectMapper objectMapper) {
-        return new MessageConverter() {
-            @Override
-            public Object fromMessage(Message<?> message, Class<?> targetClass) {
-                return CsvReader.parse(new String((byte[])message.getPayload(), StandardCharsets.UTF_8));
-            }
-
-            @SneakyThrows
-            @Override
-            public Message<?> toMessage(Object payload, MessageHeaders headers) {
-                return MessageBuilder.withPayload(objectMapper.writeValueAsBytes(payload)).build();
-            }
-        };
     }
 
 }
