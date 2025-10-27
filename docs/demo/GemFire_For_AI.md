@@ -47,23 +47,22 @@ Open Question HTML
 open http://localhost:8088/question.html
 ```
 
-
-What is the capital of NJ
-What is the capital of New Jersey
-
-
-Add Context
-- The capital of NJ is Trent
+Ask Question
+- What is the capital of NJ
 - What is the capital of New Jersey
 
 
+Answer Question
+- The capital of NJ is Trent
 
-What is the capital of NJ
-What is the capital of New Jersey
+Ask Question
+- What is the capital of New Jersey
+- What is the capital of NJ
+- What is the capital of New Jersey
 
 
+SCDF Destroy stream and re-creae
 
-Destroy stream and re-creae
 
 ```scdf
 vector-stream=http --port=7888 | remove-by-gf-search --gemfire.remove.search.indexName=SearchResultsIndex --gemfire.remove.search.regionName=SearchResults --gemfire.remove.search.defaultField=__REGION_VALUE_FIELD | gemfire-vector-sink
@@ -71,21 +70,26 @@ vector-stream=http --port=7888 | remove-by-gf-search --gemfire.remove.search.ind
 ```
 
 
+Answer Question
 
 - The capital of NJ is Trenton
 
-
-What is the capital of NJ
-What is the capital of New Jersey
-
-
-
-Does Healthmap specializes in Kidney Population Health Management
+Ask Question
+- What is the capital of NJ
+- What is the capital of New Jersey
+- Does Healthmap specializes in Kidney Population Health Management
 
 
-Adding answer
+Answer Question
 
-https://healthmapsolutions.com/about-us/
+- https://healthmapsolutions.com/about-us/
+
+
+Ask Question
+
+- Does Healthmap specializes in Kidney Population Health Management
+- Does Healthmap specializes in Kidney Population Health Management
+
 
 ---------------
 
