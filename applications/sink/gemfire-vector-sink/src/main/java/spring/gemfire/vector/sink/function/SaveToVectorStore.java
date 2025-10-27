@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import spring.gemfire.vector.sink.service.CleanupService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @Component
@@ -23,6 +24,14 @@ public class SaveToVectorStore implements Consumer<String> {
     @Override
     public void accept(String contentOrUrl) {
         log.info("doc source: {}", contentOrUrl);
+
+        if(Objects.isNull(contentOrUrl) || contentOrUrl.isEmpty())
+            return;
+
+        contentOrUrl = contentOrUrl.trim();
+
+        if(contentOrUrl.isEmpty())
+            return;
 
         cleanupService.removeSimilarDocs(contentOrUrl);
 

@@ -49,13 +49,13 @@ open http://localhost:8088/question.html
 ```
 
 
-
 What is the capital of NJ
+
 
 Add Context
 - The capital of NJ is Trenton
 
-
+What is the capital of New Jersey
 
 
 ```scdf

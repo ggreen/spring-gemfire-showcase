@@ -13,8 +13,7 @@ import spring.gemfire.vector.sink.service.CleanupService;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SaveToVectorStoreTest {
@@ -48,4 +47,28 @@ class SaveToVectorStoreTest {
         verify(cleanupService).removeSimilarDocs(any());
         verify(vectorDataStore).add(any(List.class));
     }
+
+    @Test
+    void givenNullContentThenDoNotSave() {
+        subject.accept(null);
+
+        verify(cleanupService,never()).removeSimilarDocs(any());
+        verify(vectorDataStore,never()).add(any(List.class));
+    }
+
+    @Test
+    void givenEmptyStringContentThenDoNotSave() {
+        subject.accept("");
+
+        verify(cleanupService,never()).removeSimilarDocs(any());
+        verify(vectorDataStore,never()).add(any(List.class));
+    }
+    @Test
+    void givenWhiteSpaceStringContentThenDoNotSave() {
+        subject.accept("   ");
+
+        verify(cleanupService,never()).removeSimilarDocs(any());
+        verify(vectorDataStore,never()).add(any(List.class));
+    }
+
 }
