@@ -18,6 +18,7 @@
         <module>applications/service/account-location-event-service</module>
         <module>applications/service/account-jdbc-caching-rest-service</module>
         <module>applications/processor/account-csv-processor</module>
+        <module>applications/processor/remove-by-gf-search-processor</module>
         <module>applications/source/account-file-supplier</module>
         <module>applications/batch/account-batch</module>
         <module>applications/sink/account-sink</module>

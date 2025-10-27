@@ -1,0 +1,16 @@
+server:
+  port: 0
+spring:
+  application:
+    name: remove-by-gf-search-processor
+  config:
+    import: "optional:configserver:http://localhost:8888/"
+  cloud:
+    #    function.definition: saveFavoritesConsumer;orderConsumer
+    function:
+      definition: removeSearchFunction
+    stream:
+      function:
+        bindings:
+          removeSearchFunction-in-0: input
+          removeSearchFunction-out-0: output

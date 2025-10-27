@@ -13,11 +13,27 @@ java -jar applications/web/vector-web-app/target/vector-web-app-0.0.2-SNAPSHOT.j
 open http://localhost:8088/question.html
 ```
 
+```shell 
+$GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=PARTITION"
+```
+
+
+Create Index
+
+```shell
+$GEMFIRE_HOME/bin/gfsh -e connect -e "create lucene index --name=SearchResultsIndex --region=/SearchResults  --field=__REGION_VALUE_FIELD"
+```
+
 Create region
 
 ```shell 
 $GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=PARTITION"
 ```
+
+```shell
+$GEMFIRE_HOME/bin/gfsh -e connect -e "search lucene --name=SearchResultsIndex --region=SearchResults --queryString='What does HealthMap Solutions do' --defaultField=__REGION_VALUE_FIELD --limit=10"
+```
+
 
 
 Start Web Application
@@ -53,6 +69,7 @@ Adding
 
 Tell me about Healthmap solutions
 
+```shell
 curl -X 'POST' \
 'http://localhost:7088/functions/saveToVectorStore' \
 -H 'accept: */*' \
@@ -62,3 +79,4 @@ curl -X 'POST' \
 "https://healthmapsolutions.com/about-us/"
 ]
 }'
+```
