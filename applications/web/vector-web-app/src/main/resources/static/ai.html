@@ -83,6 +83,7 @@
                     <div class="flex items-center gap-2">
                         <button type="button" id="attach" class="p-2 rounded-md hover:bg-slate-800/30" title="Attach (demo)">📎</button>
                         <button id="sendBtn" type="submit" class="bg-gradient-to-r from-purple-600 to-cyan-400 px-4 py-2 rounded-xl font-semibold shadow hover:opacity-95">Send</button>
+                        <button type="button" onclick="clearAnswer()" id="clearAnswerButton" class="p-2 rounded-md hover:bg-slate-800/30" title="Clear Answer">🗑️</button>
                     </div>
                 </div>
             </form>
@@ -132,6 +133,15 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
+    function showClearCache(userText){
+      const el = document.createElement('div');
+      el.className = 'flex';
+      el.id = 'typing';
+      el.innerHTML = `<div class="bubble msg-assistant rounded-right rounded-xl"><span class="dots">Clearing cached Answer for ${userText}}<span class="animate-pulse">...</span></span></div>`;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
     async function getAiResponse(userText){
 
         const apiUrl = 'vector/search';
@@ -149,8 +159,6 @@
             //const data = await res.json();
             data = await res.text();
             const endTime = performance.now();
-
-            //responseText.textContent = JSON.stringify(data, null, 2);
 
             var totalTime = (endTime - startTime).toFixed(2);
             data = data + "\n\n Request took: "+  totalTime+ " ms";
@@ -178,8 +186,8 @@
       showTyping();
       setTimeout(()=>{
         hideTyping();
-        // Simple canned response with echo + guidance
-        //const resp = `I received: "${userText}"\n\n(Replace this mock reply by wiring to your backend API.)`;
+
+        //get response
         getAiResponse(userText);
         //appendMessage({role:'assistant', text:resp});
       }, 800 + Math.min(userText.length*10, 1200));
@@ -190,7 +198,7 @@
       const text = inputEl.value.trim();
       if(!text) return;
       appendMessage({role:'user', text});
-      inputEl.value = '';
+      // GG REMOVED -  inputEl.value = '';
       autoGrow(inputEl);
       aiReply(text);
     });
@@ -224,6 +232,34 @@
         document.body.style.color = '';
       }
     });
+
+
+    async function clearAnswer(){
+
+            const userText = inputEl.value.trim();
+            showClearCache(userText);
+
+             const apiUrl = 'vector/search/prompt';
+             try{
+                 const res = await fetch(apiUrl, {
+                     method: 'DELETE',
+                     headers: {
+                         'accept' : '*/*'
+                     },
+                      body: new URLSearchParams({
+                         prompt: userText
+                       })
+                 });
+
+                 //hideTyping();
+
+             } catch (error) {
+                 const endTime = performance.now();
+                 var responseText  = `Error: ${error}`;
+                 var requestTime  = (endTime - startTime).toFixed(2);
+                 responseDiv.style.display = 'block';
+             }
+         }
 
     // Accessibility: focus input on load
     window.addEventListener('load', ()=> inputEl.focus());
