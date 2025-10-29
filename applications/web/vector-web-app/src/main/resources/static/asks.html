@@ -18,7 +18,7 @@
         .glass{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); backdrop-filter: blur(6px);}
         .msg-user{background:linear-gradient(90deg,#111827,#0b1220); color:#fff}
         .msg-assistant{background:rgba(255,255,255,0.04); color:#e6eef8}
-        .bubble{max-width:78%; padding:12px 14px; border-radius:12px}
+        .bubble{max-width:78%; color:rgb(100 116 139 / var(--tw-text-opacity, 1)); padding:12px 14px; border-radius:12px, }
         .rounded-left{border-bottom-left-radius:4px}
         .rounded-right{border-bottom-right-radius:4px}
         .input-shadow{box-shadow: 0 6px 24px rgba(2,6,23,0.6)}
@@ -154,17 +154,20 @@
 
             var totalTime = (endTime - startTime).toFixed(2);
             data = data + "\n\n Request took: "+  totalTime+ " ms";
-
+            appendMessage({role:'assistant', text:data});
 
         } catch (error) {
             const endTime = performance.now();
             //responseText.textContent = `Error: ${error}`;
             //requestTime.textContent = (endTime - startTime).toFixed(2);
             //responseDiv.style.display = 'block';
+
+            appendMessage({role:'assistant', text:error});
+
         }
 
 
-        appendMessage({role:'assistant', text:data});
+
         //return `I received: "${userText}"\n\n"${data}"`;
 
     }//---------------------------------------------------------
