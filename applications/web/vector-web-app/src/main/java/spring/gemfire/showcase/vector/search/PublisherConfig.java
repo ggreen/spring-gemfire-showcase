@@ -28,15 +28,15 @@ public class PublisherConfig {
     }
 
     @Bean
-    Publisher<PromptContext> publisher(RestTemplate restTemplate, Converter<PromptContext, String> converter) {
+    Publisher<PromptContext> publisher(RestTemplate restTemplate) {
         return new Publisher<PromptContext>() {
             @Override
             public void send(PromptContext promptContext) {
-                log.info("Publishing: {}",promptContext);
+                log.info("Publishing in url: {} context: {}",vectorServiceUrl,promptContext);
                 var headers = new HttpHeaders();
                 headers.setContentType(MediaType.TEXT_PLAIN);
 
-                var request = new HttpEntity<String>(converter.convert(promptContext), headers);
+                var request = new HttpEntity<String>(promptContext.context(), headers);
                 restTemplate.postForObject(vectorServiceUrl, request, String.class);
             }
         };
