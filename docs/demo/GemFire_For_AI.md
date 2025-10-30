@@ -18,9 +18,13 @@ $GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=
 ```
 
 
+Start Ollama
+
+```shell
+ollama serve
+```
 
 Start SCDF
-
 
 ```shell
 echo processor.remove-by-gf-search=file://$PWD/applications/processor/remove-by-gf-search-processor/target/remove-by-gf-search-processor-0.0.1-SNAPSHOT.jar
@@ -44,12 +48,17 @@ java -jar applications/web/vector-web-app/target/vector-web-app-0.0.1-SNAPSHOT.j
 Open Question HTML
 
 ```shell
-open http://localhost:8088/question.html
+open http://localhost:8088/ai.html
 ```
 
 Ask Question
 - What is the capital of NJ
 - What is the capital of New Jersey
+
+
+```shell
+open http://localhost:8088/answer.html
+```
 
 
 Answer Question
@@ -57,24 +66,33 @@ Answer Question
 
 Ask Question
 - What is the capital of New Jersey
-- What is the capital of NJ
+
+AI UI
+- Clean Answer using the Trash icon
 - What is the capital of New Jersey
+- What is the capital of New Jersey (cached - faster response)
 
 
-SCDF Destroy stream and re-creae
+Ask Quqstion
+- What is the capital of NJ
+
+
+SCDF Destroy stream and re-create with the following
 
 
 ```scdf
 vector-stream=http --port=7888 | remove-by-gf-search --gemfire.remove.search.indexName=SearchResultsIndex --gemfire.remove.search.regionName=SearchResults --gemfire.remove.search.defaultField=__REGION_VALUE_FIELD | gemfire-vector-sink
-
 ```
 
 
 Answer Question
 
 - The capital of NJ is Trenton
+- View Logs in Data Flow
+
 
 Ask Question
+- What is the capital of NJ
 - What is the capital of NJ
 - What is the capital of New Jersey
 - Does Healthmap specializes in Kidney Population Health Management
@@ -83,7 +101,7 @@ Ask Question
 Answer Question
 
 - https://healthmapsolutions.com/about-us/
-
+- Review logs in Data Flow
 
 Ask Question
 

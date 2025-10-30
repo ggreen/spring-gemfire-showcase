@@ -36,7 +36,7 @@ public class VectorSearchController {
         log.info("prompt: {}",prompt);
         var responseText = chatClient.prompt()
                 .user(prompt)
-                .advisors(advisor)
+                .advisors(advisor) //use GemFire vectorDB
                 .call();
         return responseText.content();
 
