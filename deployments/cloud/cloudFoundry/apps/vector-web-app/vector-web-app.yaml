@@ -1,0 +1,11 @@
+applications:
+  - name: vector-web-app
+    memory: 1400M
+    log-rate-limit-per-second: -1
+    services:
+      - gemfire
+      - ai-chat
+      - ai-embedding
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+}}'
+      SPRING_PROFILES_ACTIVE: 'gemfire'
