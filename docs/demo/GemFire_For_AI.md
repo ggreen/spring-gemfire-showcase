@@ -67,6 +67,8 @@ Answer Question
 Ask Question
 - What is the capital of New Jersey
 
+View Data Flow Logs
+
 AI UI
 - Clean Answer using the Trash icon
 - What is the capital of New Jersey
