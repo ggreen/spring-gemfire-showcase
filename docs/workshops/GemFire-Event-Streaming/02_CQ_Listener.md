@@ -20,7 +20,7 @@ Start Auditor Application
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --gemfire.cq.oql="select * from /Employees" --logging.file.name=runtime/logs/audit-cq.log
+java -jar runtime/apps/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /Employees" --logging.file.name=runtime/logs/audit-cq.log
 ```
 
 Also Tail File in separate terminal
@@ -43,7 +43,13 @@ Start Auditor Application
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --gemfire.cq.oql="select * from /Employees where salary > 1000000" --spring.application.name="emp.1m.plus" --logging.file.name=runtime/logs/audit-1m.log
+java -jar runtime/apps/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /Employees where salary > 1000000" --spring.application.name="emp.1m.plus" --logging.file.name=runtime/logs/audit-1m.log
+```
+
+Submit non-match employ
+
+```shell
+curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Keshya","lastName":"Williams","employeeId":"R914","department":"Engineering","salary":40000}' http://localhost:7080/gemfire-api/v1/Employees/R914
 ```
 
 

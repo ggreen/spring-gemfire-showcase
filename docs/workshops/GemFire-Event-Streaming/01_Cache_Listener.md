@@ -9,6 +9,16 @@ deployments/local/scripts/podman/start-gemfire-external-clients.sh
 ```
 
 
+Deploys Apps
+
+```shell
+mkdir -p runtime/apps
+wget -P runtime/apps https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Event-Streaming-2025/cache-listener-audit-0.0.1.jar
+wget -P runtime/apps https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Event-Streaming-2025/cq-listener-audit-0.0.1.jar
+
+```
+
+
 Create region in GemFire
 
 ```shell
@@ -20,7 +30,7 @@ Start Auditor Application
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cache-listener-audit/target/cache-listener-audit-0.0.1.jar --audit.region.name=Employees --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --logging.file.name=runtime/logs/audit.log
+java -jar runtime/apps/cache-listener-audit-0.0.1.jar --audit.region.name=Employees --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --logging.file.name=runtime/logs/audit.log
 ```
 
 Also Tail File in separate terminal
@@ -50,7 +60,7 @@ Start Another Cache Listener Application
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cache-listener-audit/target/cache-listener-audit-0.0.1.jar --audit.region.name=Employees --spring.data.gemfire.pool.default.locators="localhost[10334]" --server.port=0 --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor-2 --logging.file.name=runtime/logs/audit-2.log
+java -jar runtime/apps/cache-listener-audit-0.0.1.jar --audit.region.name=Employees --spring.data.gemfire.pool.default.locators="localhost[10334]" --server.port=0 --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor-2 --logging.file.name=runtime/logs/audit-2.log
 ```
 
 
@@ -75,11 +85,11 @@ Start Auditor Application
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cache-listener-audit/target/cache-listener-audit-0.0.1.jar --audit.region.name=Employees --spring.application.name=employeeAduitorForDs --server.port=0 --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id="\${spring.application.name}" --audit.region.key.reg.expression="^D.*" --logging.file.name=runtime/logs/audit-ds.log
+java -jar runtime/apps/cache-listener-audit-0.0.1.jar --audit.region.name=Employees --spring.application.name=employeeAduitorForDs --server.port=0 --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id="\${spring.application.name}" --audit.region.key.reg.expression="^D.*" --logging.file.name=runtime/logs/audit-ds.log
 ```
 
 
-Submit  Employee - Ignoore
+Submit  Employee - Ignored by filter application
 
 ```shell
 curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Ignored","lastName":"Ignored","employeeId":"C006","department":"Engineering","salary":65000}' http://localhost:7080/gemfire-api/v1/Employees/C006
@@ -90,3 +100,10 @@ Submit  Employee - Detected
 ```shell
 curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Sue","lastName":"Detected","employeeId":"D006","department":"Engineering","salary":65000}' http://localhost:7080/gemfire-api/v1/Employees/D006
 ```
+
+
+---------------
+## Cleanup
+
+
+- Stop all apps
