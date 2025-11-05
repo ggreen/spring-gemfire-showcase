@@ -1,20 +1,7 @@
 Start GemFire
 
 ```shell
-deployments/local/scripts/podman/start-gemfire-external-clients.sh
-```
-
-
-Create Index
-
-```shell
-$GEMFIRE_HOME/bin/gfsh -e connect -e "create lucene index --name=SearchResultsIndex --region=/SearchResults  --field=__REGION_VALUE_FIELD"
-```
-
-Create region
-
-```shell 
-$GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=PARTITION"
+deployments/local/scripts/podman/gemfire-for-ai.sh
 ```
 
 
@@ -31,6 +18,13 @@ echo processor.remove-by-gf-search=file://$PWD/applications/processor/remove-by-
 echo processor.remove-by-gf-search.bootVersion=3
 echo sink.gemfire-vector-sink=file://$PWD/applications/sink/gemfire-vector-sink/target/gemfire-vector-sink-0.0.1-SNAPSHOT.jar
 echo sink.gemfire-vector-sink.bootVersion=3
+```
+
+START RABBITMQ!!!!!
+
+```shell
+podman run -it --rm --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.2-management
+
 ```
 
 First stream
@@ -50,33 +44,40 @@ Open Question HTML
 ```shell
 open http://localhost:8088/ai.html
 ```
+Answer Question
+
+- https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/
+- Review logs in Data Flow
 
 Ask Question
-- What is the capital of NJ
-- What is the capital of New Jersey
+
+- What was Tanzu GemFire 10 dedicated to anyone?
+
+
+
+Ask Question
+- What is the first application development use case for GemFire?
+- What is the first application development use case for GemFire for Tanzu GemFire?
 
 
 ```shell
 open http://localhost:8088/answer.html
 ```
 
-
-Answer Question
-- The capital of NJ is Trent
-
-Ask Question
-- What is the capital of New Jersey
+Answer
+- The first use case for GemFire was mainframe application modernization for low latency data access
 
 View Data Flow Logs
 
+Question
+- What is the first application development use case for GemFire?
+
+
 AI UI
 - Clean Answer using the Trash icon
-- What is the capital of New Jersey
-- What is the capital of New Jersey (cached - faster response)
-
-
-Ask Quqstion
-- What is the capital of NJ
+- What is the first application development use case for GemFire?
+- What is the first application development use case for GemFire? (cached - faster response)
+- What is the first application development use case for Tanzu GemFire?
 
 
 SCDF Destroy stream and re-create with the following
@@ -89,26 +90,18 @@ vector-stream=http --port=7888 | remove-by-gf-search --gemfire.remove.search.ind
 
 Answer Question
 
-- The capital of NJ is Trenton
+- The first application development use case for GemFire was real-time financial trading applications
 - View Logs in Data Flow
 
 
 Ask Question
-- What is the capital of NJ
-- What is the capital of NJ
-- What is the capital of New Jersey
-- Does Healthmap specializes in Kidney Population Health Management
+- What is the first application development use case for GemFire?
+- What is the first application development use case for GemFire for Tanzu GemFire?
 
 
-Answer Question
+- What was Tanzu GemFire 10 dedicated to anyone?
 
-- https://healthmapsolutions.com/about-us/
-- Review logs in Data Flow
 
-Ask Question
-
-- Does Healthmap specializes in Kidney Population Health Management
-- Does Healthmap specializes in Kidney Population Health Management
 
 
 ---------------
@@ -128,3 +121,9 @@ $GEMFIRE_HOME/bin/gfsh -e connect -e "search lucene --name=SearchResultsIndex --
 qwen3
 
 Use wizardlm2:7b
+
+-----------
+
+```shell
+http://localhost:7080/gemfire-vectordb/swagger-ui/index.html
+```
