@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer a Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #00cc99;
+            color: #ffffff; /* white text */
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #006600;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #7cc47c;
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #90ee90;
+            background-color: #f0fff0;
+        }
+    </style>
+    <script>
+        async function clearAnswer(){
+
+             const responseDiv = document.getElementById('response');
+             const responseText = document.getElementById('responseText');
+             const requestTime = document.getElementById('requestTime');
+
+
+             const startTime = performance.now();
+             const apiUrl = 'vector/search/prompt';
+             const question = document.getElementById('question').value;
+             const promptContextParam = "prompt="+question;
+
+             try{
+                 const res = await fetch(apiUrl, {
+                     method: 'DELETE',
+                     headers: {
+                         'accept' : '*/*'
+                     },
+                      body: new URLSearchParams({
+                         prompt: question
+                       })
+                 });
+             } catch (error) {
+                 const endTime = performance.now();
+                 responseText.textContent = `Error: ${error}`;
+                 requestTime.textContent = (endTime - startTime).toFixed(2);
+                 responseDiv.style.display = 'block';
+             }
+         }
+
+    </script>
+</head>
+<body>
+<header>Answer a Question</header>
+<main>
+    <form id="addContextForm">
+        <label for="answer">Answer:</label>
+        <textarea id="answer" name="answer" rows="5" placeholder="Type your answer if the system does not have the information ..." required></textarea>
+        <button type="submit">Answer Question</button>
+    </form>
+
+    <div class="response" id="response" style="display:none;">
+        <p><strong>Response:</strong></p>
+        <pre id="responseText"></pre>
+        <p><strong>Request took:</strong> <span id="requestTime"></span> ms</p>
+    </div>
+</main>
+
+<script>
+
+    // ------------------------------------------------
+    // Answer Question
+    const answerForm = document.getElementById('addContextForm');
+    const responseDiv = document.getElementById('response');
+    const responseText = document.getElementById('responseText');
+
+    answerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        responseText.textContent = "...loading";
+        requestTime.textContent = "";
+
+        const answer = document.getElementById('answer').value;
+
+        // Replace with your actual REST API endpoint
+        const apiUrl = 'vector/search/prompt/context';
+
+        const startTime = performance.now();
+        try {
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'accept' : '*/*'
+                },
+                 body: new URLSearchParams({
+                    prompt: "",
+                    context: answer
+
+                  })
+            });
+
+            //const data = await res.json();
+            const data = await res.text();
+            const endTime = performance.now();
+
+            responseText.textContent = data;
+            requestTime.textContent = (endTime - startTime).toFixed(2);
+            responseDiv.style.display = 'block';
+        } catch (error) {
+            const endTime = performance.now();
+            responseText.textContent = `Error: ${error}`;
+            requestTime.textContent = (endTime - startTime).toFixed(2);
+            responseDiv.style.display = 'block';
+        }
+    });
+</script>
+</body>
+</html>

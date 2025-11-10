@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chat UI — ChatGPT Look & Feel (Single File)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Small custom tweaks on top of Tailwind for more precise look */
+        :root{
+          --bg: #0f1724; /* deep navy used by many chat apps */
+          --panel: #0b1220;
+          --muted: #94a3b8;
+          --accent: linear-gradient(90deg,#7c3aed,#06b6d4);
+        }
+        html,body,#app{height:100%}
+        body{background:radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent), var(--bg); font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+        .glass{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); backdrop-filter: blur(6px);}
+        .msg-user{background:linear-gradient(90deg,#111827,#0b1220); color:#fff}
+        .msg-assistant{background:rgba(255,255,255,0.04); color:#e6eef8}
+        .bubble{max-width:78%; color:rgb(100 116 139 / var(--tw-text-opacity, 1)); padding:12px 14px; border-radius:12px, }
+        .rounded-left{border-bottom-left-radius:4px}
+        .rounded-right{border-bottom-right-radius:4px}
+        .input-shadow{box-shadow: 0 6px 24px rgba(2,6,23,0.6)}
+        .example-chip{cursor:pointer}
+        /* nice subtle focus for textarea */
+        .compose:focus{outline: 2px solid rgba(124,58,237,0.18); outline-offset:2px}
+    </style>
+</head>
+<body>
+<div id="app" class="min-h-screen flex items-stretch p-6">
+
+    <!-- Left sidebar (branding & examples) -->
+    <aside class="w-80 mr-6 hidden md:flex flex-col glass rounded-2xl p-4 text-slate-200" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-cyan-400 flex items-center justify-center text-white font-bold">AI</div>
+            <div>
+                <div class="font-semibold">Chat UI</div>
+                <div class="text-sm text-slate-400">Ask a question — instant replies</div>
+            </div>
+        </div>
+
+        <div class="mt-3 text-sm text-slate-400">Examples</div>
+        <div class="mt-2 flex flex-col gap-2">
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Explain quantum computing in simple terms</button>
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Write a short professional email for follow-up</button>
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Create a shopping list for a week of dinners</button>
+        </div>
+
+        <div class="mt-auto text-xs text-slate-500">This is a single-file demo UI inspired by ChatGPT's look and feel. Customize behavior or connect to an API to power responses.</div>
+    </aside>
+
+    <!-- Main chat panel -->
+    <main class="flex-1 flex flex-col h-[80vh] max-h-[1000px]">
+        <div class="glass rounded-2xl flex-1 p-4 flex flex-col" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+
+            <!-- Header -->
+            <header class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-400 flex items-center justify-center font-semibold text-white">AI</div>
+                    <div>
+                        <div class="text-white font-semibold">Assistant</div>
+                        <div class="text-xs text-slate-400">Provide helpful, safe answers</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="themeToggle" class="text-slate-300 text-sm p-2 rounded-md hover:bg-slate-800/30">Toggle Theme</button>
+                </div>
+            </header>
+
+            <!-- Messages area -->
+            <section id="messages" class="flex-1 overflow-auto space-y-4 pb-4">
+                <!-- Example messages to show look -->
+                <div class="flex">
+                    <div class="bubble msg-assistant rounded-right rounded-xl">Hello — ask me anything. Try the examples in the left panel.</div>
+                </div>
+            </section>
+
+            <!-- Composer -->
+            <form id="composer" class="mt-4">
+                <div class="flex items-end gap-3">
+                    <textarea id="input" rows="1" placeholder="Type your question here... (Shift+Enter for newline)" class="flex-1 resize-none rounded-xl p-3 compose bg-slate-900/60 text-white placeholder:text-slate-400 input-shadow" aria-label="Message input"></textarea>
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="attach" class="p-2 rounded-md hover:bg-slate-800/30" title="Attach (demo)">📎</button>
+                        <button id="sendBtn" type="submit" class="bg-gradient-to-r from-purple-600 to-cyan-400 px-4 py-2 rounded-xl font-semibold shadow hover:opacity-95">Send</button>
+                        <button type="button" onclick="clearAnswer()" id="clearAnswerButton" class="p-2 rounded-md hover:bg-slate-800/30" title="Clear Answer">🗑️</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- Footer small controls -->
+        <div class="mt-3 text-xs text-slate-400">Tip: Press Enter to send, Shift+Enter for newline.</div>
+    </main>
+</div>
+
+<script>
+    // Simple interaction script to mimic a chat app.
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const composer = document.getElementById('composer');
+    const sendBtn = document.getElementById('sendBtn');
+    const examples = document.querySelectorAll('.example-chip');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Auto grow textarea
+    function autoGrow(el){
+      el.style.height = 'auto';
+      el.style.height = (el.scrollHeight) + 'px';
+    }
+    inputEl.addEventListener('input', e=>autoGrow(e.target));
+
+    // Add message bubble
+    function appendMessage({role='assistant', text}){
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex' + (role === 'user' ? ' justify-end' : '');
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + (role === 'user' ? 'msg-user rounded-left rounded-xl' : 'msg-assistant rounded-right rounded-xl');
+      bubble.innerText = text;
+      wrapper.appendChild(bubble);
+      messagesEl.appendChild(wrapper);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    // Typing indicator
+    function showTyping(){
+      const el = document.createElement('div');
+      el.className = 'flex';
+      el.id = 'typing';
+      el.innerHTML = `<div class="bubble msg-assistant rounded-right rounded-xl"><span class="dots">Typing<span class="animate-pulse">...</span></span></div>`;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function showClearCache(userText){
+      const el = document.createElement('div');
+      el.className = 'flex';
+      el.id = 'typing';
+      el.innerHTML = `<div class="bubble msg-assistant rounded-right rounded-xl"><span class="dots">Clearing cached Answer for ${userText}}<span class="animate-pulse">...</span></span></div>`;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    async function getAiResponse(userText){
+
+        const apiUrl = 'vector/search';
+        const startTime = performance.now();
+        var data = "";
+        try {
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: userText
+            });
+
+            //const data = await res.json();
+            data = await res.text();
+            const endTime = performance.now();
+
+            var totalTime = (endTime - startTime).toFixed(2);
+            data = data + "\n\n Request took: "+  totalTime+ " ms";
+            appendMessage({role:'assistant', text:data});
+
+        } catch (error) {
+            const endTime = performance.now();
+            //responseText.textContent = `Error: ${error}`;
+            //requestTime.textContent = (endTime - startTime).toFixed(2);
+            //responseDiv.style.display = 'block';
+
+            appendMessage({role:'assistant', text:error});
+
+        }
+
+
+
+        //return `I received: "${userText}"\n\n"${data}"`;
+
+    }//---------------------------------------------------------
+    function hideTyping(){const t=document.getElementById('typing'); if(t) t.remove();}
+
+    // Mock assistant response (replace this with API integration)
+    function aiReply(userText){
+      showTyping();
+      setTimeout(()=>{
+        hideTyping();
+
+        //get response
+        getAiResponse(userText);
+        //appendMessage({role:'assistant', text:resp});
+      }, 800 + Math.min(userText.length*10, 1200));
+    }
+
+    composer.addEventListener('submit', e=>{
+      e.preventDefault();
+      const text = inputEl.value.trim();
+      if(!text) return;
+      appendMessage({role:'user', text});
+      // GG REMOVED -  inputEl.value = '';
+      autoGrow(inputEl);
+      aiReply(text);
+    });
+
+    // Enter to send (Shift+Enter new line)
+    inputEl.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        sendBtn.click();
+      }
+    });
+
+    // Example buttons
+    examples.forEach(btn=>btn.addEventListener('click', ()=>{
+      inputEl.value = btn.innerText;
+      autoGrow(inputEl);
+      inputEl.focus();
+    }));
+
+    // Theme toggle (simple inversion)
+    let dark = true;
+    themeToggle.addEventListener('click', ()=>{
+      dark = !dark;
+      if(!dark){
+        document.documentElement.style.setProperty('--bg','#f8fafc');
+        document.documentElement.style.setProperty('--panel','#ffffff');
+        document.body.style.color = '#0f1724';
+      } else {
+        document.documentElement.style.setProperty('--bg','#0f1724');
+        document.documentElement.style.setProperty('--panel','#0b1220');
+        document.body.style.color = '';
+      }
+    });
+
+
+    async function clearAnswer(){
+
+            const userText = inputEl.value.trim();
+            showClearCache(userText);
+
+             const apiUrl = 'vector/search/prompt';
+             try{
+                 const res = await fetch(apiUrl, {
+                     method: 'DELETE',
+                     headers: {
+                         'accept' : '*/*'
+                     },
+                      body: new URLSearchParams({
+                         prompt: userText
+                       })
+                 });
+
+                 //hideTyping();
+
+             } catch (error) {
+                 const endTime = performance.now();
+                 var responseText  = `Error: ${error}`;
+                 var requestTime  = (endTime - startTime).toFixed(2);
+                 responseDiv.style.display = 'block';
+             }
+         }
+
+    // Accessibility: focus input on load
+    window.addEventListener('load', ()=> inputEl.focus());
+
+
+
+
+</script>
+</body>
+</html>

@@ -17,3 +17,19 @@ spring:
 #      model: wizardlm2:7b
       init:
         pull-model-strategy: WHEN_MISSING
+    mcp:
+      client:
+#        enabled: true
+        name: ${spring.application.name}
+        version: 1.0.0
+#        toolcallback:
+#          enabled: true
+        type: SYNC
+        sse:
+          connections:
+            server1:
+              url: http://localhost:9088
+#              sse-endpoint: /custom-sse
+#              env:
+#                API_KEY: your-api-key
+#                DEBUG: "true"

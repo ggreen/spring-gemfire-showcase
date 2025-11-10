@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import spring.gemfire.showcase.vector.search.domain.PromptContext;
 import spring.gemfire.showcase.vector.search.services.SimilaritiesService;
 
@@ -44,10 +45,12 @@ class VectorSearchControllerTest {
     private SimilaritiesService similaritiesService;
     @Mock
     private Document document;
+    @Mock
+    private ToolCallbackProvider tools;
 
     @BeforeEach
     void setUp() {
-        subject = new VectorSearchController(chatClient,advisor,publisher, similaritiesService);
+        subject = new VectorSearchController(chatClient,advisor,publisher, similaritiesService,tools);
     }
 
     @Test

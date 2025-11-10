@@ -1,0 +1,14 @@
+server:
+  port: 9088
+spring:
+  application:
+    name:  ai-mcp-server-app
+  ai:
+    mcp:
+      server:
+        enabled: true
+#        sse-endpoint: /sse
+#        instructions:
+        stdio: false
+        name: ${spring.application.name}
+        version: 0.0.1

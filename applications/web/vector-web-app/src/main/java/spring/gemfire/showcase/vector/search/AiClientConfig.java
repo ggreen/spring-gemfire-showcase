@@ -3,6 +3,7 @@ package spring.gemfire.showcase.vector.search;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -12,9 +13,11 @@ import spring.gemfire.showcase.vector.search.services.SimilaritiesService;
 @Configuration
 public class AiClientConfig {
     @Bean
-    ChatClient chatClient(ChatModel chatModel)
+    ChatClient chatClient(ChatClient.Builder chatClientBuilder, ToolCallbackProvider tools)
     {
-        return ChatClient.create(chatModel);
+        return chatClientBuilder
+                .defaultToolCallbacks(tools)
+                .build();
     }
 
     @Bean

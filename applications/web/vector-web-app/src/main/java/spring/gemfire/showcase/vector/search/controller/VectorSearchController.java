@@ -6,6 +6,7 @@ import nyla.solutions.core.patterns.integration.Publisher;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class VectorSearchController {
     private final Advisor advisor;
     private final Publisher<PromptContext> publisher;
     private final SimilaritiesService similaritiesService;
+    private final ToolCallbackProvider tools;
 
     @PostMapping
     @Cacheable("SearchResults")
@@ -36,6 +38,7 @@ public class VectorSearchController {
         log.info("prompt: {}",prompt);
         var responseText = chatClient.prompt()
                 .user(prompt)
+                .toolCallbacks(tools)
                 .advisors(advisor) //use GemFire vectorDB
                 .call();
         return responseText.content();
