@@ -5,18 +5,13 @@ import nyla.solutions.core.patterns.creational.Maker;
 import nyla.solutions.core.util.Text;
 import org.apache.geode.cache.lucene.LuceneQuery;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.net.URI;
-import java.security.cert.X509Certificate;
 
 /**
+ * Service the added context from inputted text and various sources
  * @author gregory green
  */
 @Service
@@ -26,15 +21,13 @@ public class HyperTextService {
     private final RestTemplate restTemplate;
     private final int maxSize;
 
+
     @SneakyThrows
     public HyperTextService(Maker<String, LuceneQuery<Object, Object>> maker, RestTemplate restTemplate,
                             @Value("${gemfire.url.search.text.max.size:100}") int maxSize) {
         this.maker = maker;
         this.maxSize = maxSize;
         this.restTemplate = restTemplate;
-
-
-
     }
 
 
@@ -63,8 +56,6 @@ public class HyperTextService {
             return null;
         }
 
-
-        //Text.grepText("\\<title>",htmlString);
         var text = Text.parseText(htmlString,"<title>","</title>");
 
         if(text.isEmpty() )
