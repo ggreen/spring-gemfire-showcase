@@ -3,11 +3,12 @@ package spring.gemfire.showcase.remove.search.functions;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import nyla.solutions.core.patterns.creational.Maker;
 import org.apache.geode.cache.Region;
-import org.apache.geode.cache.lucene.LuceneQuery;
 import org.springframework.stereotype.Component;
+import spring.gemfire.showcase.remove.search.service.HyperTextService;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.function.Function;
 
 /**
@@ -19,16 +20,24 @@ import java.util.function.Function;
 @Slf4j
 public class RemoveSearchFunction implements Function<String,String> {
 
-    private final Maker<String,LuceneQuery<Object,Object>> queryMaker;
+    private final HyperTextService service;
     private final Region<Object,Object> region;
 
     @SneakyThrows
     @Override
     public String apply(String text) {
-
         log.info("Searching for: {}",text);
 
-        var query = queryMaker.make(text);
+        var searchContent = text.trim().toLowerCase();
+
+        //Get URL content if needed
+        if(searchContent.startsWith("http"))
+            searchContent = service.getSummary(new URI(searchContent));
+
+        var query = service.search(searchContent);
+        if(query == null)
+            return text;
+
         var keys = query.findKeys();
 
         if(keys == null || keys.isEmpty())

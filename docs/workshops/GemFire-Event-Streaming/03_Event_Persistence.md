@@ -28,7 +28,7 @@ Durable message expiration is 1 hour = 10800 seconds
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cache-listener-audit/target/cache-listener-audit-0.0.1.jar --audit.region.name=EmployeesPersisted --audit.region.key.reg.expression=".*" --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --spring.data.gemfire.cache.client.durable-client-timeout=10800 --logging.file.name=runtime/logs/audit.log
+java -jar runtime/apps/cache-listener-audit-0.0.1.jar --audit.region.name=EmployeesPersisted --audit.region.key.reg.expression=".*" --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --spring.data.gemfire.cache.client.durable-client-timeout=10800 --logging.file.name=runtime/logs/audit.log
 ```
 
 **Insert Employee 1**
@@ -49,7 +49,7 @@ Start Application again to see missed events
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cache-listener-audit/target/cache-listener-audit-0.0.1.jar --audit.region.name=EmployeesPersisted --audit.region.key.reg.expression=".*" --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --spring.data.gemfire.cache.client.durable-client-timeout=10800 --logging.file.name=runtime/logs/audit.log --spring.data.gemfire.pool.subscription-redundancy=1
+java -jar runtime/apps/cache-listener-audit-0.0.1.jar --audit.region.name=EmployeesPersisted --audit.region.key.reg.expression=".*" --spring.data.gemfire.pool.default.locators="localhost[10334]" --spring.data.gemfire.cache.client.durable-client-id=employeeAduitor --spring.data.gemfire.cache.client.durable-client-timeout=10800 --logging.file.name=runtime/logs/audit.log --spring.data.gemfire.pool.subscription-redundancy=1
 ```
 
 Stop Cache Lister Auditor Application (Ctrl-C)

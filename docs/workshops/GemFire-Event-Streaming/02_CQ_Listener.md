@@ -58,3 +58,14 @@ Submit match employ
 ```shell
 curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Richie","lastName":"Rich","employeeId":"R001","department":"Engineering","salary":1000100}' http://localhost:7080/gemfire-api/v1/Employees/E002
 ```
+
+---------------
+## Cleanup
+
+
+- Stop all apps
+
+Shutdown GemfFire
+```shell
+podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "shutdown --include-locators"
+```

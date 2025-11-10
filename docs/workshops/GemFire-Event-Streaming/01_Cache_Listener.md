@@ -107,3 +107,9 @@ curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Sue","lastNam
 
 
 - Stop all apps
+
+Shutdown GemFire 
+
+```shell
+podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "shutdown --include-locators"
+```
