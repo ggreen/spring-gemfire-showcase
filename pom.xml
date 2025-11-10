@@ -32,6 +32,8 @@
         <module>applications/web/vector-web-app</module>
         <module>applications/listener/client/cache-listener-audit</module>
         <module>applications/listener/client/cq-listener-audit</module>
+        <module>applications/cli/gemfire-vectordb-perftest</module>
+        <module>applications/cli/postgres-vectordb-perftest</module>
     </modules>
     <build>
         <pluginManagement>
