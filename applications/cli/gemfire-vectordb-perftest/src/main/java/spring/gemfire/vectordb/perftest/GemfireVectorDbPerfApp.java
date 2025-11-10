@@ -17,7 +17,7 @@ import java.util.List;
 
 @SpringBootApplication
 @Slf4j
-public class PgVectorVectorDbPerfTestApp {
+public class GemfireVectorDbPerfApp {
 
 	@Value("${statsCapacity:300}")
 	private int statsCapacity;
@@ -39,7 +39,7 @@ public class PgVectorVectorDbPerfTestApp {
 	private int topK;
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(PgVectorVectorDbPerfTestApp.class)
+		new SpringApplicationBuilder(GemfireVectorDbPerfApp.class)
 				.web(WebApplicationType.NONE) // Key change: explicitly sets application type to non-web
 				.run(args);
 	}

@@ -44,20 +44,20 @@ Open Question HTML
 ```shell
 open http://localhost:8088/ai.html
 ```
-Answer Question
 
-- https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/
-- Review logs in Data Flow
+Open Answer HTML
 
-Ask Question
+```shell
+open http://localhost:8088/answer.html
+```
 
-- What was Tanzu GemFire 10 dedicated to anyone?
 
+****************************
 
 
 Ask Question
 - What is the first application development use case for GemFire?
-- What is the first application development use case for GemFire for Tanzu GemFire?
+- What is the first application development use case for Tanzu GemFire?
 
 
 ```shell
@@ -70,14 +70,14 @@ Answer
 View Data Flow Logs
 
 Question
-- What is the first application development use case for GemFire?
+- What is the first application development use case for Tanzu GemFire?
 
 
 AI UI
 - Clean Answer using the Trash icon
-- What is the first application development use case for GemFire?
-- What is the first application development use case for GemFire? (cached - faster response)
 - What is the first application development use case for Tanzu GemFire?
+- What is the first application development use case for Tanzu GemFire? (cached - faster response)
+- What is the first application development use case for GemFire?
 
 
 SCDF Destroy stream and re-create with the following
@@ -99,6 +99,17 @@ Ask Question
 - What is the first application development use case for GemFire for Tanzu GemFire?
 
 
+Ask Question
+
+- Was VMware GemFire 10 release was dedicated to anyone?
+
+Answer Question
+
+- https://blogs.vmware.com/tanzu/introducing-vmware-gemfire-10-ga/
+- Review logs in Data Flow
+
+Ask Question
+
 - What was Tanzu GemFire 10 dedicated to anyone?
 
 
@@ -115,7 +126,7 @@ $GEMFIRE_HOME/bin/gfsh -e connect -e "shutdown --include-locators"
 ```
 
 ```shell
-$GEMFIRE_HOME/bin/gfsh -e connect -e "search lucene --name=SearchResultsIndex --region=SearchResults --queryString='What does HealthMap Solutions do' --defaultField=__REGION_VALUE_FIELD --limit=10"
+$GEMFIRE_HOME/bin/gfsh -e connect -e "search lucene --name=SearchResultsIndex --region=SearchResults --queryString='GemFire 10' --defaultField=__REGION_VALUE_FIELD --limit=10"
 ```
 
 qwen3

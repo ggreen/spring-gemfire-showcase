@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.function.Function;
 
 /**
- * Search from keys using GemFIre remove and remove keys from a given remove
+ * Search from keys using GemFire remove and remove keys from a given remove
  * @author Gregory Green
  */
 @Component
@@ -31,15 +31,16 @@ public class RemoveSearchFunction implements Function<String,String> {
         var searchContent = text.trim().toLowerCase();
 
         //Get URL content if needed
-        if(searchContent.startsWith("http"))
+        if(searchContent.startsWith("http")) {
             searchContent = service.getSummary(new URI(searchContent));
+            log.info("From Url searchContent: {}",searchContent);
+        }
 
         var query = service.search(searchContent);
         if(query == null)
             return text;
 
         var keys = query.findKeys();
-
         if(keys == null || keys.isEmpty())
             return text;
 

@@ -8,7 +8,6 @@ import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -18,7 +17,7 @@ import java.util.List;
 
 @SpringBootApplication
 @Slf4j
-public class GemfireVectorDbPerfTestApp {
+public class PgVectorVectorDbPerfApp {
 
 	@Value("${statsCapacity:300}")
 	private int statsCapacity;
@@ -40,7 +39,7 @@ public class GemfireVectorDbPerfTestApp {
 	private int topK;
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(GemfireVectorDbPerfTestApp.class)
+		new SpringApplicationBuilder(PgVectorVectorDbPerfApp.class)
 				.web(WebApplicationType.NONE) // Key change: explicitly sets application type to non-web
 				.run(args);
 	}
