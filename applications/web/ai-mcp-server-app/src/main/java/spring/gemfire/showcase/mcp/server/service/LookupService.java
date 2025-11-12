@@ -19,7 +19,7 @@ public class LookupService {
      * @param key The  key
      * @return The value of the key
      */
-    @Tool(name = "lookupTool", description = "Finds the value for a specific cached key).")
+    @Tool(name = "lookupFindTool", description = "Find the value for a specific cached key).")
     public String lookupValue(String key) {
 
         log.info("Lookup key: {}",key);
@@ -31,4 +31,14 @@ public class LookupService {
         return value;
 
     }
+
+    @Tool(name = "lookupSaveTool", description = "Save the value for a given key).")
+    public void saveValue(String key, String value) {
+
+        log.info("Saved key: {}, value: {}",key,value);
+
+        map.put(key.toLowerCase(),value); // Use toLowerCase for case insensitivity
+
+    }
+
 }

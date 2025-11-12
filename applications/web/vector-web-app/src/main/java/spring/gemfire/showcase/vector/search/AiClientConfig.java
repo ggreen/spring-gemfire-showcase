@@ -16,7 +16,6 @@ public class AiClientConfig {
     ChatClient chatClient(ChatClient.Builder chatClientBuilder, ToolCallbackProvider tools)
     {
         return chatClientBuilder
-                .defaultToolCallbacks(tools)
                 .build();
     }
 

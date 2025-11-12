@@ -11,14 +11,15 @@ import org.springframework.context.annotation.Configuration;
 import spring.gemfire.showcase.mcp.server.service.LookupService;
 
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class AiConfig {
 
     @Bean
-    public List<ToolCallback> gemfireMCPTools () {
+    public List<ToolCallback> gemfireMCPTools (Map<String,String> map) {
 
-        var toolCallBacks = List.of(ToolCallbacks.from(new LookupService(Organizer.toMap("legend","glow"))));
+        var toolCallBacks = List.of(ToolCallbacks.from(new LookupService(map)));
         ToolCallingChatOptions.validateToolCallbacks(toolCallBacks);
         return toolCallBacks;
     }

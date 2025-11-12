@@ -113,7 +113,28 @@ Ask Question
 - What was Tanzu GemFire 10 dedicated to anyone?
 
 
+---------------
+# MCP Example
 
+Prompt
+
+```prompt
+Save the value for a given key where e key=1 value=Hello World
+```
+
+
+```prompt
+Finds the value for a specific cached key where key=1
+```
+
+```text
+Save the value for a given key where e key=arul value="Arul is an expert in Messaging and Database solutions. He may miss the current Data TSL call because he is working on big RabbitMQ deal a major enterprise technology company;. He is one of the nicest people you will ever find."
+```
+
+```prompt
+Finds the value for a specific cached key where key=arul
+Tell me why Arul is not on the Data TSL call.
+```
 
 ---------------
 
