@@ -1,15 +1,7 @@
-Start GemFire
+# GemFire fo AI Demo
 
-```shell
-deployments/local/scripts/podman/gemfire-for-ai.sh
-```
+## Pre-requisite
 
-
-Start Ollama
-
-```shell
-ollama serve
-```
 
 Start SCDF
 
@@ -20,23 +12,51 @@ echo sink.gemfire-vector-sink=file://$PWD/applications/sink/gemfire-vector-sink/
 echo sink.gemfire-vector-sink.bootVersion=3
 ```
 
+START SCDF
+
 START RABBITMQ!!!!!
 
 ```shell
 podman run -it --rm --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.2-management
-
 ```
 
-First stream
+
+Start Ollama
+
+```shell
+ollama serve
+```
+
+-----------------------------
+Start GemFire
+
+```shell
+deployments/local/scripts/podman/gemfire-for-ai.sh
+```
+
+
+Start GemFire MCP Server
+
+```shell
+java -jar applications/web/ai-mcp-server-app/target/ai-mcp-server-app-0.0.1-SNAPSHOT.jar
+```
+
+Open SCDF
+```text
+open http://localhost:9393/dashboard/index.html#/streams/list
+```
+
+Create First stream
 
 ```scdf
 vector-stream=http --port=7888| gemfire-vector-sink
 ```
 
+
 Start Web Application
 
 ```shell
-java -jar applications/web/vector-web-app/target/vector-web-app-0.0.1-SNAPSHOT.jar --spring.ai.vectorstore.gemfire.host=localhost --spring.ai.vectorstore.gemfire.port=7080 --spring.ai.ollama.base-url=http://localhost:11434 --server.port=8088 --spring.ai.ollama.chat.options.model="llama3" --vector.service.url="http://localhost:7888"
+java -jar applications/web/vector-web-app/target/vector-web-app-0.0.1-SNAPSHOT.jar --spring.ai.vectorstore.gemfire.host=localhost --spring.ai.vectorstore.gemfire.port=7080 --spring.ai.ollama.base-url=http://localhost:11434 --server.port=8088 --spring.ai.ollama.chat.options.model="llama3.1:8b" --vector.service.url="http://localhost:7888"
 ```
 
 Open Question HTML
@@ -56,8 +76,8 @@ open http://localhost:8088/answer.html
 
 
 Ask Question
-- What is the first application development use case for GemFire?
-- What is the first application development use case for Tanzu GemFire?
+- What is the first application development use case for GemFire? DO NOT USE ANY TOOLS
+- What is the first application development use case for Tanzu GemFire? DO NOT USE ANY TOOLS
 
 
 ```shell
@@ -70,7 +90,7 @@ Answer
 View Data Flow Logs
 
 Question
-- What is the first application development use case for Tanzu GemFire?
+- What is the first application development use case for Tanzu GemFire? DO NOT USE ANY TOOLS
 
 
 AI UI
@@ -95,13 +115,13 @@ Answer Question
 
 
 Ask Question
-- What is the first application development use case for GemFire?
-- What is the first application development use case for GemFire for Tanzu GemFire?
+- What is the first application development use case for GemFire? DO NOT USE ANY TOOLS
+- What is the first application development use case for GemFire for Tanzu GemFire? DO NOT USE ANY TOOLS
 
 
 Ask Question
 
-- Was VMware GemFire 10 release was dedicated to anyone?
+- Was VMware GemFire 10 release was dedicated to anyone? DO NOT USE ANY TOOLS
 
 Answer Question
 
@@ -110,7 +130,7 @@ Answer Question
 
 Ask Question
 
-- What was Tanzu GemFire 10 dedicated to anyone?
+- What was Tanzu GemFire 10 dedicated to anyone? DO NOT USE ANY TOOLS
 
 
 ---------------
@@ -119,7 +139,7 @@ Ask Question
 Prompt
 
 ```prompt
-Save the value for a given key where e key=1 value=Hello World
+Save the value for a given key where key=1 value=Hello World
 ```
 
 
@@ -128,7 +148,7 @@ Finds the value for a specific cached key where key=1
 ```
 
 ```text
-Save the value for a given key where e key=arul value="Arul is an expert in Messaging and Database solutions. He may miss the current Data TSL call because he is working on big RabbitMQ deal a major enterprise technology company;. He is one of the nicest people you will ever find."
+Save the value for a given key where key=arul value="Arul is an expert in Messaging and Database solutions. He may miss the current Data TSL call because he is working on big RabbitMQ deal a major enterprise technology company;. He is one of the nicest people you will ever find."
 ```
 
 ```prompt
