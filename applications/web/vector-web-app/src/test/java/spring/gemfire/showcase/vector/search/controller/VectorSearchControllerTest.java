@@ -6,11 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import spring.gemfire.showcase.vector.search.domain.PromptContext;
+import spring.gemfire.showcase.vector.search.services.AiAnswerService;
 import spring.gemfire.showcase.vector.search.services.SimilaritiesService;
 
 import java.util.List;
@@ -25,20 +24,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class VectorSearchControllerTest {
 
-    @Mock
-    private ChatClient chatClient;
     private VectorSearchController subject;
-    @Mock
-    private Advisor advisor;
 
-    @Mock
-    private ChatClient.ChatClientRequestSpec prompt;
-    @Mock
-    private ChatClient.ChatClientRequestSpec user;
-    @Mock
-    private ChatClient.CallResponseSpec callResponse;
-    @Mock
-    private ChatClient.ChatClientRequestSpec advisors;
     @Mock
     private Publisher<PromptContext> publisher;
     @Mock
@@ -48,27 +35,24 @@ class VectorSearchControllerTest {
     @Mock
     private ToolCallbackProvider tools;
 
+    @Mock
+    private AiAnswerService answerService;
+
     @BeforeEach
     void setUp() {
-        subject = new VectorSearchController(chatClient,advisor,publisher, similaritiesService,tools);
+        subject = new VectorSearchController(publisher, similaritiesService,answerService);
     }
 
-//    @Test
-//    void search() {
-//
-//        var expected = "Junit Test";
-//        when(chatClient.prompt()).thenReturn(prompt);
-//        when(prompt.user(anyString())).thenReturn(user);
-//        when(user.toolCallbacks(any(ToolCallbackProvider.class))).thenReturn(tools);
-//        when(user.advisors(any(Advisor.class))).thenReturn(advisors);
-//        when(advisors.call()).thenReturn(callResponse);
-//        when(callResponse.content()).thenReturn(expected);
-//
-//
-//        var actual = subject.searchPrompt("What is java?");
-//
-//        assertNotNull(actual);
-//    }
+    @Test
+    void search() {
+
+        var expected = "Junit Test";
+        when(answerService.answer(anyString())).thenReturn(expected);
+
+        var actual = subject.answerPrompt("What is java?");
+
+        assertNotNull(actual);
+    }
 
     @Test
     void findSimilarities() {

@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import spring.gemfire.showcase.vector.search.domain.PromptContext;
+import spring.gemfire.showcase.vector.search.services.AiAnswerService;
 import spring.gemfire.showcase.vector.search.services.SimilaritiesService;
 
 import java.util.List;
@@ -26,23 +27,15 @@ import java.util.List;
 @Slf4j
 public class VectorSearchController {
 
-    private final ChatClient chatClient;
-    private final Advisor advisor;
     private final Publisher<PromptContext> publisher;
     private final SimilaritiesService similaritiesService;
-    private final ToolCallbackProvider tools;
+    private final AiAnswerService aiAnswerService;
 
     @PostMapping
     @Cacheable("SearchResults")
-    public String searchPrompt(@RequestBody String prompt) {
+    public String answerPrompt(@RequestBody String prompt) {
         log.info("prompt: {}",prompt);
-        var responseText = chatClient.prompt()
-                .user(prompt)
-                .toolCallbacks(tools)
-                .advisors(advisor) //use GemFire vectorDB
-                .call();
-        return responseText.content();
-
+        return aiAnswerService.answer(prompt);
     }
 
     /**

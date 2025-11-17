@@ -26,10 +26,10 @@ spring:
 #        toolcallback:
 #          enabled: true
         type: SYNC
-        sse:
-          connections:
-            server1:
-              url: http://localhost:9088
+#        sse:
+#          connections:
+#            server1:
+#              url: http://localhost:9088
 #              sse-endpoint: /custom-sse
 #              env:
 #                API_KEY: your-api-key
