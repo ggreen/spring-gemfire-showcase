@@ -20,7 +20,7 @@ class FileSupplierTest {
     @SneakyThrows
     @BeforeEach
     void setUp() {
-        IO.delete(file);
+        IO.dir().delete(file);
     }
 
     @SneakyThrows
@@ -35,13 +35,13 @@ class FileSupplierTest {
                 var line1  ="""
                         "1","Record"                       
                         """;
-                IO.writeAppend(file,line1);
+                IO.writer().writeAppend(file,line1);
 
                 Thread.sleep(5000);
                 var line2  ="""
                         "2","Record"                       
                         """;
-                IO.writeAppend(file,line2);
+                IO.writer().writeAppend(file,line2);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);

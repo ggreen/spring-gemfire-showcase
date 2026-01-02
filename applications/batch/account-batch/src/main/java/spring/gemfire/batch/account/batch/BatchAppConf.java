@@ -1,28 +1,21 @@
 package spring.gemfire.batch.account.batch;
 
-import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.Chunk;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.Chunk;
+import org.springframework.batch.infrastructure.item.ItemReader;
+import org.springframework.batch.infrastructure.item.ItemWriter;
+import org.springframework.batch.infrastructure.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cloud.task.configuration.EnableTask;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -30,7 +23,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import spring.gemfire.showcase.account.domain.account.Account;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,7 +30,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableTask
 @EnableTransactionManagement
-@EnableBatchProcessing(tablePrefix = "${batch.job.repository.schema.prefix:}BOOT3_BATCH_")
+@EnableBatchProcessing
+        //(tablePrefix = "${batch.job.repository.schema.prefix:}BOOT3_BATCH_")
 @EnableAutoConfiguration
 public class BatchAppConf {
 
@@ -63,18 +56,18 @@ public class BatchAppConf {
     private String batchPassword;
 
 
-    @Bean
-    public JobLauncher jobLauncher(JobRepository jobRepository) throws Exception {
-        TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher();
-        jobLauncher.setJobRepository(jobRepository);
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
-    }
+//    @Bean
+//    public JobLauncher jobLauncher(JobRepository jobRepository) throws Exception {
+//        TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher();
+//        jobLauncher.setJobRepository(jobRepository);
+//        jobLauncher.afterPropertiesSet();
+//        return jobLauncher;
+//    }
 
     @Bean
     Job job(JobRepository jobRepository, Step step) {
         return new JobBuilder("account-job", jobRepository)
-                .incrementer(new RunIdIncrementer())
+//                .incrementer(new RunIdIncrementer())
                 .flow(step)
                 .end()
                 .build();
@@ -129,20 +122,20 @@ public class BatchAppConf {
                            ItemReader<Account> itemReader,
                            ItemWriter<Account> itemWriter) {
         return new StepBuilder("load-step", jobRepository)
-                .<Account, Account>chunk(chunkSize, transactionManager)
+                .<Account, Account>chunk(chunkSize)
                 .reader(itemReader)
                 .writer(itemWriter)
                 .build();
     }
 
-    @Bean
-    @Order(10)
-    CommandLineRunner runner(Job job,JobLauncher jobLauncher) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        return args -> {
-            String jobId = UUID.randomUUID().toString();
-            JobParameter<?> jobIdParam = new JobParameter<String>(jobId, String.class);
-            JobParameters jobParameters = new JobParameters(Map.of("jobId", jobIdParam));
-            jobLauncher.run(job, jobParameters);
-        };
-    }
+//    @Bean
+//    @Order(10)
+//    CommandLineRunner runner(Job job, JobLauncher jobLauncher) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+//        return args -> {
+//            String jobId = UUID.randomUUID().toString();
+//            JobParameter<?> jobIdParam = new JobParameter<String>(jobId, String.class);
+//            JobParameters jobParameters = new JobParameters(Map.of("jobId", jobIdParam));
+//            jobLauncher.run(job, jobParameters);
+//        };
+//    }
 }

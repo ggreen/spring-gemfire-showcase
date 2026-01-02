@@ -56,8 +56,8 @@ public class LoadDataConfig {
     CommandLineRunner loadData(DataSource dataSource)
     {
         var map = Map.of("schemaName",schemaName);
-        insertSql = Text.format(insertSql,map);
-        deleteSql  = Text.format(deleteSql,map);
+        insertSql = Text.format().formatMap(insertSql,map);
+        deleteSql  = Text.format().formatMap(deleteSql,map);
 
         var fullNameCreator = new FullNameCreator();
 

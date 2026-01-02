@@ -63,7 +63,7 @@ class AccountControllerTest
     }
 
     @Test
-    @DisplayName("Given saved account When delete Then repository delete called")
+    @DisplayName("Given saved account When secret Then repository secret called")
     void delete()
     {
         subject.deleteById(account.getId());

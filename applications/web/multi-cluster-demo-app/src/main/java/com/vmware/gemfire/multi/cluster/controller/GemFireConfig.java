@@ -4,7 +4,7 @@ package com.vmware.gemfire.multi.cluster.controller;
 import com.vmware.gemfire.multi.cluster.controller.domain.Claim;
 import com.vmware.gemfire.multi.cluster.controller.domain.Member;
 import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.Pool;
 import org.apache.geode.cache.client.PoolManager;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
-import org.springframework.data.gemfire.config.annotation.*;
+import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
+import org.springframework.data.gemfire.config.annotation.EnablePool;
+import org.springframework.data.gemfire.config.annotation.EnablePools;
+import org.springframework.data.gemfire.config.annotation.EnableSecurity;
 
 @Configuration
 @ClientCacheApplication
@@ -37,7 +40,7 @@ public class GemFireConfig {
     private int locator2PoolPort;
 
     @Bean
-    ClientRegionFactoryBean<String, Claim> claimRegion(GemFireCache gemFireCache,
+    ClientRegionFactoryBean<String, Claim> claimRegion(ClientCache gemFireCache,
                                                        @Qualifier("GemFireOne") Pool gemFireOnePool)
     {
         var region = new ClientRegionFactoryBean();
@@ -49,7 +52,7 @@ public class GemFireConfig {
     }
 
     @Bean
-    ClientRegionFactoryBean<String, Member> memberRegion(GemFireCache gemFireCache)
+    ClientRegionFactoryBean<String, Member> memberRegion(ClientCache gemFireCache)
     {
         var region = new ClientRegionFactoryBean();
         region.setCache(gemFireCache);

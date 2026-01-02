@@ -56,7 +56,7 @@ public class HyperTextService {
             return null;
         }
 
-        var text = Text.parseText(htmlString,"<title>","</title>");
+        var text = Text.parser().parseText(htmlString,"<title>","</title>");
 
         if(text.isEmpty() )
             return null;

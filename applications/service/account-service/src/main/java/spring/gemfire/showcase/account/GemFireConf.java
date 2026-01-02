@@ -2,6 +2,7 @@ package spring.gemfire.showcase.account;
 
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
@@ -19,7 +20,7 @@ import spring.gemfire.showcase.account.domain.account.Account;
 public class GemFireConf
 {
     @Bean("Account")
-    ClientRegionFactoryBean<String, Account> account(GemFireCache gemFireCache)
+    ClientRegionFactoryBean<String, Account> account(ClientCache gemFireCache)
     {
         var bean = new ClientRegionFactoryBean<String,Account>();
         bean.setCache(gemFireCache);

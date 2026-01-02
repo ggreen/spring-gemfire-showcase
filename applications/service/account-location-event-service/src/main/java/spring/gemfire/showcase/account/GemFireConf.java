@@ -4,6 +4,7 @@ import org.apache.geode.cache.CacheListener;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.InterestResultPolicy;
+import org.apache.geode.cache.client.ClientCache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,7 @@ public class GemFireConf {
     private String keyInterestRegExp;
 
     @Bean("Account")
-    ClientRegionFactoryBean<String, Account> account(GemFireCache gemFireCache) {
+    ClientRegionFactoryBean<String, Account> account(ClientCache gemFireCache) {
         var region = new ClientRegionFactoryBean<String, Account>();
 
         region.setCache(gemFireCache);
@@ -56,7 +57,7 @@ public class GemFireConf {
     }
 
     @Bean("Location")
-    ClientRegionFactoryBean<String, Location> location(GemFireCache gemFireCache, @Qualifier("accountTemplate") GemfireTemplate accountTemplate )
+    ClientRegionFactoryBean<String, Location> location(ClientCache gemFireCache, @Qualifier("accountTemplate") GemfireTemplate accountTemplate )
     {
         var region = new ClientRegionFactoryBean<String,Location>();
         region.setCache(gemFireCache);
