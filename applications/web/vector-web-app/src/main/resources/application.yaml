@@ -14,7 +14,7 @@ spring:
       chat:
         options:
 #          model: llama3
-          model: llama3.1:8b
+          model: llama3.2:latest
 #      model: wizardlm2:7b
       init:
         pull-model-strategy: WHEN_MISSING

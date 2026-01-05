@@ -22,7 +22,7 @@ Run Script to run a GemFire locator and server in Docker with example GemFire re
 Run account-service in Docker
 
 ```shell
-docker run -p 6001:6001 --rm -it --name account-service -e "server.port=6001" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" --network=gemfire-cache cloudnativedata/account-service:0.0.1-SNAPSHOT
+docker run -p 6001:6001 --rm -it --name account-service -e "server.port=6001" -e "spring.data.gemfire.pool.default.locators=gf-locator[10334]" --network=gemfire-cache cloudnativedata/account-service:1.0.0
 ```
 
 Open Swagger UI for Testing the account-service
@@ -76,12 +76,15 @@ query --query="select * from /Account"
 The following are the steps to build a docker image
 ```shell
 mvn install
-cd applications/account-service
-mvn spring-boot:build-image
+cd applications/service/account-service
+docker build --file=Dockerfile --tag=cloudnativedata/account-gemfire-service:1.0.0 --rm=true .
+docker login
+docker push cloudnativedata/jdbc-upsert:latest 
+docker push cloudnativedata/jdbc-upsert:latest
 ```
 
 Example for tagging and pushing to docker hub
 ```shell
-docker tag account-service:0.0.1-SNAPSHOT cloudnativedata/account-service:0.0.1-SNAPSHOT
-docker push cloudnativedata/account-service:0.0.1-SNAPSHOT
+docker tag account-service:1.0.0 cloudnativedata/account-gemfire-service:1.0.0
+docker push cloudnativedata/account-gemfire-service:1.0.0
 ```
