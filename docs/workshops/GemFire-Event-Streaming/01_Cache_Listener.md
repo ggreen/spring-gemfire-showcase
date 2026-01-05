@@ -25,7 +25,34 @@ Create region in GemFire
 podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "create region --name=Employees --type=PARTITION --enable-statistics=true"
 ```
 
+Auditor Applications
 
+See source code [cache-listener-audit](../../../applications/listener/client/cache-listener-audit)
+
+
+```java
+@Component
+public class AuditCacheListener extends AbstractCommonEventProcessingCacheListener<Object, Object> implements CacheListener<Object,Object> {
+
+    private final String durableClientId;
+    public AuditCacheListener(    @Value("${spring.data.gemfire.cache.client.durable-client-id}")
+                                  String durableClientId) {
+        this.durableClientId = durableClientId;
+    }
+
+    @Override
+    protected void processEntryEvent(EntryEvent<Object, Object> event, EntryEventType eventType) {
+      log.info("AUDIT: durableClientId: {} -  Entry Event key: {} eventType: {} newValue: {} oldValue: {}",
+              durableClientId,
+              event.getKey(),eventType,event.getNewValue(),event.getOldValue());
+    }
+
+    @Override
+    protected void processRegionEvent(RegionEvent<Object, Object> event, RegionEventType eventType) {
+        log.info("AUDIT: durableClientId: {} - Region Event - eventType: {} region: {}",durableClientId, eventType,event.getRegion().getName());
+    }
+}
+```
 Start Auditor Application
 
 ```shell
@@ -80,6 +107,41 @@ curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Jill","lastNa
 
 Filtering Events by Keys
 
+See [GemFireConfig.java](../../../applications/listener/client/cache-listener-audit/src/main/java/spring/gemfire/showcase/audit/GemFireConfig.java)
+
+```java
+@Configuration
+@ClientCacheApplication(subscriptionEnabled = true, readyForEvents = true)
+@Slf4j
+public class GemFireConfig {
+
+    @Value("${audit.region.name}")
+    private String regionName;
+
+    @Value("${audit.region.key.reg.expression:.*}")
+    private String keyRegularExpression;
+
+    @Value("${audit.durable:true}")
+    private boolean durable;
+
+    @Bean("AuditRegion")
+    ClientRegionFactoryBean<Object,Object> auditRegion(ClientCache clientCache, AuditCacheListener auditCacheListener){
+        var region = new ClientRegionFactoryBean<Object,Object>();
+        region.setCache(clientCache);
+        region.setRegionName(regionName);
+        region.setDataPolicy(DataPolicy.EMPTY);
+
+        log.info("Subscribing to keys matching regular expression: {}, durable: {}", keyRegularExpression,durable);
+        var interests = new Interest[]{new Interest<String>(keyRegularExpression, InterestResultPolicy.KEYS, durable)};
+        region.setInterests(interests);
+        region.setStatisticsEnabled(true);
+
+        region.setCacheListeners(new CacheListener[]{auditCacheListener});
+
+        return region;
+    }
+}
+```
 
 Start Auditor Application
 
