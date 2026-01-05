@@ -2,6 +2,13 @@
 
 This workshop demonstrates how to use a event for Cache Listener and Cache Listener are persisted to prevent message lost.
 
+Prerequisite Download Apps (one time only)
+
+```shell
+mkdir -p runtime/apps
+wget -P runtime/apps https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Event-Streaming-2025/cache-listener-audit-0.0.1.jar
+wget -P runtime/apps https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Event-Streaming-2025/cq-listener-audit-0.0.1.jar
+```
 
 Start GemFire Locator and Server
 
@@ -10,7 +17,7 @@ deployments/local/scripts/podman/start-gemfire-external-clients.sh
 ```
 
 
-Create region in GemFire
+Create regions in GemFire
 
 ```shell
 podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "create region --name=EmployeesPersisted --type=PARTITION_PERSISTENT --enable-statistics=true"
@@ -25,6 +32,10 @@ podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "cre
 Start Cache Lister Auditor Application
 
 Durable message expiration is 1 hour = 10800 seconds
+
+See source code 
+
+[cache-listener-audit](../../../applications/listener/client/cache-listener-audit)
 
 ```shell
 mkdir -p runtime/logs
@@ -58,9 +69,12 @@ Stop Cache Lister Auditor Application (Ctrl-C)
 
 Start CQ Lister Auditor Application Hold events for 1 hour 10800
 
+See source code [cq-listener-audit](../../../applications/listener/client/cq-listener-audit)
+
+
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesCqPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.application.name=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
+java -jar runtime/apps/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesCqPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.application.name=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
 ```
 
 **Insert Employee 1**
@@ -68,6 +82,8 @@ java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audi
 ```shell
 curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"John","lastName":"Doe","employeeId":"P001","department":"Engineering","salary":85000}' http://localhost:7080/gemfire-api/v1/EmployeesCqPersisted/P001
 ```
+
+View Logs
 
 Stop CQ Lister Auditor Application (Ctrl-C) then restart to see events that were missed
 
@@ -79,7 +95,7 @@ Start CQ Lister Auditor Application Hold events for 1 hour 10800
 
 ```shell
 mkdir -p runtime/logs
-java -jar applications/listener/client/cq-listener-audit/target/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesCqPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.application.name=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
+java -jar runtime/apps/cq-listener-audit-0.0.1.jar  --spring.data.gemfire.pool.default.locators="localhost[10334]" --audit.cq.oql="select * from /EmployeesCqPersisted" --logging.file.name=runtime/logs/audit-cq.log --spring.data.gemfire.cache.client.durable-client-id=cq-listener-audit --spring.application.name=cq-listener-audit --spring.data.gemfire.cache.client.durable-client-timeout=10800 --spring.data.gemfire.pool.subscription-redundancy=1
 ````
 
 

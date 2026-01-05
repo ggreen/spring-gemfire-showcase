@@ -9,13 +9,12 @@ deployments/local/scripts/podman/start-gemfire-external-clients.sh
 ```
 
 
-Deploys Apps
+Prerequisite Download Apps (one time only)
 
 ```shell
 mkdir -p runtime/apps
 wget -P runtime/apps https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Event-Streaming-2025/cache-listener-audit-0.0.1.jar
 wget -P runtime/apps https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Event-Streaming-2025/cq-listener-audit-0.0.1.jar
-
 ```
 
 
