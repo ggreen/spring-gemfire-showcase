@@ -3,7 +3,26 @@ Start GemFire
 ```shell
 deployments/local/scripts/podman/gemfire-for-ai.sh
 ```
+Start GMC
 
+```shell
+deployments/local/scripts/podman/start-gmc-gideon-console.sh
+```
+
+Open GMC
+
+```shell
+open http://localhost:8080
+```
+
+Connect
+
+```properties
+name=gemfire-vector-db
+host=gf-locator
+port=7070
+
+```
 
 Start Ollama
 

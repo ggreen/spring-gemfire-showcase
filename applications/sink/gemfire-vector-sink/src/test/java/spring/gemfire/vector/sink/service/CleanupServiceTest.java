@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 
 import java.util.List;
@@ -46,7 +47,7 @@ class CleanupServiceTest {
 
         List<Document> docLists = List.of(document);
         when(document.getId()).thenReturn(docId);
-        when(vectorStore.similaritySearch(any(String.class))).thenReturn(docLists);
+        when(vectorStore.similaritySearch(any(SearchRequest.class))).thenReturn(docLists);
 
         var removed = subject.removeSimilarDocs(documentSource);
 
