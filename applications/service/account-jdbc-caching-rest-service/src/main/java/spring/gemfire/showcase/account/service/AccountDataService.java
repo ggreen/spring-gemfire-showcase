@@ -25,9 +25,7 @@ public class AccountDataService implements AccountService{
     public Account findByAccountId(String id) {
         log.info("!!!!==============SEARCHING for Account Id:{}",id);
         var optional = accountJdbcRepository.findById(id);
-        if (optional.isEmpty())
-            return null;
+        return optional.orElse(null);
 
-        return optional.get();
     }
 }

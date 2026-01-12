@@ -12,7 +12,6 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 import spring.gemfire.showcase.account.entity.Account;
 
 @ClientCacheApplication
-@EnableSecurity
 @Configuration
 @EnablePdx
 @EnableGemfireRepositories

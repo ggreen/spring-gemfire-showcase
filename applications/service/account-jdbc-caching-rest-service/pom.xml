@@ -10,20 +10,20 @@
     </parent>
     <groupId>com.github.ggreen</groupId>
     <artifactId>account-jdbc-caching-rest-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>account-jdbc-caching-rest-service</name>
     <description>account-jdbc-caching-rest-service</description>
     <properties>
         <java.version>17</java.version>
         <springBootForGemFire.version>2.0.0</springBootForGemFire.version>
-        <vmwareGemFire.version>10.0.0</vmwareGemFire.version>
+        <vmwareGemFire.version>10.1.1</vmwareGemFire.version>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.github.ggreen</groupId>
             <artifactId>account-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.nyla-solutions</groupId>
@@ -96,8 +96,7 @@
         <dependency>
             <groupId>com.vmware.gemfire</groupId>
             <artifactId>gemfire-core</artifactId>
-            <version>10.1.3</version>
-            <scope>compile</scope>
+            <version>${vmwareGemFire.version}</version>
         </dependency>
     </dependencies>
     <build>
