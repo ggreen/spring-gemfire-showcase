@@ -20,7 +20,7 @@ public class AccountDataService implements AccountService{
         return accountJdbcRepository.save(account);
     }
 
-    @Cacheable(value = {"AccountDbCache"})
+    @Cacheable("AccountDbCache")
     @Override
     public Account findByAccountId(String id) {
         log.info("!!!!==============SEARCHING for Account Id:{}",id);

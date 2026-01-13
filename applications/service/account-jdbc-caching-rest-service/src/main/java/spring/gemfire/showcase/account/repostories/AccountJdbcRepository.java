@@ -18,9 +18,9 @@ public class AccountJdbcRepository implements AccountRepository{
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final String updateSql = "update ACCOUNTS set name = ? where id = ?";
-    private static final String insertSql = "insert into ACCOUNTS (id,name) values (?,?)";
-    private static final String selectSql = "select id as id, name as name from ACCOUNTS where id = ?";
+    private static final String updateSql = "update gf_cache.ACCOUNTS set name = ? where id = ?";
+    private static final String insertSql = "insert into gf_cache.ACCOUNTS (id,name) values (?,?)";
+    private static final String selectSql = "select id as id, name as name from gf_cache.ACCOUNTS where id = ?";
 
     @Override
     public Account save(Account account) {

@@ -1,5 +1,7 @@
 # GemFire as a cache
 
+
+
 ```java
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,11 @@ public class AccountDataService implements AccountService{
     }
 }
 ```
+Start GemFire
+
+```shell
+deployments/local/scripts/podman/start-gemfire-external-clients.sh
+```
 
 Open Gfsh
 
@@ -30,10 +37,12 @@ Open Gfsh
 podman exec -it gf-locator gfsh
 ```
 
-```shell
+```gfsh
 connect
+```
+
+```gfsh
 create region --name=AccountDbCache --entry-time-to-live-expiration=30 --enable-statistics=true --type=PARTITION
-exit
 ```
 
 Start Postgres
@@ -44,16 +53,36 @@ podman run -it --rm --name postgres \
 ```
 
 
+
+
 Start service
 
 ```shell
-
-java -jar applications/service/account-jdbc-caching-rest-service/target/account-jdbc-caching-rest-service-1.0.0.jar --spring.profiles.active=local
+java -jar applications/service/account-jdbc-caching-rest-service/target/account-jdbc-caching-rest-service-1.0.0.jar
 ```
+
+--logging.level.org.springframework.data=DEBUG --logging.level.org.apache.geode=DEBUG --logging.level.org.springframework.cache=DEBUG
 
 ```shell
 list clients
 ```
+
+
+```shell
+podman exec -it postgres psql -U postgres
+```
+
+```psql
+insert into gf_cache.accounts(id,name) 
+values 
+('1','Account 1'),
+('2','Account 2'),
+('3','Account 3'),
+('4','Account 4'),
+('5','Account 5');
+```
+
+
 
 ```shell
 open http://localhost:6003
@@ -61,33 +90,42 @@ open http://localhost:6003
 
 Load cache
 ```shell
-curl -X 'GET' \
-  'http://localhost:9020/accounts/1' \
-  -H 'accept: */*';echo
+curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
+  'http://localhost:6003/accounts/1' \
+  -H 'accept: */*'
 ```
 
 
 Read from cache
 ```shell
-curl -X 'GET' \
-  'http://localhost:9020/accounts/1' \
+curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
+  'http://localhost:6003/accounts/1' \
   -H 'accept: */*';echo
 ```
 
+Read from cache
 ```shell
+curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
+  'http://localhost:6003/accounts/2' \
+  -H 'accept: */*';echo
+```
+
+In Gfsh
+
+```gfsh
 query --query="select * from /AccountDbCache"
 ```
 
 Evict cache
 
 ```shell
-curl -X 'POST' \
-  'http://localhost:9020/accounts' \
+curl -w "\n Total Time:    %{time_total}s\n"  -X 'POST' \
+  'http://localhost:6003/accounts' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "1",
-  "name": "Account"
+  "name": "Account Updated"
 }'
 ```
 
@@ -95,18 +133,18 @@ curl -X 'POST' \
 Clears cache because system of record change
 
 ```shell
-query --query="select * from /AccountDbCache"
+query --query="select * from /AccountDbCache.keys"
 ```
 
 Reload cache from relationship database
 ```shell
-curl -X 'GET' \
-  'http://localhost:9020/accounts/1' \
+curl  -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
+  'http://localhost:6003/accounts/1' \
   -H 'accept: */*';echo
 ```
 
 ```shell
-query --query="select * from /AccountDbCache"
+query --query="select * from /AccountDbCache.keys"
 ```
 
 ------------------------------

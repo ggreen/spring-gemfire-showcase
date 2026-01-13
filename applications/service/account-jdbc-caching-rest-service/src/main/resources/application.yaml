@@ -1,13 +1,14 @@
 management.endpoints.web.exposure.include: "*"
-flyway:
-  locations: "classpath:db/migration"
 server:
   port: 6003
 spring:
   application:
     name: account-jdbc-caching-rest-service
-  flyway:
-    locations: "classpath:db/migration"
+  liquibase:
+    enabled: true
+    # Required running: CREATE SCHEMA IF NOT EXISTS retail;
+    defaultSchema: "gf_cache"
+    change-log: "classpath:db/changelog/postgres/changelog-v1.sql"
   jpa:
     hibernate:
       ddl-auto: none
