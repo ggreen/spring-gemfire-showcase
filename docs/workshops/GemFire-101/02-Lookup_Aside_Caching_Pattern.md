@@ -26,7 +26,7 @@ public class AccountDataService implements AccountService{
 Start GemFire
 
 ```shell
-deployments/local/scripts/podman/start-gemfire-external-clients.sh
+deployments/local/scripts/podman/labs/start-gemfire-10-2.sh
 ```
 
 Open Gfsh
@@ -35,9 +35,13 @@ Open Gfsh
 podman exec -it gf-locator gfsh
 ```
 
+In GemFire connect to the cluster
+
 ```gfsh
 connect
 ```
+
+Create a GemFire region
 
 ```gfsh
 create region --name=AccountDbCache --entry-time-to-live-expiration=300 --enable-statistics=true --type=PARTITION
@@ -51,24 +55,24 @@ podman run -it --rm --name postgres \
 ```
 
 
-
-
 Start service
 
 ```shell
 java -jar applications/service/account-jdbc-caching-rest-service/target/account-jdbc-caching-rest-service-1.0.0.jar
 ```
 
---logging.level.org.springframework.data=DEBUG --logging.level.org.apache.geode=DEBUG --logging.level.org.springframework.cache=DEBUG
 
-```shell
-list clients
-```
 
+Adding Data to Postgres
+
+
+Open Psql
 
 ```shell
 podman exec -it postgres psql -U postgres
 ```
+
+Insert Account Data
 
 ```psql
 insert into gf_cache.accounts(id,name) 
@@ -81,12 +85,18 @@ values
 ```
 
 
+Open Spring App
 
 ```shell
 open http://localhost:6003
 ```
+Click Click Swagger UI and Post account
 
-Load cache
+
+
+
+Or use the following Curl command to access data
+
 ```shell
 curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
   'http://localhost:6003/accounts/1' \
@@ -94,27 +104,29 @@ curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
 ```
 
 
-Read from cache
+Second Read from cache will be faster
+
 ```shell
 curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
   'http://localhost:6003/accounts/1' \
   -H 'accept: */*';echo
 ```
 
-Read from cache
+Read an additional account record
+
 ```shell
 curl -w "\n Total Time:    %{time_total}s\n" -X 'GET' \
   'http://localhost:6003/accounts/2' \
   -H 'accept: */*';echo
 ```
 
-In Gfsh
+Select loaded cache data in GemFire using Gfsh
 
 ```gfsh
 query --query="select * from /AccountDbCache"
 ```
 
-Evict cache
+Evict cache using Spring Cache
 
 ```shell
 curl -w "\n Total Time:    %{time_total}s\n"  -X 'POST' \
@@ -130,21 +142,34 @@ curl -w "\n Total Time:    %{time_total}s\n"  -X 'POST' \
 
 Clears cache because system of record change
 
+Query in Gfsh (Account was evicted)
+
 ```shell
 query --query="select * from /AccountDbCache"
 ```
 
-Reload cache from relationship database
+Reload data from database
+
 ```shell
 curl  -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
   'http://localhost:6003/accounts/1' \
   -H 'accept: */*';echo
 ```
 
+Query in Gfsh 
+
 ```shell
 query --query="select * from /AccountDbCache"
 ```
 
+
+Data is Also evicted after 5 minutes of activity based in 
+
+See the following setting in the above create region statement
+
+``` 
+--entry-time-to-live-expiration=300 
+``` 
 ------------------------------
 
 # Proxy versus Cache Proxy
