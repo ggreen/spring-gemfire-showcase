@@ -1,7 +1,5 @@
 # GemFire as a cache
 
-
-
 ```java
 @Service
 @RequiredArgsConstructor
@@ -42,7 +40,7 @@ connect
 ```
 
 ```gfsh
-create region --name=AccountDbCache --entry-time-to-live-expiration=30 --enable-statistics=true --type=PARTITION
+create region --name=AccountDbCache --entry-time-to-live-expiration=300 --enable-statistics=true --type=PARTITION
 ```
 
 Start Postgres
@@ -133,7 +131,7 @@ curl -w "\n Total Time:    %{time_total}s\n"  -X 'POST' \
 Clears cache because system of record change
 
 ```shell
-query --query="select * from /AccountDbCache.keys"
+query --query="select * from /AccountDbCache"
 ```
 
 Reload cache from relationship database
@@ -144,7 +142,7 @@ curl  -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
 ```
 
 ```shell
-query --query="select * from /AccountDbCache.keys"
+query --query="select * from /AccountDbCache"
 ```
 
 ------------------------------
