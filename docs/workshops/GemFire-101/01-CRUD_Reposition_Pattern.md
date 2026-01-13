@@ -1,25 +1,3 @@
-# Agenda 101
-
-Overview 
-
-- Start Clustering 
-  - Gfsh
-- App READ/WRITE
-- Querying
-- GemFire as a cache 
-- Proxy versus Cache Proxy
-- GemFire functions
-- GemFire operational data store
-
-Download Apps
-
-```shell
-mkdir -p runtime/apps
-wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/account-service-1.0.0.jar
-```
-
---------
-
 # Start Clustering
 
 Start GemFire Locator and Server
@@ -112,6 +90,8 @@ extends CrudRepository<Account,String>
 }
 ```
 
+Start account-service
+
 ```shell
 java -jar runtime/apps/account-service-1.0.0.jar --server.port=6001 --spring.data.gemfire.pool.locators="localhost[10334]"
 ```
@@ -120,7 +100,9 @@ Save Account
 
 ```shell
 open http://localhost:6001
-``
+```
+
+Post Account Data
 
 ```shell
 curl -X 'POST' \
@@ -276,3 +258,13 @@ create index --name=accountName --expression=name --region=/Account
 query --query="<trace> select * from /Account where name = 'Account 99'"
 ```
 ----------------
+
+# Cleanup
+
+Stop all applications
+
+Shutdown GemFire
+
+```shell
+podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
+```

@@ -1,7 +1,26 @@
-# GemFire Event Streaming Workshop
-
+# Spring Data for GemFire Workshop
 
 This workshop demonstrates how to use Spring Data for VMware GemFire.
+
+# Agenda 101
+
+Overview
+
+- Start Clustering
+    - Gfsh
+- App READ/WRITE
+- Querying
+- GemFire as a cache
+- Proxy versus Cache Proxy
+- GemFire functions
+- GemFire operational data store
+
+Download Apps
+
+```shell
+mkdir -p runtime/apps
+wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/account-service-1.0.0.jar
+```
 
 | Lab   | Description                            |
 |-------|----------------------------------------|
