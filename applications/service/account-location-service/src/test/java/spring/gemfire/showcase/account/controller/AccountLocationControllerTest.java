@@ -12,15 +12,18 @@ import spring.gemfire.showcase.account.domain.account.Location;
 import spring.gemfire.showcase.account.repository.AccountRepository;
 import spring.gemfire.showcase.account.repository.LocationRepository;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AccountLocationControllertTest {
+class AccountLocationControllerTest {
 
     private final static String invalidZipCode = "Invalid";
+    private final static String id = "001";
     private final static String validZipCode = "09999";
 
     private AccountLocationController subject;
@@ -39,6 +42,8 @@ class AccountLocationControllertTest {
     @Test
     void save() {
 
+        accountLocation.getAccount().setId(id);
+        accountLocation.getLocation().setId(id);
         accountLocation.getLocation().setZipCode(validZipCode);
         subject.save(accountLocation);
 
@@ -49,9 +54,33 @@ class AccountLocationControllertTest {
     @Test
     void rollback() {
 
+        accountLocation.getAccount().setId(id);
+        accountLocation.getLocation().setId(id);
         accountLocation.getLocation().setZipCode(invalidZipCode);
         assertThrows(IllegalArgumentException.class, () -> subject.save(accountLocation));
         verify(accountRepository).save(any(Account.class));
         verify(locationRepository, never()).save(any(Location.class));
+    }
+
+    @Test
+    void getAccountLocation() {
+
+        when(locationRepository.findById(anyString())).thenReturn(Optional.of(accountLocation.getLocation()));
+        when(accountRepository.findById(anyString())).thenReturn(Optional.of(accountLocation.getAccount()));
+
+        var actual = subject.findById(accountLocation.getAccount().getId());
+
+        assertThat(actual).isEqualTo(accountLocation);
+    }
+
+    @Test
+    void syncIds() {
+        accountLocation.getAccount().setId(id);
+        accountLocation.getLocation().setId(id+"diff");
+        accountLocation.getLocation().setZipCode(validZipCode);
+
+        subject.save(accountLocation);
+
+        assertThat(accountLocation.getLocation().getId()).isEqualTo(accountLocation.getAccount().getId());
     }
 }

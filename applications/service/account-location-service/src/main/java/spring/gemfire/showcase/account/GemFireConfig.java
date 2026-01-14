@@ -7,19 +7,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.Interest;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
+import org.springframework.data.gemfire.transaction.config.EnableGemfireCacheTransactions;
 import spring.gemfire.showcase.account.domain.account.Account;
 import spring.gemfire.showcase.account.domain.account.Location;
 
 @Configuration
 @ClientCacheApplication(subscriptionEnabled = true)
+@EnableGemfireCacheTransactions
 public class GemFireConfig {
+
+    private final DataPolicy dataPolicy = DataPolicy.NORMAL;
 
     @Bean("Account")
     ClientRegionFactoryBean<String, Account> account(ClientCache gemfireCache)
     {
         var bean= new ClientRegionFactoryBean<String,Account>();
         bean.setCache(gemfireCache);
-        bean.setDataPolicy(DataPolicy.NORMAL);
+        bean.setDataPolicy(dataPolicy);
         bean.setInterests(new Interest[]{Interest.newInterest(Interest.ALL_KEYS)});
         bean.setName("Account");
         return bean;
@@ -31,7 +35,7 @@ public class GemFireConfig {
         Interest[] interests = {new Interest(Interest.ALL_KEYS)};
         var bean= new ClientRegionFactoryBean<String,Location>();
         bean.setCache(gemfireCache);
-        bean.setDataPolicy(DataPolicy.NORMAL);
+        bean.setDataPolicy(dataPolicy);
         bean.setInterests(interests);
         bean.setName("Location");
         return bean;
