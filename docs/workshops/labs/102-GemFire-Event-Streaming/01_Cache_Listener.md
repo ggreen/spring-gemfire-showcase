@@ -26,7 +26,7 @@ podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "cre
 
 Auditor Applications
 
-See source code [cache-listener-audit](../../../applications/listener/client/cache-listener-audit)
+See source code [cache-listener-audit](../../../../applications/listener/client/cache-listener-audit)
 
 
 ```java
@@ -106,7 +106,7 @@ curl -X PUT  -H "Content-Type: application/json" -d '{"firstName":"Jill","lastNa
 
 Filtering Events by Keys
 
-See [GemFireConfig.java](../../../applications/listener/client/cache-listener-audit/src/main/java/spring/gemfire/showcase/audit/GemFireConfig.java)
+See [GemFireConfig.java](../../../../applications/listener/client/cache-listener-audit/src/main/java/spring/gemfire/showcase/audit/GemFireConfig.java)
 
 ```java
 @Configuration

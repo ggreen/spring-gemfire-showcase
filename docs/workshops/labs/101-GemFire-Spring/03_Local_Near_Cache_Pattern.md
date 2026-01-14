@@ -1,36 +1,64 @@
-
 # Proxy versus Cache Proxy
 
-````shell
+Start GemFire
+
+```shell
+deployments/local/scripts/podman/labs/start-gemfire-10-2.sh
+```
+
+Open Gfsh
+
+```shell
+podman exec -it gf-locator gfsh
+```
+
+In GemFire connect to the cluster
+
+```gfsh
+connect
+```
+
+Create a GemFire region
+
+````gfsh
+create region --name=Account --type=PARTITION
 create region --name=Location --type=PARTITION
 ````
 
+Run Application
+
 ```shell
-cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-geode-showcase
-java -jar  applications/account-location-rest-service/target/account-location-rest-service-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
+java -jar  applications/service/account-location-service/target/account-location-service-1.0.0.jar
 ```
 
 
-```kotlin
-@RestController
-class LocationController(private var locationRepository: LocationRepository) {
-    @PostMapping("locations/location")
-    fun saveLocation(@RequestBody location: Location) {
-        locationRepository.save(location)
-    }
+```java
+@RequestMapping("accountLocations")
+@RequiredArgsConstructor
+public class AccountLocationController {
+    private final AccountRepository accountRepository;
+    private final LocationRepository locationRepository;
+    private final String validZipRegEx = "^\\d{5}(?:[-\\s]\\d{4})?$";
 
-    @GetMapping("locations/location/{id}")
-    fun findLocation(@PathVariable id: String): Location? {
-        var results = locationRepository.findById(id)
-        if(results.isEmpty)
-            return null
+    @PostMapping
+    public void save(@RequestBody AccountLocation accountLocation) {
 
-        return results.get()
+        var location = accountLocation.getLocation();
+
+        accountRepository.save(accountLocation.getAccount());
+
+        if(!location.getZipCode().matches(validZipRegEx)) {
+            throw new IllegalArgumentException("Invalid zip code "+location.getZipCode());
+        }
+
+        locationRepository.save(accountLocation.getLocation());
     }
 }
 ```
 
-```shell
+List clients in Gfsh
+
+```gfsh
 list clients
 ```
 
@@ -41,7 +69,7 @@ open http://localhost:8081
 
 ```shell
 curl -X 'POST' \
-  'http://localhost:8081/locations/location' \
+  'http://localhost:8081/accountLocations' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{

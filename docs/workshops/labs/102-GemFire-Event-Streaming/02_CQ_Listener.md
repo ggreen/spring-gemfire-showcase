@@ -25,7 +25,7 @@ podman exec -it gf-locator gfsh -e "connect --locator=gf-locator[10334]" -e "cre
 
 Auditor Application
 
-See [cq-listener-audit](../../../applications/listener/client/cq-listener-audit)
+See [cq-listener-audit](../../../../applications/listener/client/cq-listener-audit)
 
 ```java
 @Component

@@ -35,7 +35,7 @@ Durable message expiration is 1 hour = 10800 seconds
 
 See source code 
 
-[cache-listener-audit](../../../applications/listener/client/cache-listener-audit)
+[cache-listener-audit](../../../../applications/listener/client/cache-listener-audit)
 
 ```shell
 mkdir -p runtime/logs
@@ -69,7 +69,7 @@ Stop Cache Lister Auditor Application (Ctrl-C)
 
 Start CQ Lister Auditor Application Hold events for 1 hour 10800
 
-See source code [cq-listener-audit](../../../applications/listener/client/cq-listener-audit)
+See source code [cq-listener-audit](../../../../applications/listener/client/cq-listener-audit)
 
 
 ```shell
