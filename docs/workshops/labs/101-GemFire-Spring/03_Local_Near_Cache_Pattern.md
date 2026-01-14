@@ -33,26 +33,16 @@ java -jar  applications/service/account-location-service/target/account-location
 
 
 ```java
-@RequestMapping("accountLocations")
-@RequiredArgsConstructor
-public class AccountLocationController {
-    private final AccountRepository accountRepository;
-    private final LocationRepository locationRepository;
-    private final String validZipRegEx = "^\\d{5}(?:[-\\s]\\d{4})?$";
-
-    @PostMapping
-    public void save(@RequestBody AccountLocation accountLocation) {
-
-        var location = accountLocation.getLocation();
-
-        accountRepository.save(accountLocation.getAccount());
-
-        if(!location.getZipCode().matches(validZipRegEx)) {
-            throw new IllegalArgumentException("Invalid zip code "+location.getZipCode());
-        }
-
-        locationRepository.save(accountLocation.getLocation());
-    }
+ @Bean("Location")
+ClientRegionFactoryBean<String, Location> location(ClientCache gemfireCache)
+{
+    Interest[] interests = {new Interest(Interest.ALL_KEYS)};
+    var bean= new ClientRegionFactoryBean<String,Location>();
+    bean.setCache(gemfireCache);
+    bean.setDataPolicy(DataPolicy.NORMAL);
+    bean.setInterests(interests);
+    bean.setName("Location");
+    return bean;
 }
 ```
 
@@ -69,7 +59,7 @@ open http://localhost:8081
 
 ```shell
 curl -X 'POST' \
-  'http://localhost:8081/accountLocations' \
+  'http://localhost:8081/locations/location' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -83,7 +73,7 @@ curl -X 'POST' \
 
 
 ```shell
-curl -X 'GET' \
+curl -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
   'http://localhost:8081/locations/location/1' \
   -H 'accept: */*';echo
 ```
@@ -106,10 +96,12 @@ Register Interest
 
 In gfsh
 
-```shell
+```gfsh
 shutdown
 list members
 ```
+
+Get data with not servers
 
 ```shell
 curl -X 'GET' \
@@ -120,10 +112,20 @@ curl -X 'GET' \
 
 In gfsh
 
+
+Start Server Back
+
 ```shell
-start server --name=server1  --server-port=50001
+podman run -d -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire -p 40404:40404 -p 7080:7080 -p 7977:7977 gemfire/gemfire-all:10.2-jdk21 gfsh start server --name=server1 --locators=gf-locator\[10334\] --hostname-for-clients=127.0.0.1 --start-rest-api=true --http-service-port=7080 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7977  --J=-Duser.timezone=America/New_York --J=-Dgemfire.prometheus.metrics.interval=15s
+```
+
+In gfsh Verify server ready
+
+```gfsh
 list members
 ```
+
+Get Data
 
 ```shell
 curl -X 'GET' \
@@ -134,4 +136,14 @@ curl -X 'GET' \
 Empty (local updated)
 
 
+------------------------------
 
+# Cleanup
+
+Stop all applications
+
+Shutdown GemFire
+
+```shell
+podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
+```
