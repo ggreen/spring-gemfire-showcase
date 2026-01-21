@@ -19,6 +19,7 @@
         <module>applications/service/account-jdbc-caching-rest-service</module>
         <module>applications/service/account-location-service</module>
         <module>applications/processor/account-csv-processor</module>
+        <module>applications/service/account-paging</module>
         <module>applications/processor/remove-by-gf-search-processor</module>
         <module>applications/source/account-file-supplier</module>
         <module>applications/batch/account-batch</module>
