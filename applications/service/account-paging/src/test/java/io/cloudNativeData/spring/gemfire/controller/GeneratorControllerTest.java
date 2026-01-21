@@ -9,6 +9,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -19,6 +22,7 @@ class GeneratorControllerTest {
 
     @Mock
     private AccountRepository repository;
+    private int batchSize = 3;
 
     @BeforeEach
     void setUp() {
@@ -27,8 +31,9 @@ class GeneratorControllerTest {
 
     @Test
     void generator() {
-        var accountCount = subject.generatorAccounts(count);
+        var accountCount = subject.generatorAccounts(count,batchSize);
 
         assertThat(accountCount).isEqualTo(count);
+        verify(repository,times(4)).saveAll(any());
     }
 }

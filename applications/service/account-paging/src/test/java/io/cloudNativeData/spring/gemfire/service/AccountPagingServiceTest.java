@@ -1,4 +1,4 @@
-package io.cloudNativeData.spring.gemfire.controller;
+package io.cloudNativeData.spring.gemfire.service;
 
 import io.cloudNativeData.spring.gemfire.domain.PagingRequest;
 import io.cloudNativeData.spring.gemfire.repository.AccountPagingRepository;
@@ -33,7 +33,7 @@ class AccountPagingServiceTest {
     }
 
     @Test
-    void getPage() {
+    void constructPages() {
         int expectedPageCount = 2;
         int pageSize = 2;
         var keys = Set.of("key1", "key2", "key3","key4");
