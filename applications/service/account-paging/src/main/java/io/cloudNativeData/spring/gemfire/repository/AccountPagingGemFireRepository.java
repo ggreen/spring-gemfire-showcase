@@ -9,6 +9,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Implementation of  AccountPagingRepository
+ * @author gregory green
+ */
 @Repository
 @RequiredArgsConstructor
 public class AccountPagingGemFireRepository implements AccountPagingRepository {

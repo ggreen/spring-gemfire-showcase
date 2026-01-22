@@ -1,5 +1,19 @@
-# account-paging
+# Paging Region Data Sets
 
+
+![GemFire + Spring Paging](docs/img/paging.png)
+
+This is an example recall for how to page through large records of a gym fire region.
+The general strategy is the following.
+
+1. Get All Keys
+2. Split keys into a list of list of keys
+3. Get list of keys based on page index var pagedKeys = list.get(pageIndex)
+4. Get region values with batched keys var pageValues = region.getAll(pagedKeys)
+
+See [AccountPagingService.java](src/main/java/io/cloudNativeData/spring/gemfire/service/AccountPagingService.java)
+
+# Getting Stared
 
 Start GemFire
 
