@@ -101,3 +101,22 @@ curl -X 'GET' \
   'http://localhost:6777/accounts/paging/page/9999' \
   -H 'accept: */*'
 ```
+
+-------------
+
+# Alternative Paging Designs
+
+## Page Search results using GemFire Search
+
+Use GemFire Search see https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-search/1-2/gf-search/search_landing.html
+
+
+## Page Query results using OQL
+
+
+Paging steps with OQL
+
+- Get All Keys with a OQL, ex: select key from account.entries where value.name = $1 
+- Split keys into a list of list of keys 
+- Get list of keys based on page index ex: var pagedKeys = list.get(pageIndex)
+- Get region values with batched keys ex: var pageValues = region.getAll(pagedKeys)
