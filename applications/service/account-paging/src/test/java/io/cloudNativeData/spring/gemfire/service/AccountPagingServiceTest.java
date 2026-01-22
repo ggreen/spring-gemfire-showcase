@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import spring.gemfire.showcase.account.domain.account.Account;
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,9 +36,11 @@ class AccountPagingServiceTest {
     void constructPages() {
         int expectedPageCount = 2;
         int pageSize = 2;
+        PagingRequest pagingRequest = PagingRequest.builder().pageSize(pageSize).build();
+
         var keys = Set.of("key1", "key2", "key3","key4");
 
-        PagingRequest pagingRequest = PagingRequest.builder().pageSize(pageSize).build();
+
         when(pagingRepository.findAllKeys()).thenReturn(keys);
 
         var actual = subject.constructPages(pagingRequest);
@@ -46,6 +48,12 @@ class AccountPagingServiceTest {
         assertThat(actual).isNotNull();
         assertThat(actual.keys()).isNotNull();
         assertThat(actual.keys().size()).isEqualTo(expectedPageCount);
+    }
+
+    @Test
+    void givenKeysAreNullThenConstructPage_Then_handle_condition() {
+        var actual = subject.constructPages(PagingRequest.builder().build());
+        assertThat(actual).isNotNull();
     }
 
     @Test

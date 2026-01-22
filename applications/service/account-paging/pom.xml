@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.github.ggreen</groupId>
     <artifactId>account-paging</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>account-paging</name>
     <description>account-paging</description>
     <properties>

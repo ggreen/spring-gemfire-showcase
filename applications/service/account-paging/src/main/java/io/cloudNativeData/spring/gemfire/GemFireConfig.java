@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
-import spring.gemfire.showcase.account.domain.account.Account;
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 
 @ClientCacheApplication
 public class GemFireConfig {

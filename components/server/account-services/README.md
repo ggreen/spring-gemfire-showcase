@@ -16,7 +16,7 @@ mvn install
 
 ## Account Async Event Listener
 
-See [AccountAsyncEventListener.java](src/main/java/spring/gemfire/showcase/account/server/listeners/AccountAsyncEventListener.java)
+See [AccountAsyncEventListener.java](src/main/java/io/cloudNativeData/spring/gemfire/account/server/listeners/AccountAsyncEventListener.java)
 
 Setup Database
 
@@ -68,7 +68,7 @@ Deploy JAR
 ```
 
 ```shell
-./gfsh -e "connect" -e "create async-event-queue --id=accountQueue --listener=spring.gemfire.showcase.account.server.listeners.AccountAsyncEventListener"
+./gfsh -e "connect" -e "create async-event-queue --id=accountQueue --listener=listeners.server.io.cloudNativeData.spring.gemfire.account.AccountAsyncEventListener"
 ```
 
 ```shell

@@ -9,7 +9,7 @@ destroy async-event-queue --id=springAeq
 deploy --jar=/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/components/server/account-listeners/target/account-listeners-0.0.1-SNAPSHOT.jar
 
 
-create async-event-queue --id=springAeq --listener=spring.gemfire.showcase.account.server.account.listeners.AccountAsyncEventListener
+create async-event-queue --id=springAeq --listener=listeners.account.server.io.cloudNativeData.spring.gemfire.account.AccountAsyncEventListener
 
 create region --name=AccountEvents --async-event-queue-id=springAeq --type=PARTITION
 

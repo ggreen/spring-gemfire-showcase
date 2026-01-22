@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.gemfire.showcase.account.domain.account.Account;
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 
 import java.util.ArrayList;
 import java.util.List;

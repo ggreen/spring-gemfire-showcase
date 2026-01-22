@@ -1,6 +1,7 @@
 package io.cloudNativeData.spring.gemfire.repository;
 
-import spring.gemfire.showcase.account.domain.account.Account;
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Set;

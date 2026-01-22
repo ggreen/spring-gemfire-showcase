@@ -30,33 +30,33 @@ The following is the server-side GemFire function.
 ```Java
 public class AccountNameToUpperCaseFunction implements Function<Object[]> {
 
-            private Logger logger = LogManager.getLogger(spring.gemfire.showcase.account.server.function.AccountNameToUpperCaseFunction.class);
+    private Logger logger = LogManager.getLogger(function.server.io.cloudNativeData.spring.gemfire.account.AccountNameToUpperCaseFunction.class);
 
 
-            @Override
-            public void execute(FunctionContext<Object[]> functionContext) {
+    @Override
+    public void execute(FunctionContext<Object[]> functionContext) {
 
-                var rfc = (RegionFunctionContext<Object[]>)functionContext ;
-                Region<String,Object> region =  rfc.getDataSet();
+        var rfc = (RegionFunctionContext<Object[]>) functionContext;
+        Region<String, Object> region = rfc.getDataSet();
 
-                var accountId = valueOf(functionContext.getArguments()[0]);
-                var accountObject = region.get(accountId);
+        var accountId = valueOf(functionContext.getArguments()[0]);
+        var accountObject = region.get(accountId);
 
-                if(accountObject  == null)
-                    return;
+        if (accountObject == null)
+            return;
 
-                Account account;
+        Account account;
 
-                if(accountObject instanceof PdxInstance accountPdx)
-                    account = (Account)accountPdx.getObject();
-                else
-                    account = (Account)accountObject;
+        if (accountObject instanceof PdxInstance accountPdx)
+            account = (Account) accountPdx.getObject();
+        else
+            account = (Account) accountObject;
 
-                logger.info("account {}",account);
+        logger.info("account {}", account);
 
-                account.setName(account.getName().toUpperCase());
+        account.setName(account.getName().toUpperCase());
 
-                functionContext.getResultSender().lastResult(account);
+        functionContext.getResultSender().lastResult(account);
 
     }
 

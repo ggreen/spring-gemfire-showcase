@@ -83,7 +83,7 @@ curl -X 'POST' \
 'http://localhost:8802' \
 -H 'accept: */*' \
 -H 'Content-Type: application/json' \
--d '{ "@type" : "spring.gemfire.showcase.account.domain.account.Account",
+-d '{ "@type" : "io.cloudNativeData.spring.gemfire.account.domain.account.Account",
 "id": "70",
 "name": "Account 70"
 }';echo
@@ -95,8 +95,8 @@ curl -X 'POST' \
 'http://localhost:8802' \
 -H 'accept: */*' \
 -H 'Content-Type: application/json' \
--d '{ "@type" : "spring.gemfire.showcase.account.domain.account.Account",
-"__GEMFIRE_JSON" : "spring.gemfire.showcase.account.domain.account.Account",
+-d '{ "@type" : "io.cloudNativeData.spring.gemfire.account.domain.account.Account",
+"__GEMFIRE_JSON" : "io.cloudNativeData.spring.gemfire.account.domain.account.Account",
 "id": "71",
 "name": "Account 71"
 }';echo

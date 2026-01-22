@@ -3,7 +3,7 @@ package io.cloudNativeData.spring.gemfire.repository;
 import lombok.RequiredArgsConstructor;
 import org.apache.geode.cache.Region;
 import org.springframework.stereotype.Repository;
-import spring.gemfire.showcase.account.domain.account.Account;
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 
 import java.util.Collection;
 import java.util.Map;

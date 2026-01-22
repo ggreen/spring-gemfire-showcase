@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import spring.gemfire.showcase.account.domain.account.Account;
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 
 import java.util.List;
 
@@ -40,10 +40,40 @@ class AccountsPagingControllerTest {
 
         when(service.constructPages(pagingRequest)).thenReturn(expectedPages);
 
+        var count = subject.buildPages(pagingRequest);
+        assertThat(count).isEqualTo(expectedPages.keys().size());
+        assertThat(subject.getPages()).isEqualTo(expectedPages);
+    }
+
+    @Test
+    void getPageCount() {
+
+        when(service.constructPages(pagingRequest)).thenReturn(expectedPages);
         subject.buildPages(pagingRequest);
 
+        var actual = subject.getPageCount();
+        assertThat(actual).isEqualTo(expectedPages.keys().size());
+    }
 
-        assertThat(subject.getPages()).isEqualTo(expectedPages);
+    @Test
+    void getPageWithConstruct() {
+
+        when(service.constructPages(pagingRequest)).thenReturn(expectedPages);
+        subject.buildPages(pagingRequest);
+
+        assertThat(subject.getPage(0)).isEmpty();
+    }
+
+    @Test
+    void getPageWithConstructEmptyPage() {
+
+
+        var expectedPages = Pages.builder().build();
+        when(service.constructPages(pagingRequest)).thenReturn(expectedPages);
+
+        subject.buildPages(pagingRequest);
+
+        assertThat(subject.getPage(0)).isNull();
     }
 
     @Test
@@ -58,5 +88,16 @@ class AccountsPagingControllerTest {
 
         var actual = subject.getPage(0);
         assertThat(actual).isEqualTo(expectedAccounts);
+    }
+
+    @Test
+    void check_Index_out_of_bounds() {
+
+        when(service.constructPages(any())).thenReturn(expectedPages);
+
+        subject.buildPages(pagingRequest);
+
+        var actual = subject.getPage(99);
+        assertThat(actual).isNull();
     }
 }
