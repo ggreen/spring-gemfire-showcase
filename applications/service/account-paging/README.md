@@ -1,5 +1,4 @@
-# Paging Region Data Sets
-
+# Account Paging 
 
 ![GemFire + Spring Paging](docs/img/paging.png)
 
