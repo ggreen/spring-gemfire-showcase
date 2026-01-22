@@ -1,20 +1,21 @@
-# Account Paging 
+# Account Paging Application
 
 ![GemFire + Spring Paging](docs/img/paging.png)
 
-This is an example recall for how to page through large records of a gym fire region.
+This is an example for paging through large records in GemFire Region.
+
 The general strategy is the following.
 
 1. Get All Keys
 2. Split keys into a list of list of keys
-3. Get list of keys based on page index var pagedKeys = list.get(pageIndex)
-4. Get region values with batched keys var pageValues = region.getAll(pagedKeys)
+3. Get list of keys based on page index ex: var pagedKeys = list.get(pageIndex)
+4. Get region values with batched keys ex: var pageValues = region.getAll(pagedKeys)
 
 See [AccountPagingService.java](src/main/java/io/cloudNativeData/spring/gemfire/service/AccountPagingService.java)
 
 # Getting Stared
 
-Start GemFire
+Start GemFire(ex: Podman)
 
 ```shell
 deployments/local/scripts/podman/start-gemfire-external-clients.sh
@@ -26,13 +27,13 @@ Launch gfsh (Ex: in Podman)
 podman exec -it gf-locator gfsh
 ```
 
-Connection to locator
+Connect to locator in gfsh
 
 ```gfsh
 connect
 ```
 
-Create Account Region
+Create Account Region in gfsh
 
 ```gfsh
 create region --name=Account --type=PARTITION
@@ -55,7 +56,7 @@ open http://localhost:6777/swagger-ui.html
 # Testing
 
 
-Generate Accounts 1 million accounts saving 1000 records at a time.
+Generate 1 million accounts saving 1000 records at a time.
 *Note:* The response contains the number of accounts saved.
 
 ```shell
@@ -64,7 +65,7 @@ curl -X 'PUT' \
   -H 'accept: */*'
 ```
 
-Generate pages for all accounts where each page a max of 10 records.
+Generate pages for all accounts where each page has a max of 10 records.
 Notes: The response contains the number of pages.
 
 ```shell
@@ -78,7 +79,7 @@ curl -X 'POST' \
 ```
 
 Get the first page.
-Note: The index starts with 0-9999
+Note: The index starts with 0-9999.
 
 ```shell
 curl -X 'GET' \
@@ -86,7 +87,7 @@ curl -X 'GET' \
   -H 'accept: */*'
 ```
 
-Look formated JSON for next page
+You can also format the JSON response for the next page
 
 ```shell
 curl -X 'GET' 'http://localhost:6777/accounts/paging/page/1' -H 'accept: */*' | jq
