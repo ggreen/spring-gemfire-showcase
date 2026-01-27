@@ -18,7 +18,6 @@ public class AccountLocationController {
     private final static String validZipRegEx = "^\\d{5}(?:[-\\s]\\d{4})?$";
 
 
-
     @PostMapping
     @Transactional
     public void save(@RequestBody AccountLocation accountLocation) {

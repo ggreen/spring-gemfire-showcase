@@ -1,5 +1,4 @@
-=--------------------
-# GemFire operational data store
+# GemFire Transactions
 
 
 Start GemFire cluster with 1 locator and 3 servers
@@ -31,7 +30,7 @@ create region --name=Location --type=PARTITION --colocated-with=Account
 Start Account Service
 
 ```shell
-java -jar applications/service/account-location-service/target/account-location-service-1.0.0.jar --server.port=6001 --spring.data.gemfire.pool.locators="localhost[10334]"
+java -jar runtime/apps/account-location-service-1.0.0.jar --server.port=6001 --spring.data.gemfire.pool.locators="localhost[10334]"
 ```
 
 Post Account Data

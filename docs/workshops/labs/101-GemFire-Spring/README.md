@@ -51,11 +51,11 @@ wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases
 
 # Labs
 
-| Lab   | Description                                                                |
-|-------|----------------------------------------------------------------------------|
-| 01    | [Spring CRUD_Reposition](01-CRUD_Reposition_Pattern.md)                    |
-| 02    | [Lookup Aside Caching Pattern](02-Lookup_Aside_Caching_Pattern.md)         |
-| 03    | [Local/Near Caching.md](03_Local_Near_Cache_Pattern.md)                    |
-| 04    | [Distributed Transactions](04_GemFire_Transaction.md)                      |
+| Lab   | Description                                                               |
+|-------|---------------------------------------------------------------------------|
+| 01    | [Spring CRUD_Reposition](01-CRUD_Reposition_Pattern.md)                   |
+| 02    | [Look Aside Caching Pattern](02-Lookup_Aside_Caching_Pattern.md)          |
+| 03    | [Local/Near Caching.md](03_Local_Near_Cache_Pattern.md)                   |
+| 04    | [Transactions](04_GemFire_Transaction.md)                          |
 | 05    | [GemFire as an Operational Data Store](05_GemFire_Operation_Data_Store.md) |
 |

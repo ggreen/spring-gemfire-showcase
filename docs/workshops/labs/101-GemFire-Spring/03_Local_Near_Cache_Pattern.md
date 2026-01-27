@@ -1,4 +1,4 @@
-# Proxy versus Cache Proxy
+# Local Near Cache Pattern
 
 Start GemFire
 
@@ -28,7 +28,7 @@ create region --name=Location --type=PARTITION
 Run Application
 
 ```shell
-java -jar  applications/service/account-location-service/target/account-location-service-1.0.0.jar
+java -jar  runtime/apps/account-location-service-1.0.0.jar
 ```
 
 

@@ -1,4 +1,4 @@
-# Start Clustering
+# CRUD Reposition Pattern
 
 Start GemFire Locator and Server
 

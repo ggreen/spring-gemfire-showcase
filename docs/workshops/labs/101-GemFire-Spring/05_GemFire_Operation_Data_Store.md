@@ -1,4 +1,3 @@
-=--------------------
 # GemFire operational data store
 
 

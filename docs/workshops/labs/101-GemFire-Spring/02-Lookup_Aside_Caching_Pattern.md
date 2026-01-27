@@ -1,4 +1,4 @@
-# GemFire as a cache
+# Lookup Aside Caching Pattern
 
 ```java
 @Service
@@ -58,7 +58,7 @@ podman run -it --rm --name postgres \
 Start service
 
 ```shell
-java -jar applications/service/account-jdbc-caching-rest-service/target/account-jdbc-caching-rest-service-1.0.0.jar
+java -jar runtime/apps/account-jdbc-caching-rest-service-1.0.0.jar
 ```
 
 

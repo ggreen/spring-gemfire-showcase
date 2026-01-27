@@ -18,7 +18,7 @@ open http://localhost:8080
 Connect
 
 ```properties
-name=gemfire-vector-db
+name=gemfire
 host=gf-locator
 port=7070
 
