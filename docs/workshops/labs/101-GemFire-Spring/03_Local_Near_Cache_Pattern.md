@@ -74,6 +74,7 @@ curl -X 'POST' \
 }'
 ```
 
+Get Location Data
 
 ```shell
 curl -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
@@ -81,7 +82,16 @@ curl -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
   -H 'accept: */*';echo
 ```
 
-Register Interest
+
+Second Get will use local cache
+
+```shell
+curl -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
+  'http://localhost:6007/locations/location/1' \
+  -H 'accept: */*';echo
+```
+
+Register Interest based on Interest of all keys
 
 ```java
     @Bean("Location")
@@ -97,21 +107,24 @@ Register Interest
 
 ```
 
-In gfsh
+In gfsh, Stop Server
 
 ```gfsh
 shutdown
 ```
+
+Type "y" to confirm shutdown
+
 
 List members (only locator running)
 ```shell
 list members
 ```
 
-Get data with not servers
+Get data from local cache with no servers running 
 
 ```shell
-curl -X 'GET' \
+curl -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
   'http://localhost:6007/locations/location/1' \
   -H 'accept: */*';echo
 ```
