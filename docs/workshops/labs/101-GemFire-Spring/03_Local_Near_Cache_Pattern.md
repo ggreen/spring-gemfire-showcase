@@ -21,14 +21,13 @@ connect
 Create a GemFire region
 
 ````gfsh
-create region --name=Account --type=PARTITION
 create region --name=Location --type=PARTITION
 ````
 
 Run Application
 
 ```shell
-java -jar  runtime/apps/account-location-service-1.0.0.jar
+java -jar  runtime/apps/location-service-1.0.0.jar
 ```
 
 The following is example code.
@@ -56,14 +55,14 @@ list clients
 Open Swagger UI
 
 ```shell
-open http://localhost:8081/swagger-ui/index.html
+open http://localhost:6007/swagger-ui/index.html
 ```
 
 Post Data 
 
 ```shell
 curl -X 'POST' \
-  'http://localhost:8081/locations/location' \
+  'http://localhost:6007/locations/location' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -78,7 +77,7 @@ curl -X 'POST' \
 
 ```shell
 curl -w "\n Total Time:    %{time_total}s\n"  -X 'GET' \
-  'http://localhost:8081/locations/location/1' \
+  'http://localhost:6007/locations/location/1' \
   -H 'accept: */*';echo
 ```
 
@@ -102,6 +101,10 @@ In gfsh
 
 ```gfsh
 shutdown
+```
+
+List members (only locator running)
+```shell
 list members
 ```
 
@@ -109,7 +112,7 @@ Get data with not servers
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8081/locations/location/1' \
+  'http://localhost:6007/locations/location/1' \
   -H 'accept: */*';echo
 ```
 
@@ -133,11 +136,11 @@ Get Data
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8081/locations/location/1' \
+  'http://localhost:6007/locations/location/1' \
   -H 'accept: */*';echo
 ```
 
-Empty (local updated)
+Empty (local updated), because the data was not persisted
 
 
 ------------------------------

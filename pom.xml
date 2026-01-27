@@ -17,6 +17,7 @@
 	    <module>applications/service/account-service</module>
         <module>applications/service/account-location-event-service</module>
         <module>applications/service/account-jdbc-caching-rest-service</module>
+        <module>applications/service/location-service</module>
         <module>applications/service/account-location-service</module>
         <module>applications/processor/account-csv-processor</module>
         <module>applications/service/account-paging</module>
