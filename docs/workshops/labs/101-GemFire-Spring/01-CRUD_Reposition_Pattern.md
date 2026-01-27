@@ -3,11 +3,13 @@
 Start GemFire Locator and Server
 
 ```shell
-deployments/local/scripts/podman/start-gemfire-external-clients.sh
+deployments/local/scripts/podman/labs/start-gemfire-10-2.sh
 ```
 
 
 ## Gfsh
+
+Start the GemFire command line shell ("Gfsh")
 
 ```shell
 podman exec -it gf-locator gfsh
@@ -29,6 +31,7 @@ create region --name=Account --type=PARTITION
 
 Start Account REST App
 
+The following is example code for the Account Controller.
 
 ```java
 @AllArgsConstructor
@@ -82,6 +85,8 @@ public class AccountController
 }
 ```
 
+The following is the example Account Repository.
+
 ```java
 @Repository
 public interface AccountRepository
@@ -96,10 +101,10 @@ Start account-service
 java -jar runtime/apps/account-service-1.0.0.jar --server.port=6001 --spring.data.gemfire.pool.locators="localhost[10334]"
 ```
 
-Save Account
+Open Swagger UI
 
 ```shell
-open http://localhost:6001
+open http://localhost:6001/swagger-ui/index.html
 ```
 
 Post Account Data
@@ -124,6 +129,7 @@ curl -X 'POST' \
 }';echo 
 ```
 
+Post Account Data
 
 ```shell
 curl -X 'POST' \
@@ -145,6 +151,7 @@ curl -X 'POST' \
 }';echo 
 ```
 
+Post Account Data
 
 ```shell
 curl -X 'POST' \
@@ -166,13 +173,15 @@ curl -X 'POST' \
 }';echo 
 ```
 
-Get account 
+Get account 1
 
 ```shell
 curl -X 'GET' \
   'http://localhost:6001/accounts/1' \
   -H 'accept: */*';echo
 ```
+
+Get account 2
 
 ```shell
 curl -X 'GET' \
@@ -180,21 +189,21 @@ curl -X 'GET' \
   -H 'accept: */*';echo
 ```
 
-Get account Expected: {"id":"1","name":"Account"}
+Get account 3
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:6001/accounts/1' \
+  'http://localhost:6001/accounts/2' \
   -H 'accept: */*';echo
 ```
+
 
 ---------------------
 
 # Query
 
 
-In gfsh
-
+Post Account
 
 ```shell
 curl -X 'POST' \
@@ -207,6 +216,11 @@ curl -X 'POST' \
 }';echo 
 ```
 
+
+In gfsh
+
+
+
 ```shell
 query --query="select * from /Account where name = 'Account 99' "
 ```
@@ -215,48 +229,6 @@ query --query="select * from /Account where name = 'Account 99' "
 query --query="select distinct name from /Account"
 ```
 
-```shell
-curl -X 'POST' \
-  'http://localhost:6001/accounts' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "id": "100",
-  "name": "Account 100"
-}';echo 
-```
-
-Using like
-
-```shell
-query --query="select * from /Account where name like '%100%'"
-```
-
-
-
-Using set
-
-```shell
-query --query="select distinct name from /Account where id in SET('2','3')"
-```
-
-Using Object Methods
-
-```shell
-query --query="select distinct name, name.length() as len from /Account"
-```
-
-```shell
-query --query="select count(*) from /Account where name.length() > 7"
-```
-
-```shell
-create index --name=accountName --expression=name --region=/Account
-```
-
-```shell
-query --query="<trace> select * from /Account where name = 'Account 99'"
-```
 ----------------
 
 # Cleanup

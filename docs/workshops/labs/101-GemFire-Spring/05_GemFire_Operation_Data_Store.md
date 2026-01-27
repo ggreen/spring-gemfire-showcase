@@ -3,7 +3,7 @@
 
 Start GemFire cluster with 1 locator and 3 servers
 
-```
+```shell
 deployments/local/scripts/podman/labs/start-gemfire-10-2-mult-servers.sh
 ```
 

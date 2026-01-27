@@ -1,12 +1,11 @@
 # Spring Data for GemFire Workshop
 
 
-This set of activities introduces key GemFire features for Spring Applications.
+This workshop contains a set of activities for GemFire. It introduces key GemFire features for Spring Applications.
 You’ll start with Spring Boot applications using Spring Data,
 then explore the look aside and local/near cache patterns.
 Review GemFire transactions for ACID workload with data.
-Finally, understand GemFire goes beyond caching with persistence and resiliency to
-used as an operational database for Spring Applications.
+Finally, understand that GemFire goes beyond caching with persistence and resiliency to be used as an operational database for Spring Applications.
 
 
 ## Pre-requisite
@@ -25,6 +24,7 @@ Pull Docker images
 ```shell
 podman pull gemfire/gemfire-management-console:1.4
 podman pull gemfire/gemfire-all:10.2-jdk21
+podman pull postgres:15.15
 ```
 
 
@@ -36,7 +36,7 @@ cd spring-gemfire-showcase
 
 Download Apps
 
-A Broadcom account is required in order to build the applications in this repo. If you do not have a 
+A Broadcom account is required in order to build the source code in this repo. If you do not have a 
 Broadcom account, you can download the pre-compiled JAR files
 in order to exercise the labs.
 

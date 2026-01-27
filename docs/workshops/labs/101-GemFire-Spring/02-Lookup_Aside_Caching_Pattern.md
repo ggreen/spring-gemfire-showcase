@@ -41,7 +41,7 @@ In GemFire connect to the cluster
 connect
 ```
 
-Create a GemFire region
+Create a GemFire region 5 minutes expiration
 
 ```gfsh
 create region --name=AccountDbCache --entry-time-to-live-expiration=300 --enable-statistics=true --type=PARTITION
@@ -85,10 +85,10 @@ values
 ```
 
 
-Open Spring App
+Open Spring App Swagger UI
 
 ```shell
-open http://localhost:6003
+open http://localhost:6003/swagger-ui/index.html
 ```
 Click Click Swagger UI and Post account
 
@@ -140,7 +140,7 @@ curl -w "\n Total Time:    %{time_total}s\n"  -X 'POST' \
 ```
 
 
-Clears cache because system of record change
+Clears cache because system of record changed
 
 Query in Gfsh (Account was evicted)
 

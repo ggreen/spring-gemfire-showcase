@@ -31,6 +31,7 @@ Run Application
 java -jar  runtime/apps/account-location-service-1.0.0.jar
 ```
 
+The following is example code.
 
 ```java
  @Bean("Location")
@@ -52,10 +53,13 @@ List clients in Gfsh
 list clients
 ```
 
+Open Swagger UI
 
 ```shell
-open http://localhost:8081
+open http://localhost:8081/swagger-ui/index.html
 ```
+
+Post Data 
 
 ```shell
 curl -X 'POST' \
