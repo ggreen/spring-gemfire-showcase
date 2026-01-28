@@ -225,11 +225,23 @@ curl -X 'POST' \
   -d 'Account 99'
 ```
 
+```shell
+curl -X 'POST' \
+  'http://localhost:6001/accounts/name/like' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d 'J%'
+```
+
 In gfsh
 
 
 ```shell
 query --query="select * from /Account where name = 'Account 99' "
+```
+
+```shell
+query --query="select * from /Account where name like 'J%' "
 ```
 
 
