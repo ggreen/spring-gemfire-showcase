@@ -11,8 +11,9 @@ deployments/local/scripts/podman/labs/start-gemfire-10-2.sh
 
 Start the GemFire command line shell ("Gfsh")
 
+
 ```shell
-podman exec -it gf-locator gfsh
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh
 ```
 
 In Gfsh
@@ -95,13 +96,13 @@ extends CrudRepository<Account,String>
 }
 ```
 
-Start account-service
+In a new terminal session, start account-service
 
 ```shell
 java -jar runtime/apps/account-service-1.0.0.jar --server.port=6001 --spring.data.gemfire.pool.locators="localhost[10334]"
 ```
 
-Open Swagger UI
+In another new terminal session, open Swagger UI
 
 ```shell
 open http://localhost:6001/swagger-ui/index.html
@@ -235,7 +236,6 @@ curl -X 'POST' \
 
 In gfsh
 
-
 ```shell
 query --query="select * from /Account where name = 'Account 99' "
 ```
@@ -254,5 +254,5 @@ Stop all applications
 Shutdown GemFire
 
 ```shell
-podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
 ```

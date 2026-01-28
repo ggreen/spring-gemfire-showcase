@@ -32,30 +32,30 @@ deployments/local/scripts/podman/labs/start-gemfire-10-2.sh
 Open Gfsh
 
 ```shell
-podman exec -it gf-locator gfsh
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh
 ```
 
-In GemFire connect to the cluster
+In Gfsh, connect to the cluster
 
 ```gfsh
 connect
 ```
 
-Create a GemFire region 5 minutes expiration
+Create a GemFire region with 5 minutes expiration
 
 ```gfsh
 create region --name=AccountDbCache --entry-time-to-live-expiration=300 --enable-statistics=true --type=PARTITION
 ```
 
-Start Postgres
+In a new terminal, start Postgres
 
 ```shell
-podman run -it --rm --name postgres \
+source deployments/local/scripts/container-runtime.sh; podman run -it --rm --name postgres \
   -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_HOST_AUTH_METHOD=trust postgres:15.15
 ```
 
 
-Start service
+In another terminal, start the REST service
 
 ```shell
 java -jar runtime/apps/account-jdbc-caching-rest-service-1.0.0.jar
@@ -66,10 +66,10 @@ java -jar runtime/apps/account-jdbc-caching-rest-service-1.0.0.jar
 Adding Data to Postgres
 
 
-Open Psql
+In another terminal session, open Psql
 
 ```shell
-podman exec -it postgres psql -U postgres
+source deployments/local/scripts/container-runtime.sh; podman exec -it postgres psql -U postgres
 ```
 
 Insert Account Data
@@ -84,16 +84,17 @@ values
 ('5','Account 5');
 ```
 
+Exit psql
+```psql
+\q
+```
 
 Open Spring App Swagger UI
 
 ```shell
 open http://localhost:6003/swagger-ui/index.html
 ```
-Click Click Swagger UI and Post account
-
-
-
+Click Click Swagger UI and Get account number 1
 
 Or use the following Curl command to access data
 
@@ -179,5 +180,5 @@ Stop all applications
 Shutdown GemFire
 
 ```shell
-podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
 ```
