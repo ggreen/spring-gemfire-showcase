@@ -11,7 +11,7 @@ Finally, understand that GemFire goes beyond caching with persistence and resili
 ## Pre-requisite
 
 - Mac/Linux
-- [Podman Desktop](https://podman-desktop.io/) 1.20 or higher
+- [Podman Desktop](https://podman-desktop.io/) 1.20 or higher **OR** [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Java 17](https://formulae.brew.sh/formula/openjdk@17) -  brew install openjdk@17
 - Apache Maven 3.9.1 + (ex: brew install maven@3.9)
 - [Curl](https://formulae.brew.sh/formula/curl)  (Ex: brew install curl)
@@ -19,7 +19,17 @@ Finally, understand that GemFire goes beyond caching with persistence and resili
 - git - (ex: brew install git)
 
 
-Pull Docker images
+## Container Runtime Setup
+
+This workshop supports both Podman and Docker. Run this command once per terminal session to configure your environment:
+
+```shell
+source deployments/local/scripts/container-runtime.sh
+```
+
+This will detect your container runtime and enable all `podman` commands in this workshop to work with Docker if that's what you have installed.
+
+## Pull Container Images
 
 ```shell
 podman pull gemfire/gemfire-management-console:1.4

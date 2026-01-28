@@ -11,7 +11,7 @@ deployments/local/scripts/podman/labs/start-gemfire-10-2-mult-servers.sh
 Open Gfsh
 
 ```shell
-podman exec -it gf-locator gfsh
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh
 ```
 
 In GemFire connect to the cluster
@@ -27,13 +27,13 @@ create region --name=Account --type=PARTITION
 create region --name=Location --type=PARTITION --colocated-with=Account
 ```
 
-Start Account Service
+In a new terminal session, start Account Service
 
 ```shell
 java -jar runtime/apps/account-location-service-1.0.0.jar --server.port=6001 --spring.data.gemfire.pool.locators="localhost[10334]"
 ```
 
-Post Account Data
+In another new terminal session, post Account Data
 
 
 ```shell
@@ -155,5 +155,5 @@ Stop all applications
 Shutdown GemFire
 
 ```shell
-podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
 ```

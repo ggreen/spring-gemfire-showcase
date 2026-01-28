@@ -9,7 +9,7 @@ deployments/local/scripts/podman/labs/start-gemfire-10-2.sh
 Open Gfsh
 
 ```shell
-podman exec -it gf-locator gfsh
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh
 ```
 
 In GemFire connect to the cluster
@@ -136,7 +136,7 @@ In gfsh
 Start Server Back
 
 ```shell
-podman run -d -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire -p 40404:40404 -p 7080:7080 -p 7977:7977 gemfire/gemfire-all:10.2-jdk21 gfsh start server --name=server1 --locators=gf-locator\[10334\] --hostname-for-clients=127.0.0.1 --start-rest-api=true --http-service-port=7080 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7977  --J=-Duser.timezone=America/New_York --J=-Dgemfire.prometheus.metrics.interval=15s
+source deployments/local/scripts/container-runtime.sh; podman run -d -e 'ACCEPT_TERMS=y' --rm --name gf-server1 --network=gemfire -p 40404:40404 -p 7080:7080 -p 7977:7977 gemfire/gemfire-all:10.2-jdk21 gfsh start server --name=server1 --locators=gf-locator\[10334\] --hostname-for-clients=127.0.0.1 --start-rest-api=true --http-service-port=7080 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7977  --J=-Duser.timezone=America/New_York --J=-Dgemfire.prometheus.metrics.interval=15s
 ```
 
 In gfsh Verify server ready
@@ -165,5 +165,5 @@ Stop all applications
 Shutdown GemFire
 
 ```shell
-podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
+source deployments/local/scripts/container-runtime.sh; podman exec -it gf-locator gfsh -e "connect" -e "shutdown --include-locators"
 ```
