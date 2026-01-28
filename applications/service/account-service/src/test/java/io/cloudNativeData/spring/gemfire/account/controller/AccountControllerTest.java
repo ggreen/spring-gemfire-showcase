@@ -74,7 +74,7 @@ class AccountControllerTest
     void findByName() {
         List<Account> expected = asList(account);
 
-        when(accountRepository.findByNameContaining(anyString())).thenReturn(expected);
+        when(accountRepository.findByName(anyString())).thenReturn(expected);
 
         var actual = subject.findByName(name);
 

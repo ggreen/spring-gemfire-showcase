@@ -1,6 +1,5 @@
 package io.cloudNativeData.spring.gemfire.account.repostories;
 
-import org.springframework.data.domain.*;
 import org.springframework.data.gemfire.repository.GemfireRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,7 @@ import java.util.List;
     public interface AccountRepository
     extends GemfireRepository<Account,String>, PagingAndSortingRepository<Account,String>
     {
-        List<Account> findByNameContaining(String name);
+        Iterable<Account> findByName(String name);
 
-        Window<Account> findFirst2ByNameLikeOrderByName(String name, ScrollPosition offset);
+        Iterable<Account> findByNameLike(String name);
     }

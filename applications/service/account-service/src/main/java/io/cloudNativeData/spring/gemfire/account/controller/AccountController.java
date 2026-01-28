@@ -37,8 +37,8 @@ public class AccountController
 
 
     @GetMapping("names/{name}")
-    public List<Account> findByName(@PathVariable String name) {
-        return accountRepository.findByNameContaining(name);
+    public Iterable<Account> findByName(@PathVariable String name) {
+        return accountRepository.findByName(name);
     }
 
     @GetMapping("paging/{pageNumber}/{pageSize}")
@@ -48,9 +48,8 @@ public class AccountController
 
 
     @PostMapping("name/like")
-    public List<Account> findFirst2ByNameLikeOrderByByName(@RequestBody String nameLike){
-        ScrollPosition offset = ScrollPosition.keyset();
-        return accountRepository.findFirst2ByNameLikeOrderByName(nameLike, offset).getContent();
+    public Iterable<Account> findByNameLike(@RequestBody String nameLike){
+        return accountRepository.findByNameLike(nameLike);
     }
 
     @PutMapping("functions/upperCase/name/{accountId}")

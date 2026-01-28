@@ -1,7 +1,7 @@
 # Spring Data for GemFire Workshop
 
 
-This workshop contains a set of activities for GemFire. It introduces key GemFire features for Spring Applications.
+This workshop contains a set of activities for GemFire. It introduces key [GemFire](https://gemfire.dev/) features for Spring Applications.
 You’ll start with Spring Boot applications using Spring Data,
 then explore the look aside and local/near cache patterns.
 Review GemFire transactions for ACID workload with data.
