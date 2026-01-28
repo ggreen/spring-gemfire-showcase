@@ -27,6 +27,8 @@ podman pull gemfire/gemfire-all:10.2-jdk21
 podman pull postgres:15.15
 ```
 
+Note: You need a mininum of 4 CPU(s) 8 GB Memory in Podman Resources to run these labs.
+
 
 Clone Repo
 ```shell

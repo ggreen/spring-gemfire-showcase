@@ -20,7 +20,7 @@ In GemFire connect to the cluster
 connect
 ```
 
-Create Region
+Create Co-located Regions
 
 ```shell
 create region --name=Account --type=PARTITION
