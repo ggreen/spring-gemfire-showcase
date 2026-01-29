@@ -13,8 +13,9 @@ spring:
       base-url: http://localhost:11434
       chat:
         options:
+          model: gpt-oss:20b
 #          model: llama3
-          model: llama3.2:latest
+#          model: llama3.2:latest
 #      model: wizardlm2:7b
       init:
         pull-model-strategy: WHEN_MISSING

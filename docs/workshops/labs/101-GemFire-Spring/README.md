@@ -47,7 +47,7 @@ The lab instructions will reference the applications in the directory **runtime/
 ```shell
 mkdir -p runtime/apps
 wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/account-service-1.0.0.jar
-wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/account-jdbc-caching-rest-service-1.0.0.jar
+wget -P runtime/apps  https://github.com/ggreenc/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/account-jdbc-caching-rest-service-1.0.0.jar
 wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/account-location-service-1.0.0.jar
 wget -P runtime/apps  https://github.com/ggreen/spring-gemfire-showcase/releases/download/GemFire-Spring-Workshop-v1/location-service-1.0.0.jar
 ```

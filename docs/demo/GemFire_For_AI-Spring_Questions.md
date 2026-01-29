@@ -71,9 +71,8 @@ Implementation: Spring Data GemFire provides indexing support that allows these 
 -------------------------------
 
 # Ask Question
-- What is GemFire? 
 - Tell me about "Spring Data GemFire"
-- What use cases does Spring Data implement?
+- What use cases does Spring Data GemFire implement?
 
 
 Open GMC

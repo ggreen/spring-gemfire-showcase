@@ -193,7 +193,7 @@ Get account 3
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:6001/accounts/2' \
+  'http://localhost:6001/accounts/3' \
   -H 'accept: */*';echo
 ```
 
