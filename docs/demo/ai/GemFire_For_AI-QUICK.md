@@ -39,6 +39,11 @@ echo sink.gemfire-vector-sink=file://$PWD/applications/sink/gemfire-vector-sink/
 echo sink.gemfire-vector-sink.bootVersion=3
 ```
 
+Open SCDF
+```shell
+open http://localhost:9393/dashboard
+```
+
 START RABBITMQ!!!!!
 
 ```shell

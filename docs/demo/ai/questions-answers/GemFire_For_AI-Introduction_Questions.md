@@ -1,4 +1,6 @@
 ```shell
+open http://localhost:8080
+http://localhost:8088/ai.html
 open http://localhost:8088/answer.html
 ```
 

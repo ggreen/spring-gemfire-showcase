@@ -2,13 +2,25 @@ _
 Ask Question
 - What is GemFire?
 
+SCDF  stream and re-create with the following
+
+
+```scdf
+vector-stream=http --port=7888| gemfire-vector-sink
+```
+
 
 ```shell
+open http://localhost:8088/ai.html
 open http://localhost:8088/answer.html
 ```
 
-Answer (from Google)
+Question
 
+- What does GemFire refer to?
+
+
+Answer
 ```text
 
 "Gemfire" refers to an enterprise-grade in-memory data grid used in software development.
