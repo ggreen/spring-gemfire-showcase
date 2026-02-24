@@ -70,6 +70,9 @@ a distributed cluster. It makes it very easy to implement production ready GemFi
 
 - What is GemFire?
 - Why is GemFire so FAST? Be brief
+
+Show GMC
+
 - Provide a brief explanation of a GemFire cache server?
 - Provide a brief explanation of a GemFire locator?
 - Tell me briefly about the core GemFire data structure called a Region?
@@ -82,4 +85,12 @@ Open GMC
 
 ```text
 open http://localhost:8080/dashboard/clusters
+```
+
+
+```sql
+select value from /SearchResults.entries where key like '%Region%'
+```
+```sql
+select key,value from /SearchResults.entries where value like '%Region%'
 ```
