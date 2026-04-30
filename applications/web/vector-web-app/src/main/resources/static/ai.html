@@ -41,7 +41,7 @@
         </div>
 
         <div class="mt-3 text-sm text-slate-400">Examples</div>
-        <div class="mt-2 flex flex-col gap-2">
+        <div class="mt-2 flex flex-col gap-2" id="preLoadedQuestions">
             <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Explain quantum computing in simple terms</button>
             <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Write a short professional email for follow-up</button>
             <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Create a shopping list for a week of dinners</button>
@@ -164,12 +164,11 @@
             data = data + "\n\n Request took: "+  totalTime+ " ms";
             appendMessage({role:'assistant', text:data});
 
+            // Remove Typing
+            hideTyping();
+
         } catch (error) {
             const endTime = performance.now();
-            //responseText.textContent = `Error: ${error}`;
-            //requestTime.textContent = (endTime - startTime).toFixed(2);
-            //responseDiv.style.display = 'block';
-
             appendMessage({role:'assistant', text:error});
 
         }
@@ -181,14 +180,28 @@
     }//---------------------------------------------------------
     function hideTyping(){const t=document.getElementById('typing'); if(t) t.remove();}
 
+
+    function askPreloadedQuestionFromButton(questionButton){
+
+        var newQuestion = questionButton.innerText;
+        inputEl.value = newQuestion;
+
+        appendMessage({role:'user', text:newQuestion} );
+
+        aiReply(newQuestion);
+    }
+
     // Mock assistant response (replace this with API integration)
     function aiReply(userText){
       showTyping();
       setTimeout(()=>{
-        hideTyping();
+
 
         //get response
         getAiResponse(userText);
+
+
+
         //appendMessage({role:'assistant', text:resp});
       }, 800 + Math.min(userText.length*10, 1200));
     }
@@ -262,7 +275,42 @@
          }
 
     // Accessibility: focus input on load
-    window.addEventListener('load', ()=> inputEl.focus());
+    window.addEventListener('load', async ()=> {
+        inputEl.focus();
+
+        const resultsDiv = document.getElementById('preLoadedQuestions');
+
+        try {
+            // 1. Call the REST endpoint
+            const response = await fetch('prompts');
+
+            // 2. Check if the response is successful
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            // 3. Parse the JSON data
+            const data = await response.json();
+
+            /*
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Explain quantum computing in simple terms</button>
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Write a short professional email for follow-up</button>
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Create a shopping list for a week of dinners</button>
+
+             */
+            let questionButtons = '';
+
+            data.forEach(item => {
+                questionButtons += `<button onclick="askPreloadedQuestionFromButton(this)" class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">${item}</button>`;
+            });
+
+            // 4. Add results to the HTML div
+            resultsDiv.innerHTML = questionButtons;
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+            resultsDiv.innerText = 'Failed to load data.';
+        }
+
+    });
 
 
 
