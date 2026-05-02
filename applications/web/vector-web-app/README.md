@@ -21,11 +21,6 @@ START ollama in Podman
 podman run -it --rm -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
-Start GemFire Cluster
-
-```shell
-./deployments/local/scripts/podman/start-gemfire.sh
-```
 
 Create region 
 
@@ -39,11 +34,15 @@ $GEMFIRE_HOME/bin/gfsh -e connect -e "create region --name=SearchResults --type=
 Start Web Application
 
 ```shell
-java -jar applications/web/vector-web-app/target/vector-web-app-0.0.2-SNAPSHOT.jar --spring.ai.vectorstore.gemfire.host=localhost --spring.ai.vectorstore.gemfire.port=7080 --spring.ai.ollama.base-url=http://localhost:11434 --server.port=8088 --spring.ai.ollama.model="llama3"
+java -jar applications/web/vector-web-app/target/vector-web-app-0.0.1-SNAPSHOT.jar --spring.ai.vectorstore.gemfire.host=localhost --spring.ai.vectorstore.gemfire.port=7080 --spring.ai.ollama.base-url=http://localhost:11434 --server.port=8088 --spring.ai.ollama.model="llama3"
 ```
 
 Open Web Application
 
 ```shell
-open http://localhost:8088 
+open http://localhost:8088/ai.html
 ```
+
+Screen shot
+
+![ai.png](docs/img/ai.png)

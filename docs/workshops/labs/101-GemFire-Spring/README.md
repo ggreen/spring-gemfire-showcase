@@ -22,7 +22,7 @@ Finally, understand that GemFire goes beyond caching with persistence and resili
 Pull Docker images
 
 ```shell
-podman pull gemfire/gemfire-management-console:1.4
+podman pull gemfire/gemfire-management-console:latest
 podman pull gemfire/gemfire-all:10.2-jdk21
 podman pull postgres:15.15
 ```
