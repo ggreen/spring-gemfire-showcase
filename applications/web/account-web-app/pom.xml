@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<springSessionForGemFire.version>1.0.0</springSessionForGemFire.version>
-		<vmwareGemFire.version>10.1.1</vmwareGemFire.version>
+		<vmwareGemFire.version>10.2.0</vmwareGemFire.version>
 	</properties>
 	<dependencies>
 		<dependency>

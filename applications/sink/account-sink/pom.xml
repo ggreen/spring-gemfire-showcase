@@ -17,7 +17,7 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
 		<springBootForGemFire.version>2.0.0</springBootForGemFire.version>
-		<vmwareGemFire.version>10.0.0</vmwareGemFire.version>
+		<vmwareGemFire.version>10.2.0</vmwareGemFire.version>
 		<testcontainers.version>1.19.3</testcontainers.version>
 	</properties>
 	<dependencies>
