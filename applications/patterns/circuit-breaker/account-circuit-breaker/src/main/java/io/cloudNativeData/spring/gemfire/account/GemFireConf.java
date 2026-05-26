@@ -1,0 +1,24 @@
+package io.cloudNativeData.spring.gemfire.account;
+
+import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.client.ClientCache;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
+import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
+import org.springframework.data.gemfire.config.annotation.EnablePdx;
+import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
+
+@Configuration
+public class GemFireConf
+{
+    @Bean("Account")
+    ClientRegionFactoryBean<String, Account> account(ClientCache gemFireCache)
+    {
+        var bean = new ClientRegionFactoryBean<String,Account>();
+        bean.setCache(gemFireCache);
+        bean.setDataPolicy(DataPolicy.EMPTY);
+        return bean;
+    }
+}

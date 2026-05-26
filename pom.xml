@@ -38,6 +38,7 @@
         <module>applications/web/ai-mcp-server-app</module>
         <module>applications/cli/gemfire-vectordb-perftest</module>
         <module>applications/cli/postgres-vectordb-perftest</module>
+        <module>applications/patterns/circuit-breaker/account-circuit-breaker</module>
     </modules>
     <build>
         <pluginManagement>
