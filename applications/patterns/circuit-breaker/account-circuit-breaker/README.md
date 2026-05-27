@@ -89,6 +89,8 @@ kill -CONT < Gemfire -PID>.
  This will close the circuit breaker to continue operations on cluster 1.
 
 
+## Recommendation against testing with kill -STOP
+
 **Note:** To minimize client downtime during a server issue, it is always best to let a failing server process shut down completely as quickly as possible.
 
 Freezing or suspending a process creates a 'silent failure' that delays network detection. On the other hand, a clean process exit (such as configuring the JVM to exit on an Out of Memory Error) allows the operating system to immediately notify client applications, triggering a much faster automatic recovery.
