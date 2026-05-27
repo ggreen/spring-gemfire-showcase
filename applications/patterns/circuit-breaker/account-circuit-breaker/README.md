@@ -45,8 +45,8 @@ The following configuration establishes the baseline timeout behavior and circui
 
 
 ```java
-    @Bean
-    public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
+@Bean
+public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
     return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
     .timeLimiterConfig(TimeLimiterConfig.custom()
     .timeoutDuration(Duration.ofSeconds(timeOutSeconds)) // Sets the maximum allowed execution time
@@ -54,7 +54,7 @@ The following configuration establishes the baseline timeout behavior and circui
     .build())
     .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
     .build());
-    }
+}
 ```
 
 The configuration adjusts two primary subsystems: the Time Limiter (timeouts) and the Circuit Breaker (state tracking).
