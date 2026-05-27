@@ -9,6 +9,15 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.stereotype.Service;
 
 /**
+ * Service class responsible for managing account-related business operations.
+ * <p>
+ * This service interacts with an {@link AccountRepository} for persistent operations.
+ * To ensure high availability and fault tolerance, it wraps read and write requests
+ * within distinct, dedicated {@link CircuitBreaker} instances ("readCircuitBreaker" and
+ * "writeCircuitBreaker"). If a database operation fails or times out, the service
+ * automatically routes the request to an {@link AccountRepositoryFallback}.
+ * </p>
+ *
  * @author gregory green
  */
 @Service
@@ -31,22 +40,47 @@ public class AccountService {
         this.writeCircuitBreaker = writeCircuitBreaker;
     }
 
+    /**
+     * Retrieves an account by its unique identifier.
+     * <p>
+     * This operation is protected by the {@code readCircuitBreaker}. If the primary repository
+     * call fails, logs the exception and attempts to recover the account data from the fallback repository.
+     * </p>
+     *
+     * @param id the unique identifier of the account to find
+     * @return the {@link Account} associated with the given ID, or {@code null} if not found in either repository
+     */
     public Account findAccountById(String id) {
-        return readCircuitBreaker.run(
+        var account = readCircuitBreaker.run(
                 () -> repository.findById(id).orElse(null),
                 e -> {
-                    log.warn("Exception: {}", e);
+                    log.trace("Exception: {}", e);
                     return repositoryFallback.findById(id).orElse(null);
 
                 });
+
+        log.info("Account found: {}", account.getId());
+        return account;
     }
 
+    /**
+     * Persists or updates an account.
+     * <p>
+     * This operation is protected by the {@code writeCircuitBreaker}. If the primary repository
+     * write fails, logs the exception and routes the entity to the fallback repository (e.g., a local cache,
+     * secondary database, or a queue for eventual consistency).
+     * </p>
+     *
+     * @param account the {@link Account} entity to save
+     */
     public void saveAccount(Account account) {
         writeCircuitBreaker
                 .run(() -> repository.save(account),
                         e -> {
-                            log.warn("Exception: {}", e);
+                            log.trace("Exception: {}", e);
                             return repositoryFallback.save(account);
                         });
+
+        log.info("Account saved: {}", account.getId());
     }
 }

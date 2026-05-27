@@ -2,6 +2,7 @@ package io.cloudNativeData.spring.gemfire.account.repository.fallback;
 
 import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 import io.cloudNativeData.spring.gemfire.account.repository.AccountRepositoryFallback;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,7 @@ import java.util.Optional;
  */
 
 @Repository
+@Slf4j
 public class GemFireRegionAliasAccountRepositoryFallback implements AccountRepositoryFallback {
 
     private final GemfireTemplate gemfireTemplate;
@@ -40,7 +42,6 @@ public class GemFireRegionAliasAccountRepositoryFallback implements AccountRepos
     @Override
     public Optional<Account> findById(String id) {
         Account account = gemfireTemplate.get(id);
-
         return account != null ? Optional.of(account) : Optional.empty();
     }
 

@@ -1,7 +1,6 @@
 package io.cloudNativeData.spring.gemfire.account;
 
 import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
-import io.cloudNativeData.spring.gemfire.account.repository.AccountRepository;
 import io.cloudNativeData.spring.gemfire.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,13 +8,16 @@ import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreato
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Runner a quality check for the circuit breaker.
+ * @author gregory green
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PutAndGets implements ApplicationRunner {
+public class PutAndGetsRunner implements ApplicationRunner {
     private final AccountService accountService;
     @Value("${app.sleepMs}")
     private long sleepMs;
