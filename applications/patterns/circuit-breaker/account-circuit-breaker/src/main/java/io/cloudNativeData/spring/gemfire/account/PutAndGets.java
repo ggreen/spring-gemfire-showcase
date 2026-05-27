@@ -2,6 +2,7 @@ package io.cloudNativeData.spring.gemfire.account;
 
 import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 import io.cloudNativeData.spring.gemfire.account.repository.AccountRepository;
+import io.cloudNativeData.spring.gemfire.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
@@ -15,14 +16,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class PutAndGets implements ApplicationRunner {
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     @Value("${app.sleepMs}")
     private long sleepMs;
 
     @Value("${app.accountCount:20}")
     private int accountCount;
-
-    private final CircuitBreakerFactory cbFactory;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -31,7 +30,7 @@ public class PutAndGets implements ApplicationRunner {
         var accounts = JavaBeanGeneratorCreator.of(Account.class).createCollection(accountCount);
 
         for (Account account : accounts) {
-            accountRepository.save(account);
+            accountService.saveAccount(account);
         }
 
         var count = 1;
@@ -41,25 +40,10 @@ public class PutAndGets implements ApplicationRunner {
             for (Account account : accounts) {
 
 
-                var foundAccount = cbFactory.create("get")
-
-                        .run(() -> accountRepository.findById(account.getId()).get(),
-                                e -> {
-                            log.error("GET FALL BACKING error: {}",e);
-                            return null;
-                                });
-
-                if(foundAccount == null) continue;
+                var foundAccount = accountService.findAccountById(account.getId());
 
                 foundAccount.setName(account.getId() + count++);
-                cbFactory.create("save").run(() -> {
-                    accountRepository.save(foundAccount);
-                    return null;
-                }, e -> {
-
-                    log.error("SAVE FALL BACKING error: {}",e);
-                    return null;
-                });
+                accountService.saveAccount(foundAccount);
 
             }
             var end = System.currentTimeMillis();
