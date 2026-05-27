@@ -10,6 +10,7 @@ import org.apache.geode.cache.client.PoolManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
@@ -36,18 +37,18 @@ public class GemFireConf
         return bean;
     }
 
-    @Bean
-    Region<String, Account> accountRegionCluster2(ClientCache clientCache)
+    @Bean("accountTemplateCluster2")
+    GemfireTemplate accountRegionCluster2(ClientCache clientCache)
     {
         var poolCluster1 = PoolManager.createFactory()
                 .addLocator(locatorCluster2Host, locatorCluster2Port)
                 .create(clusterPool2Name);
 
-        return clientCache
+        return new GemfireTemplate(clientCache
                 .<String, Account>createClientRegionFactory(ClientRegionShortcut.PROXY)
                 .setPoolName(clusterPool2Name)
                 .setServerRegionName("Account")
-                .create("OrdersCluster1");
+                .create("OrdersCluster1"));
 
     }
 }
