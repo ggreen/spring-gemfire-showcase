@@ -38,6 +38,7 @@ spring:
 app:
   ai:
     prompts:
+      - Was Tanzu GemFire 10 dedicated to anyone?
       - What is GemFire?
       - Why is GemFire so FAST? Be brief
       - Provide a brief explanation of a GemFire cache server?

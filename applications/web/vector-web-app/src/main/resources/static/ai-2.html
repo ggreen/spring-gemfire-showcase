@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chat UI — ChatGPT Look & Feel (Single File)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Small custom tweaks on top of Tailwind for more precise look */
+        :root{
+            --bg: #0f1724; /* deep navy used by many chat apps */
+            --panel: #0b1220;
+            --muted: #94a3b8;
+            --accent: linear-gradient(90deg,#7c3aed,#06b6d4);
+        }
+        html,body,#app{height:100%}
+        body{background:radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent), var(--bg); font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+        .glass{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); backdrop-filter: blur(6px);}
+        .msg-user{background:linear-gradient(90deg,#111827,#0b1220); color:#fff}
+        .msg-assistant{background:rgba(255,255,255,0.04); color:#e6eef8}
+        .bubble{max-width:78%; color:rgb(100 116 139 / var(--tw-text-opacity, 1)); padding:12px 14px; border-radius:12px, }
+        .rounded-left{border-bottom-left-radius:4px}
+        .rounded-right{border-bottom-right-radius:4px}
+        .input-shadow{box-shadow: 0 6px 24px rgba(2,6,23,0.6)}
+        .example-chip{cursor:pointer}
+        /* nice subtle focus for textarea */
+        .compose:focus{outline: 2px solid rgba(124,58,237,0.18); outline-offset:2px}
+    </style>
+</head>
+<body>
+<div id="app" class="min-h-screen flex items-stretch p-6">
+
+    <aside class="w-80 mr-6 hidden md:flex flex-col glass rounded-2xl p-4 text-slate-200" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-cyan-400 flex items-center justify-center text-white font-bold">AI</div>
+            <div>
+                <div class="font-semibold">Chat UI</div>
+                <div class="text-sm text-slate-400">Ask a question — instant replies</div>
+            </div>
+        </div>
+
+        <div class="mt-3 text-sm text-slate-400">Examples</div>
+        <div class="mt-2 flex flex-col gap-2" id="preLoadedQuestions">
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Explain quantum computing in simple terms</button>
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Write a short professional email for follow-up</button>
+            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Create a shopping list for a week of dinners</button>
+        </div>
+
+        <div class="mt-auto text-xs text-slate-500">This is a single-file demo UI inspired by ChatGPT's look and feel. Customize behavior or connect to an API to power responses.</div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-[80vh] max-h-[1000px]">
+        <div class="glass rounded-2xl flex-1 p-4 flex flex-col" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+
+            <header class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-400 flex items-center justify-center font-semibold text-white">AI</div>
+                    <div>
+                        <div class="text-white font-semibold">Assistant</div>
+                        <div class="text-xs text-slate-400">Provide helpful, safe answers</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="addContextBtn" class="text-white bg-purple-600 font-semibold text-sm px-3 py-2 rounded-md hover:bg-purple-700 transition">Add Context</button>
+                    <button id="themeToggle" class="text-slate-300 text-sm p-2 rounded-md hover:bg-slate-800/30">Toggle Theme</button>
+                </div>
+            </header>
+
+            <section id="messages" class="flex-1 overflow-auto space-y-4 pb-4">
+                <div class="flex">
+                    <div class="bubble msg-assistant rounded-right rounded-xl">Hello — ask me anything. Try the examples in the left panel.</div>
+                </div>
+            </section>
+
+            <form id="composer" class="mt-4">
+                <div class="flex items-end gap-3">
+                    <textarea id="input" rows="1" placeholder="Type your question here... (Shift+Enter for newline)" class="flex-1 resize-none rounded-xl p-3 compose bg-slate-900/60 text-white placeholder:text-slate-400 input-shadow" aria-label="Message input"></textarea>
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="attach" class="p-2 rounded-md hover:bg-slate-800/30" title="Attach (demo)">📎</button>
+                        <button id="sendBtn" type="submit" class="bg-gradient-to-r from-purple-600 to-cyan-400 px-4 py-2 rounded-xl font-semibold shadow hover:opacity-95">Send</button>
+                        <button type="button" onclick="clearAnswer()" id="clearAnswerButton" class="p-2 rounded-md hover:bg-slate-800/30" title="Clear Answer">🗑️</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="mt-3 text-xs text-slate-400">Tip: Press Enter to send, Shift+Enter for newline.</div>
+    </main>
+</div>
+
+<div id="contextModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
+        <h2 class="text-xl font-semibold text-white mb-4">Add Vector Search Context</h2>
+        <form id="contextForm" class="space-y-4">
+            <div>
+                <label for="modalPrompt" class="block text-sm font-medium text-slate-300 mb-1">Prompt</label>
+                <input type="text" id="modalPrompt" required placeholder="e.g., Was Tanzu GemFire 10 dedicated to anyone?" class="w-full bg-slate-950 text-white border border-slate-800 rounded-xl p-3 focus:outline-none focus:border-purple-500">
+            </div>
+            <div>
+                <label for="modalContext" class="block text-sm font-medium text-slate-300 mb-1">Context URL / String</label>
+                <input type="text" id="modalContext" required placeholder="e.g., https://blogs.vmware.com/..." class="w-full bg-slate-950 text-white border border-slate-800 rounded-xl p-3 focus:outline-none focus:border-purple-500">
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button type="button" id="closeModalBtn" class="px-4 py-2 rounded-xl text-slate-400 hover:bg-slate-800/50 font-medium transition">Cancel</button>
+                <button type="submit" class="bg-gradient-to-r from-purple-600 to-cyan-400 px-5 py-2 rounded-xl text-white font-semibold shadow hover:opacity-95 transition">Submit Context</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Simple interaction script to mimic a chat app.
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const composer = document.getElementById('composer');
+    const sendBtn = document.getElementById('sendBtn');
+    const examples = document.querySelectorAll('.example-chip');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Modal DOM Elements
+    const contextModal = document.getElementById('contextModal');
+    const addContextBtn = document.getElementById('addContextBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const contextForm = document.getElementById('contextForm');
+
+    // Modal Control logic
+    addContextBtn.addEventListener('click', () => {
+        contextModal.classList.remove('hidden');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        contextModal.classList.add('hidden');
+        contextForm.reset();
+    });
+
+    // Dynamic Modal submit handling POST parameters matching your curl configuration
+    contextForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const promptVal = document.getElementById('modalPrompt').value.trim();
+        const contextVal = document.getElementById('modalContext').value.trim();
+
+        // Build URL dynamically ensuring valid Query Parameter String encoding
+        const baseUrl = '/vector/search/prompt/context';
+        const urlParams = new URLSearchParams({
+            prompt: promptVal,
+            context: contextVal
+        });
+        const requestUrl = `${baseUrl}?${urlParams.toString()}`;
+
+        try {
+            const res = await fetch(requestUrl, {
+                method: 'POST',
+                headers: {
+                    'accept': '*/*'
+                },
+                body: '' // Empty body matching -d '' snippet
+            });
+
+            if (res.ok) {
+                alert('Context added successfully!');
+                contextModal.classList.add('hidden');
+                contextForm.reset();
+            } else {
+                alert(`Server returned an error status: ${res.status}`);
+            }
+        } catch (error) {
+            console.error('Error submitting context:', error);
+            alert(`Failed to connect to backend context endpoint: ${error.message}`);
+        }
+    });
+
+    // Auto grow textarea
+    function autoGrow(el){
+        el.style.height = 'auto';
+        el.style.height = (el.scrollHeight) + 'px';
+    }
+    inputEl.addEventListener('input', e=>autoGrow(e.target));
+
+    // Add message bubble
+    function appendMessage({role='assistant', text}){
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex' + (role === 'user' ? ' justify-end' : '');
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble ' + (role === 'user' ? 'msg-user rounded-left rounded-xl' : 'msg-assistant rounded-right rounded-xl');
+        bubble.innerText = text;
+        wrapper.appendChild(bubble);
+        messagesEl.appendChild(wrapper);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    // Typing indicator
+    function showTyping(){
+        const el = document.createElement('div');
+        el.className = 'flex';
+        el.id = 'typing';
+        el.innerHTML = `<div class="bubble msg-assistant rounded-right rounded-xl"><span class="dots">Typing<span class="animate-pulse">...</span></span></div>`;
+        messagesEl.appendChild(el);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function showClearCache(userText){
+        const el = document.createElement('div');
+        el.className = 'flex';
+        el.id = 'typing';
+        el.innerHTML = `<div class="bubble msg-assistant rounded-right rounded-xl"><span class="dots">Clearing cached Answer for ${userText}}<span class="animate-pulse">...</span></span></div>`;
+        messagesEl.appendChild(el);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    async function getAiResponse(userText){
+
+        const apiUrl = 'vector/search';
+        const startTime = performance.now();
+        var data = "";
+        try {
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: userText
+            });
+
+            data = await res.text();
+            const endTime = performance.now();
+
+            var totalTime = (endTime - startTime).toFixed(2);
+            data = data + "\n\n Request took: "+  totalTime+ " ms";
+            appendMessage({role:'assistant', text:data});
+
+            // Remove Typing
+            hideTyping();
+
+        } catch (error) {
+            hideTyping();
+            appendMessage({role:'assistant', text:error});
+        }
+    }
+
+    function hideTyping(){const t=document.getElementById('typing'); if(t) t.remove();}
+
+    function askPreloadedQuestionFromButton(questionButton){
+        var newQuestion = questionButton.innerText;
+        inputEl.value = newQuestion;
+        appendMessage({role:'user', text:newQuestion} );
+        aiReply(newQuestion);
+    }
+
+    // Mock assistant response
+    function aiReply(userText){
+        showTyping();
+        setTimeout(()=>{
+            getAiResponse(userText);
+        }, 800 + Math.min(userText.length*10, 1200));
+    }
+
+    composer.addEventListener('submit', e=>{
+        e.preventDefault();
+        const text = inputEl.value.trim();
+        if(!text) return;
+        appendMessage({role:'user', text});
+        autoGrow(inputEl);
+        aiReply(text);
+    });
+
+    // Enter to send (Shift+Enter new line)
+    inputEl.addEventListener('keydown', e=>{
+        if(e.key === 'Enter' && !e.shiftKey){
+            e.preventDefault();
+            sendBtn.click();
+        }
+    });
+
+    // Example buttons
+    examples.forEach(btn=>btn.addEventListener('click', ()=>{
+        inputEl.value = btn.innerText;
+        autoGrow(inputEl);
+        inputEl.focus();
+    }));
+
+    // Theme toggle (simple inversion)
+    let dark = true;
+    themeToggle.addEventListener('click', ()=>{
+        dark = !dark;
+        if(!dark){
+            document.documentElement.style.setProperty('--bg','#f8fafc');
+            document.documentElement.style.setProperty('--panel','#ffffff');
+            document.body.style.color = '#0f1724';
+        } else {
+            document.documentElement.style.setProperty('--bg','#0f1724');
+            document.documentElement.style.setProperty('--panel','#0b1220');
+            document.body.style.color = '';
+        }
+    });
+
+    async function clearAnswer(){
+        const userText = inputEl.value.trim();
+        showClearCache(userText);
+        const startTime = performance.now();
+
+        const apiUrl = 'vector/search/prompt';
+        try{
+            await fetch(apiUrl, {
+                method: 'DELETE',
+                headers: {
+                    'accept' : '*/*'
+                },
+                body: new URLSearchParams({
+                    prompt: userText
+                })
+            });
+            hideTyping();
+        } catch (error) {
+            const endTime = performance.now();
+            hideTyping();
+            console.error("Error standardizing cache update: ", error);
+        }
+    }
+
+    // Accessibility: focus input on load
+    window.addEventListener('load', async ()=> {
+        inputEl.focus();
+        const resultsDiv = document.getElementById('preLoadedQuestions');
+
+        try {
+            const response = await fetch('prompts');
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+
+            let questionButtons = '';
+            data.forEach(item => {
+                questionButtons += `<button onclick="askPreloadedQuestionFromButton(this)" class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">${item}</button>`;
+            });
+            resultsDiv.innerHTML = questionButtons;
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+            resultsDiv.innerText = 'Failed to load data.';
+        }
+    });
+</script>
+</body>
+</html>

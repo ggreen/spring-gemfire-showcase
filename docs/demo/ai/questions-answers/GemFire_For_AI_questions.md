@@ -91,25 +91,15 @@ Ask Question
 - What was Tanzu GemFire 10 dedicated to anyone? DO NOT USE ANY TOOLS
 
 
----------------
-# MCP Example
+Add a button "Add Context" that opens a modal JavaScript window  the accepts
 
-Prompt
+a prompt and context using String
 
-```prompt
-Save the value for a given key where key=1 value=Hello World
-```
+The modal windows has a submit button to POST similar to the following
 
-
-```prompt
-Finds the value for a specific cached key where key=1
-```
-
-```text
-Save the value for a given key where key=arul value="Arul is an expert in Messaging and Database solutions. He may miss the current Data TSL call because he is working on big RabbitMQ deal a major enterprise technology company;. He is one of the nicest people you will ever find."
-```
-
-```prompt
-Finds the value for a specific cached key where key=arul
-Tell me why Arul is not on the Data TSL call.
+```shell
+curl -X 'POST' \
+  'http://localhost:8088/vector/search/prompt/context?prompt=Was%20Tanzu%20GemFire%2010%20dedicated%20to%20anyone%3F&context=https%3A%2F%2Fblogs.vmware.com%2Ftanzu%2Fintroducing-vmware-gemfire-10-ga%2F' \
+  -H 'accept: */*' \
+  -d ''
 ```
