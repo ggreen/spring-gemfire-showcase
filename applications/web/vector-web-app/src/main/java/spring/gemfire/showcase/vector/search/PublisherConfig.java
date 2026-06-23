@@ -18,7 +18,7 @@ import java.net.URI;
 @Slf4j
 public class PublisherConfig {
 
-    @Value("${vector.service.url:http://localhost:7088/functions/saveToVectorStore}")
+    @Value("${vector.service.url:http://localhost:7888}")
     private URI vectorServiceUrl;
 
     @Bean
