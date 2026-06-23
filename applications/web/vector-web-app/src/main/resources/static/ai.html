@@ -95,7 +95,7 @@
         <form id="contextForm" class="space-y-4">
             <div>
                 <label for="modalPrompt" class="block text-sm font-medium text-slate-300 mb-1">Prompt</label>
-                <input type="text" id="modalPrompt" required placeholder="e.g., Was Tanzu GemFire 10 dedicated to anyone?" class="w-full bg-slate-950 text-white border border-slate-800 rounded-xl p-3 focus:outline-none focus:border-purple-500">
+                <input type="text" id="modalPrompt" placeholder="e.g., Was Tanzu GemFire 10 dedicated to anyone?" class="w-full bg-slate-950 text-white border border-slate-800 rounded-xl p-3 focus:outline-none focus:border-purple-500">
             </div>
             <div>
                 <label for="modalContext" class="block text-sm font-medium text-slate-300 mb-1">Context URL / String</label>
@@ -126,6 +126,10 @@
 
     // Modal Control logic
     addContextBtn.addEventListener('click', () => {
+
+        //Copy current prompt to context
+        document.getElementById('modalPrompt').value = document.getElementById("input").value;
+
         contextModal.classList.remove('hidden');
     });
 
