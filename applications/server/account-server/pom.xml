@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.7</version>
+        <version>3.5.15</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.ggreen</groupId>
@@ -15,14 +15,40 @@
     <description>account-server</description>
     <properties>
         <java.version>17</java.version>
+        <springBootForGemFire.version>1.0.0</springBootForGemFire.version>
         <vmwareGemFire.version>10.2.0</vmwareGemFire.version>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>spring-boot-3.5-gemfire-10.2</artifactId>
+            <version>${springBootForGemFire.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.ggreen</groupId>
             <artifactId>account-domain</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-core</artifactId>
+            <version>${vmwareGemFire.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-gfsh</artifactId>
+            <version>${vmwareGemFire.version}</version>
+        </dependency>
+        <!--if using continuous queries-->
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-cq</artifactId>
+            <version>${vmwareGemFire.version}</version>
         </dependency>
         <dependency>
             <groupId>com.vmware.gemfire</groupId>
@@ -33,32 +59,13 @@
                     <groupId>com.vmware.gemfire</groupId>
                     <artifactId>gemfire-log4j</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.vmware.gemfire</groupId>
-                    <artifactId>prometheus-metrics</artifactId>
-                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.vmware.gemfire</groupId>
-            <artifactId>gemfire-cq</artifactId>
-            <version>${vmwareGemFire.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.13.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-            <version>2.4.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -93,12 +100,8 @@
             <artifactId>nyla.solutions.core</artifactId>
             <version>2.4.1</version>
         </dependency>
-        <!-- ====================== -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>11.0.24</version>
-        </dependency>
+
+
     </dependencies>
     <build>
         <plugins>

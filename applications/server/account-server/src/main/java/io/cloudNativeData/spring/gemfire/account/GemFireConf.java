@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
 import io.cloudNativeData.spring.gemfire.account.function.NoOpFunction;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
+import org.springframework.format.support.DefaultFormattingConversionService;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,6 +25,7 @@ import java.nio.file.Paths;
  * @author gregory green
  */
 @Configuration
+@CacheServerApplication(locators="localhost[10334]")
 public class GemFireConf
 {
     @Value("${gemfire.server.name}")
@@ -78,27 +82,27 @@ public class GemFireConf
         return new ReflectionBasedAutoSerializer(pdxClassPatterns);
     }
 
-    @Bean
-    ServerLauncher builder(PdxSerializer pdxSerializer)
-    {
-        var serverLauncher = new ServerLauncher.Builder()
-                .setWorkingDirectory(workingDirectory)
-                .setMemberName(serverName)
-                .setServerPort(serverPort)
-                .set("locators",locators)
-                .set("statistic-sampling-enabled","true")
-                .set("statistic-archive-file",workingDirectory+"/"+statisticArchiveFile)
-                .set("archive-disk-space-limit",archiveDiskSpaceLimit)
-                .set("archive-file-size-limit",archiveFileSizeLimit)
-                .setPdxReadSerialized(readPdxSerialized)
-                .setPdxDiskStore(workingDirectory+"/"+pdxDiskStore)
-                .setPdxSerializer(pdxSerializer)
-                .build();
-
-        serverLauncher.start();
-
-        return serverLauncher;
-    }
+//    @Bean
+//    ServerLauncher builder(PdxSerializer pdxSerializer)
+//    {
+//        var serverLauncher = new ServerLauncher.Builder()
+//                .setWorkingDirectory(workingDirectory)
+//                .setMemberName(serverName)
+//                .setServerPort(serverPort)
+//                .set("locators",locators)
+//                .set("statistic-sampling-enabled","true")
+//                .set("statistic-archive-file",workingDirectory+"/"+statisticArchiveFile)
+//                .set("archive-disk-space-limit",archiveDiskSpaceLimit)
+//                .set("archive-file-size-limit",archiveFileSizeLimit)
+//                .setPdxReadSerialized(readPdxSerialized)
+//                .setPdxDiskStore(workingDirectory+"/"+pdxDiskStore)
+//                .setPdxSerializer(pdxSerializer)
+//                .build();
+//
+//        serverLauncher.start();
+//
+//        return serverLauncher;
+//    }
 
     @Bean
     Region<String, Account> partitioned(Cache cache)
@@ -106,6 +110,11 @@ public class GemFireConf
         Region<String, Account>  region  =  (Region)cache.createRegionFactory(RegionShortcut.PARTITION)
                 .create("Account");
         return region;
+    }
+
+    @Bean
+    public ConversionService conversionService() {
+        return new DefaultFormattingConversionService();
     }
 
 
