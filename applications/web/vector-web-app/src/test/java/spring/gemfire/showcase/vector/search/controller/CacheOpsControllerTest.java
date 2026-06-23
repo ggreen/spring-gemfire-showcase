@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.gemfire.GemfireTemplate;
+import spring.gemfire.showcase.vector.search.services.ClearCacheService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -18,23 +18,21 @@ class CacheOpsControllerTest {
     private CacheOpsController subject;
 
     @Mock
-    private GemfireTemplate gemfireTemplate;
+    private ClearCacheService cacheService;
 
     @Mock
     private Region<Object, Object> region;
 
     @BeforeEach
     void setUp() {
-        subject = new CacheOpsController(gemfireTemplate);
+        subject = new CacheOpsController(cacheService);
     }
 
     @Test
     void clearVectorEmbeddings() {
 
-        when(gemfireTemplate.getRegion()).thenReturn(region);
-
         subject.clearCache();
 
-        verify(gemfireTemplate).removeAll(any());
+        verify(cacheService).clearCache();
     }
 }
