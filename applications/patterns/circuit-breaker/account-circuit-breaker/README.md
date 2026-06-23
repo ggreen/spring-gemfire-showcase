@@ -71,6 +71,11 @@ Start 2 WAN connected GemFire clusters each with 3 cache servers.
 ./deployments/local/scripts/gemfire/ha/start-3-data-nodes-ha-clusters.sh
 ```
 
+Start Application
+
+```shell
+java -jar applications/patterns/circuit-breaker/account-circuit-breaker/target/account-circuit-breaker-1.0.0.jar
+```
 
 Use the following to pause a cache server in cluster 1
 

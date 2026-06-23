@@ -1,7 +1,7 @@
 Start GemFire
 
 ```shell
-deployments/local/scripts/podman/gemfire-for-ai.sh
+deployments/local/scripts/podman/gemfire-for-ai.sh 
 ```
 Start GMC
 
