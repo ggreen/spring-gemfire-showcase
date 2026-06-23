@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -61,6 +60,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
+                    <button id="clearBtn" class="text-white bg-rose-600 font-semibold text-sm px-3 py-2 rounded-md hover:bg-rose-700 transition">Clear</button>
                     <button id="addContextBtn" class="text-white bg-purple-600 font-semibold text-sm px-3 py-2 rounded-md hover:bg-purple-700 transition">Add Context</button>
                     <button id="themeToggle" class="text-slate-300 text-sm p-2 rounded-md hover:bg-slate-800/30">Toggle Theme</button>
                 </div>
@@ -117,12 +117,37 @@
     const sendBtn = document.getElementById('sendBtn');
     const examples = document.querySelectorAll('.example-chip');
     const themeToggle = document.getElementById('themeToggle');
+    const clearBtn = document.getElementById('clearBtn');
 
     // Modal DOM Elements
     const contextModal = document.getElementById('contextModal');
     const addContextBtn = document.getElementById('addContextBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const contextForm = document.getElementById('contextForm');
+
+    // Clear Button Logic to call the requested endpoint configuration
+    clearBtn.addEventListener('click', async () => {
+        const url = 'cache/ops';
+
+        try {
+            const res = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'accept': '*/*'
+                },
+                body: ''
+            });
+
+            if (res.ok) {
+                alert('Clear operation completed successfully!');
+            } else {
+                alert(`Clear action failed with status: ${res.status}`);
+            }
+        } catch (error) {
+            console.error('Error executing Clear action:', error);
+            alert(`Failed to execute Clear action: ${error.message}`);
+        }
+    });
 
     // Modal Control logic
     addContextBtn.addEventListener('click', () => {

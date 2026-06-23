@@ -8,16 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.gemfire.GemfireTemplate;
 
-import java.util.Collections;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class VectorOpsControllerTest {
+class CacheOpsControllerTest {
 
-    private VectorOpsController subject;
+    private CacheOpsController subject;
 
     @Mock
     private GemfireTemplate gemfireTemplate;
@@ -27,7 +25,7 @@ class VectorOpsControllerTest {
 
     @BeforeEach
     void setUp() {
-        subject = new VectorOpsController(gemfireTemplate);
+        subject = new CacheOpsController(gemfireTemplate);
     }
 
     @Test
@@ -35,7 +33,7 @@ class VectorOpsControllerTest {
 
         when(gemfireTemplate.getRegion()).thenReturn(region);
 
-        subject.deleteEmbeddings();
+        subject.clearCache();
 
         verify(gemfireTemplate).removeAll(any());
     }
