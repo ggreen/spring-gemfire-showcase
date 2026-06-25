@@ -118,7 +118,6 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.15.12</version>
         </dependency>
     </dependencies>
     <build>
@@ -141,6 +140,10 @@
                         <dependency>
                             <groupId>org.springframework.shell</groupId>
                             <artifactId>spring-shell</artifactId>
+                        </dependency>
+                        <dependency>
+                            <groupId>io.micrometer</groupId>
+                            <artifactId>micrometer-registry-prometheus</artifactId>
                         </dependency>
                     </requiresUnpack>
                 </configuration>
