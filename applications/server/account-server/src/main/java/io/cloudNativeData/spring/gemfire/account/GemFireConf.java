@@ -1,23 +1,15 @@
 package io.cloudNativeData.spring.gemfire.account;
 
-import org.apache.geode.cache.*;
-import org.apache.geode.cache.execute.Function;
-import org.apache.geode.cache.execute.FunctionService;
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
 import org.apache.geode.distributed.ServerLauncher;
 import org.apache.geode.pdx.PdxSerializer;
 import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import io.cloudNativeData.spring.gemfire.account.domain.account.Account;
-import io.cloudNativeData.spring.gemfire.account.function.NoOpFunction;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.format.support.DefaultFormattingConversionService;
-
-import java.io.File;
-import java.nio.file.Paths;
 
 /**
  * Provides examples Spring configurations from embedding GemFire
@@ -25,7 +17,6 @@ import java.nio.file.Paths;
  * @author gregory green
  */
 @Configuration
-@CacheServerApplication(locators="localhost[10334]")
 public class GemFireConf
 {
     @Value("${gemfire.server.name}")
@@ -82,83 +73,33 @@ public class GemFireConf
         return new ReflectionBasedAutoSerializer(pdxClassPatterns);
     }
 
-//    @Bean
-//    ServerLauncher builder(PdxSerializer pdxSerializer)
-//    {
-//        var serverLauncher = new ServerLauncher.Builder()
-//                .setWorkingDirectory(workingDirectory)
-//                .setMemberName(serverName)
-//                .setServerPort(serverPort)
-//                .set("locators",locators)
-//                .set("statistic-sampling-enabled","true")
-//                .set("statistic-archive-file",workingDirectory+"/"+statisticArchiveFile)
-//                .set("archive-disk-space-limit",archiveDiskSpaceLimit)
-//                .set("archive-file-size-limit",archiveFileSizeLimit)
-//                .setPdxReadSerialized(readPdxSerialized)
-//                .setPdxDiskStore(workingDirectory+"/"+pdxDiskStore)
-//                .setPdxSerializer(pdxSerializer)
-//                .build();
-//
-//        serverLauncher.start();
-//
-//        return serverLauncher;
-//    }
-
     @Bean
-    Region<String, Account> partitioned(Cache cache)
+    ServerLauncher builder(PdxSerializer pdxSerializer)
     {
-        Region<String, Account>  region  =  (Region)cache.createRegionFactory(RegionShortcut.PARTITION)
-                .create("Account");
-        return region;
+        var serverLauncher = new ServerLauncher.Builder()
+                .setWorkingDirectory(workingDirectory)
+                .setMemberName(serverName)
+                .setServerPort(serverPort)
+                .set("locators",locators)
+                .set("statistic-sampling-enabled","true")
+                .set("statistic-archive-file",workingDirectory+"/"+statisticArchiveFile)
+                .set("archive-disk-space-limit",archiveDiskSpaceLimit)
+                .set("archive-file-size-limit",archiveFileSizeLimit)
+                .set("cache-xml-file","/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/server/account-server/src/main/resources/cache.xml")
+                .setPdxReadSerialized(readPdxSerialized)
+                .setPdxDiskStore(workingDirectory+"/"+pdxDiskStore)
+                .setPdxSerializer(pdxSerializer)
+                .build();
+
+        serverLauncher.start();
+
+        return serverLauncher;
     }
+
 
     @Bean
     public ConversionService conversionService() {
         return new DefaultFormattingConversionService();
     }
 
-
-    @Bean
-    DiskStoreFactory diskStoreFactory(Cache cache)
-    {
-        return cache.createDiskStoreFactory().setDiskDirs(new File[]{Paths.get(workingDirectory).toFile()});
-    }
-
-    @Bean
-    DiskStore pdxDiskStoreNameDiskStore(Cache cache, DiskStoreFactory diskStoreFactory)
-    {
-        return diskStoreFactory.create(pdxDataStoreName);
-    }
-
-    @Bean
-    DiskStore partitionedPersistedDiskStore(Cache cache, DiskStoreFactory diskStoreFactory)
-    {
-        return diskStoreFactory.create(partitionedPersistedDiskStoreName);
-    }
-
-    @Bean
-    Region<String, Account> partitioned_persisted(Cache cache, @Qualifier("partitionedPersistedDiskStore") DiskStore diskStore)
-    {
-        Region<String, Account>  region  =  (Region)cache.createRegionFactory(RegionShortcut.PARTITION_PERSISTENT)
-                .setDiskStoreName(diskStore.getName())
-                .create("Account_persisted");
-        return region;
-    }
-
-    @Bean
-    Region<String, Account> replicated(Cache cache)
-    {
-        Region<String, Account>  region  =  (Region)cache.createRegionFactory(RegionShortcut.REPLICATE)
-                .create("Account_replicated");
-        return region;
-    }
-
-
-    @Bean
-    Function<Object[]> function(Cache cache)
-    {
-        var function = new NoOpFunction();
-        FunctionService.registerFunction(function);
-        return function;
-    }
 }

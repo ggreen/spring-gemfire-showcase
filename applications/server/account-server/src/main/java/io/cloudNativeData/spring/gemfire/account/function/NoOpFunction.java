@@ -1,11 +1,12 @@
 package io.cloudNativeData.spring.gemfire.account.function;
 
 import nyla.solutions.core.util.Debugger;
+import org.apache.geode.cache.Declarable;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.logging.log4j.LogManager;
 
-public class NoOpFunction implements Function<Object[]> {
+public class NoOpFunction implements Function<Object[]>, Declarable {
     @Override
     public void execute(FunctionContext<Object[]> functionContext) {
         LogManager.getLogger(NoOpFunction.class).info("NO OPERATION {}", Debugger.toString(functionContext.getArguments()));
