@@ -7,13 +7,18 @@ Screen shot
 
 Pre-requisite
 
-
+- GIT
 - Java SDK 17 or 21
-- Podman 
+- GemFire Token 
+- GemFire In-Memory [NO-SQL](https://en.wikipedia.org/wiki/NoSQL) data management solution [GemFire](https://gemfire.dev/)
+- Podman
+*Example on Mac*
 ```
 brew install podman
 ```
 - Ollama
+
+*Example on Mac*
 ```text
 brew install ollama
 ```

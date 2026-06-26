@@ -1,3 +1,23 @@
+# GemFire for AI
+
+
+# Getting Start
+
+Clone Repo
+
+```shell
+git clone https://github.com/ggreen/spring-gemfire-showcase.git
+cd spring-gemfire-showcase
+```
+
+## Build Repo
+
+```shell
+./mvnw package
+
+```
+
+
 Start GemFire
 
 ```shell
