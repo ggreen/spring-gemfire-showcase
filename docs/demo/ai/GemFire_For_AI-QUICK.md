@@ -41,6 +41,33 @@ echo sink.gemfire-vector-sink.bootVersion=3
 
 ```
 
+### Start SCDF
+
+
+Download SCDF Jars (optional first time only)
+- SCDF Server
+- Skipper
+- Shell
+
+```shell
+mkdir -p runtime/scdf
+wget  --directory-prefix=runtime/scdf https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dataflow-server/2.11.5/spring-cloud-dataflow-server-2.11.5.jar
+wget --directory-prefix=runtime/scdf https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-skipper-server/2.11.5/spring-cloud-skipper-server-2.11.5.jar
+wget --directory-prefix=runtime/scdf https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dataflow-shell/2.11.5/spring-cloud-dataflow-shell-2.11.5.jar
+```
+
+Start Data Flow Server
+
+(Use a new shell *from the data-orchestration-with-scdf-showcase directory*)
+
+```shell
+./deployment/local/dataflow/start-df-server.sh
+```
+
+
+--------------------------
+
+
 Open SCDF
 ```shell
 open http://localhost:9393/dashboard
