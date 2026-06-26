@@ -3,7 +3,7 @@ Start GemFire
 ```shell
 deployments/local/scripts/podman/gemfire-for-ai.sh 
 ```
-Start GMC
+Start GemFire Management Console (GMC)
 
 ```shell
 deployments/local/scripts/podman/start-gmc-gideon-console.sh
@@ -21,7 +21,6 @@ Connect
 name=gemfire
 host=gf-locator
 port=7070
-
 ```
 
 Start Ollama
@@ -30,21 +29,10 @@ Start Ollama
 ollama serve
 ```
 
-Start SCDF
-
-```shell
-echo "------   Copy The following App properties-----------"
-echo processor.remove-by-gf-search=file://$PWD/applications/processor/remove-by-gf-search-processor/target/remove-by-gf-search-processor-0.0.1-SNAPSHOT.jar
-echo processor.remove-by-gf-search.bootVersion=3
-echo sink.gemfire-vector-sink=file://$PWD/applications/sink/gemfire-vector-sink/target/gemfire-vector-sink-0.0.1-SNAPSHOT.jar
-echo sink.gemfire-vector-sink.bootVersion=3
-
-```
-
-### Start SCDF
-
+## Start SCDF
 
 Download SCDF Jars (optional first time only)
+
 - SCDF Server
 - Skipper
 - Shell
@@ -56,6 +44,17 @@ wget --directory-prefix=runtime/scdf https://repo.maven.apache.org/maven2/org/sp
 wget --directory-prefix=runtime/scdf https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dataflow-shell/2.11.5/spring-cloud-dataflow-shell-2.11.5.jar
 ```
 
+Start SCDF
+
+```shell
+echo "------   Copy The following App properties-----------"
+echo processor.remove-by-gf-search=file://$PWD/applications/processor/remove-by-gf-search-processor/target/remove-by-gf-search-processor-0.0.1-SNAPSHOT.jar
+echo processor.remove-by-gf-search.bootVersion=3
+echo sink.gemfire-vector-sink=file://$PWD/applications/sink/gemfire-vector-sink/target/gemfire-vector-sink-0.0.1-SNAPSHOT.jar
+echo sink.gemfire-vector-sink.bootVersion=3
+```
+
+
 Start Data Flow Server
 
 (Use a new shell *from the data-orchestration-with-scdf-showcase directory*)
@@ -63,7 +62,6 @@ Start Data Flow Server
 ```shell
 ./deployment/local/dataflow/start-df-server.sh
 ```
-
 
 --------------------------
 

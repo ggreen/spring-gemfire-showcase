@@ -9,9 +9,15 @@ Pre-requisite
 
 
 - Java SDK 17 or 21
-- Podman
+- Podman 
+```
+brew install podman
+```
 - Ollama
-- Spring Cloud Data Flow
+```text
+brew install ollama
+```
+- Spring Cloud Data Flow (instructors included in link below)
 
 
 # Getting Started
