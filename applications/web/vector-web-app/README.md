@@ -8,6 +8,13 @@ Screen shot
 Pre-requisite
 
 - GIT
+```text
+brew install git
+```
+- WGET
+```text
+brew install wget
+```
 - Java SDK 17 or 21
 - GemFire Token 
 - GemFire In-Memory [NO-SQL](https://en.wikipedia.org/wiki/NoSQL) data management solution [GemFire](https://gemfire.dev/)

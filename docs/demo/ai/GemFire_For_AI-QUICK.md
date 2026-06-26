@@ -14,7 +14,6 @@ cd spring-gemfire-showcase
 
 ```shell
 ./mvnw package
-
 ```
 
 
@@ -23,7 +22,7 @@ Start GemFire
 ```shell
 deployments/local/scripts/podman/gemfire-for-ai.sh 
 ```
-Start GemFire Management Console (GMC)
+Start GemFire Management Console (GMC) - Optional
 
 ```shell
 deployments/local/scripts/podman/start-gmc-gideon-console.sh
@@ -80,7 +79,7 @@ Start Data Flow Server
 (Use a new shell *from the data-orchestration-with-scdf-showcase directory*)
 
 ```shell
-./deployment/local/dataflow/start-df-server.sh
+./deployments/local/scripts/dataflow/start-df-server.sh
 ```
 
 --------------------------
