@@ -1,15 +1,7 @@
 package io.cloudNativeData.spring.gemfire.account;
 
-import org.apache.geode.cache.Cache;
-import org.apache.geode.cache.CacheFactory;
-import org.apache.geode.distributed.ServerLauncher;
-import org.apache.geode.pdx.PdxSerializer;
-import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 
 /**
  * Provides examples Spring configurations from embedding GemFire
@@ -17,89 +9,10 @@ import org.springframework.format.support.DefaultFormattingConversionService;
  * @author gregory green
  */
 @Configuration
+@CacheServerApplication
+//@PeerCacheApplication
 public class GemFireConf
 {
-    @Value("${gemfire.server.name}")
-    private String serverName;
 
-    @Value("${gemfire.start-locator}")
-    private String startLocator;
-
-    @Value("${spring.data.gemfire.pool.locators}")
-    private String locators;
-
-    @Value("${gemfire.async.event.queue.id}")
-    private String asyncEventQueueId;
-
-    @Value("${gemfire.pdx.patterns:.*}")
-    private String pdxClassPatterns;
-
-    @Value("${gemfire.server.port:40404}")
-    private Integer serverPort;
-
-    @Value("${gemfire.read.pdx.serialize:false}")
-    private boolean readPdxSerialized;
-
-    @Value("${gemfire.working.dir}")
-    private String workingDirectory;
-
-    @Value("${gemfire.pdx.disk.store:PDX_DS}")
-    private String pdxDiskStore;
-
-    @Value("${gemfire.statistic.archive.file:${gemfire.server.name}.gfs}")
-    private String statisticArchiveFile;
-
-    @Value("${gemfire.pdx.archive.disk.space.limit:5}")
-    private String archiveDiskSpaceLimit;
-
-    @Value("${gemfire.pdx.archive.file.size.limit:5}")
-    private String archiveFileSizeLimit;
-
-    @Value("${gemfire.partitioned.persisted.disk.store.name:partitionedPersistedDiskStoreName}")
-    private String partitionedPersistedDiskStoreName;
-
-    @Value("${gemfire.pdx.disk.store.name:PDX_STORE}")
-    private String pdxDataStoreName;
-
-    @Bean
-    Cache cacheFactory(ServerLauncher launcher)
-    {
-        return CacheFactory.getAnyInstance();
-    }
-
-    @Bean
-    PdxSerializer serializer()
-    {
-        return new ReflectionBasedAutoSerializer(pdxClassPatterns);
-    }
-
-    @Bean
-    ServerLauncher builder(PdxSerializer pdxSerializer)
-    {
-        var serverLauncher = new ServerLauncher.Builder()
-                .setWorkingDirectory(workingDirectory)
-                .setMemberName(serverName)
-                .setServerPort(serverPort)
-                .set("locators",locators)
-                .set("statistic-sampling-enabled","true")
-                .set("statistic-archive-file",workingDirectory+"/"+statisticArchiveFile)
-                .set("archive-disk-space-limit",archiveDiskSpaceLimit)
-                .set("archive-file-size-limit",archiveFileSizeLimit)
-                .set("cache-xml-file","/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/spring-gemfire-showcase/applications/server/account-server/src/main/resources/cache.xml")
-                .setPdxReadSerialized(readPdxSerialized)
-                .setPdxDiskStore(workingDirectory+"/"+pdxDiskStore)
-                .setPdxSerializer(pdxSerializer)
-                .build();
-
-        serverLauncher.start();
-
-        return serverLauncher;
-    }
-
-
-    @Bean
-    public ConversionService conversionService() {
-        return new DefaultFormattingConversionService();
-    }
 
 }
