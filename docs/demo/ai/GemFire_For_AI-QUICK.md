@@ -184,8 +184,10 @@ You will see a visual canvas and a text editor box at the top.
 
 Copy and paste your exact pipeline definition into the text editor:
 
-Plaintext
+```Plaintext
 http --port=7888 | gemfire-vector-sink
+```
+
 You will notice the visual canvas automatically links the http source block to your custom gemfire-vector-sink block.
 
 Click the Create Stream button at the bottom of the page.
