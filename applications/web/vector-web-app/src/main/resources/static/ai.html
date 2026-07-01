@@ -2,67 +2,156 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Chat UI — ChatGPT Look & Feel (Single File)</title>
+    <title>GemFire AI Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Small custom tweaks on top of Tailwind for more precise look */
-        :root{
-            --bg: #0f1724; /* deep navy used by many chat apps */
-            --panel: #0b1220;
-            --muted: #94a3b8;
-            --accent: linear-gradient(90deg,#7c3aed,#06b6d4);
+        /* ── VMware Clarity light theme (default) ── */
+        :root {
+            --bg:            #f3f6fa;
+            --panel-bg:      #ffffff;
+            --sidebar-bg:    #e8f0f7;
+            --border:        #dde3ea;
+            --text-primary:  #21333b;
+            --text-secondary:#5a7184;
+            --text-muted:    #89a0b0;
+            --vmw-blue:      #0079b8;
+            --vmw-blue-dark: #004e8a;
+            --msg-user-bg:   #0079b8;
+            --msg-user-text: #ffffff;
+            --msg-ai-bg:     #f0f5fa;
+            --msg-ai-text:   #21333b;
+            --input-bg:      #ffffff;
+            --input-border:  #b8ccd8;
+            --chip-bg:       #ddeaf3;
+            --chip-hover:    #c5d9e8;
+            --shadow:        0 2px 12px rgba(0,121,184,0.10);
+        }
+        /* ── Dark theme overrides ── */
+        [data-theme="dark"] {
+            --bg:            #0f1724;
+            --panel-bg:      #0b1220;
+            --sidebar-bg:    #0d1829;
+            --border:        #1e2d3d;
+            --text-primary:  #e6eef8;
+            --text-secondary:#94a3b8;
+            --text-muted:    #64748b;
+            --vmw-blue:      #00b4e6;
+            --vmw-blue-dark: #0091da;
+            --msg-user-bg:   #163a5a;
+            --msg-user-text: #e6eef8;
+            --msg-ai-bg:     rgba(255,255,255,0.04);
+            --msg-ai-text:   #e6eef8;
+            --input-bg:      #0d1829;
+            --input-border:  #1e3a52;
+            --chip-bg:       rgba(255,255,255,0.06);
+            --chip-hover:    rgba(255,255,255,0.10);
+            --shadow:        0 2px 12px rgba(0,0,0,0.5);
         }
         html,body,#app{height:100%}
-        body{background:radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent), var(--bg); font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
-        .glass{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); backdrop-filter: blur(6px);}
-        .msg-user{background:linear-gradient(90deg,#111827,#0b1220); color:#fff}
-        .msg-assistant{background:rgba(255,255,255,0.04); color:#e6eef8}
-        .bubble{max-width:78%; color:rgb(100 116 139 / var(--tw-text-opacity, 1)); padding:12px 14px; border-radius:12px, }
-        .rounded-left{border-bottom-left-radius:4px}
-        .rounded-right{border-bottom-right-radius:4px}
-        .input-shadow{box-shadow: 0 6px 24px rgba(2,6,23,0.6)}
-        .example-chip{cursor:pointer}
-        /* nice subtle focus for textarea */
-        .compose:focus{outline: 2px solid rgba(124,58,237,0.18); outline-offset:2px}
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            transition: background 0.25s, color 0.25s;
+        }
+        /* VMware blue accent bar at top */
+        body::before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vmw-blue), var(--vmw-blue-dark));
+            z-index: 100;
+        }
+        #app { padding-top: calc(1.5rem + 3px); }
+        .glass {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: background 0.25s, border-color 0.25s;
+        }
+        .sidebar-panel {
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .msg-user { background: var(--msg-user-bg); color: var(--msg-user-text); }
+        .msg-assistant {
+            background: var(--msg-ai-bg);
+            color: var(--msg-ai-text);
+            border: 1px solid var(--border);
+        }
+        .bubble { max-width: 78%; padding: 12px 14px; border-radius: 12px; }
+        .rounded-left  { border-bottom-left-radius: 4px; }
+        .rounded-right { border-bottom-right-radius: 4px; }
+        .example-chip {
+            cursor: pointer;
+            background: var(--chip-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+        .example-chip:hover { background: var(--chip-hover); }
+        .compose {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--input-border);
+            transition: border-color 0.15s;
+        }
+        .compose::placeholder { color: var(--text-muted); }
+        .compose:focus { outline: none; border-color: var(--vmw-blue); box-shadow: 0 0 0 3px rgba(0,121,184,0.15); }
+        .send-btn { background: var(--vmw-blue); color: #fff; transition: background 0.15s; }
+        .send-btn:hover { background: var(--vmw-blue-dark); }
+        .theme-btn {
+            background: var(--chip-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .theme-btn:hover { background: var(--chip-hover); }
     </style>
 </head>
 <body>
 <div id="app" class="min-h-screen flex items-stretch p-6">
 
-    <aside class="w-80 mr-6 hidden md:flex flex-col glass rounded-2xl p-4 text-slate-200" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+    <aside class="w-80 mr-6 hidden md:flex flex-col sidebar-panel rounded-2xl p-4 overflow-y-auto">
         <div class="flex items-center gap-3 mb-4">
-            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-cyan-400 flex items-center justify-center text-white font-bold">AI</div>
+            <div class="h-10 w-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:var(--vmw-blue)">AI</div>
             <div>
-                <div class="font-semibold">Chat UI</div>
-                <div class="text-sm text-slate-400">Ask a question — instant replies</div>
+                <div class="font-semibold" style="color:var(--text-primary)">GemFire AI</div>
+                <div style="font-size:0.85rem;color:var(--text-secondary)">Ask a question — instant replies</div>
             </div>
         </div>
 
-        <div class="mt-3 text-sm text-slate-400">Examples</div>
+        <div class="mt-3 text-sm font-medium" style="color:var(--text-secondary)">Examples</div>
         <div class="mt-2 flex flex-col gap-2" id="preLoadedQuestions">
-            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Explain quantum computing in simple terms</button>
-            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Write a short professional email for follow-up</button>
-            <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Create a shopping list for a week of dinners</button>
+            <button class="example-chip text-left p-3 rounded-lg">Explain quantum computing in simple terms</button>
+            <button class="example-chip text-left p-3 rounded-lg">Write a short professional email for follow-up</button>
+            <button class="example-chip text-left p-3 rounded-lg">Create a shopping list for a week of dinners</button>
         </div>
 
-        <div class="mt-auto text-xs text-slate-500">This is a single-file demo UI inspired by ChatGPT's look and feel. Customize behavior or connect to an API to power responses.</div>
     </aside>
 
     <main class="flex-1 flex flex-col h-[80vh] max-h-[1000px]">
-        <div class="glass rounded-2xl flex-1 p-4 flex flex-col" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+        <div class="glass rounded-2xl flex-1 p-4 flex flex-col">
 
             <header class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-400 flex items-center justify-center font-semibold text-white">AI</div>
+                    <div class="h-9 w-9 rounded-lg flex items-center justify-center font-semibold text-white" style="background:var(--vmw-blue)">AI</div>
                     <div>
-                        <div class="text-white font-semibold">Assistant</div>
-                        <div class="text-xs text-slate-400">Provide helpful, safe answers</div>
+                        <div class="font-semibold" style="color:var(--text-primary)">GemFire AI Assistant</div>
+                        <div style="font-size:0.75rem;color:var(--text-secondary)">Powered by VMware GemFire Vector DB</div>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button id="clearBtn" class="text-white bg-rose-600 font-semibold text-sm px-3 py-2 rounded-md hover:bg-rose-700 transition">Clear</button>
-                    <button id="addContextBtn" class="text-white bg-purple-600 font-semibold text-sm px-3 py-2 rounded-md hover:bg-purple-700 transition">Add Context</button>
-                    <button id="themeToggle" class="text-slate-300 text-sm p-2 rounded-md hover:bg-slate-800/30">Toggle Theme</button>
+                <div class="flex items-center gap-2">
+                    <button id="clearBtn" class="text-white text-sm px-3 py-2 rounded-md font-semibold transition" style="background:#c92100" onmouseover="this.style.background='#a51900'" onmouseout="this.style.background='#c92100'">Clear</button>
+                    <button id="addContextBtn" class="send-btn text-sm px-3 py-2 rounded-md font-semibold transition">Add Context</button>
+                    <button id="themeToggle" class="theme-btn">Dark Mode</button>
                 </div>
             </header>
 
@@ -74,36 +163,36 @@
 
             <form id="composer" class="mt-4">
                 <div class="flex items-end gap-3">
-                    <textarea id="input" rows="1" placeholder="Type your question here... (Shift+Enter for newline)" class="flex-1 resize-none rounded-xl p-3 compose bg-slate-900/60 text-white placeholder:text-slate-400 input-shadow" aria-label="Message input"></textarea>
+                    <textarea id="input" rows="1" placeholder="Type your question here... (Shift+Enter for newline)" class="flex-1 resize-none rounded-xl p-3 compose" aria-label="Message input"></textarea>
                     <div class="flex items-center gap-2">
-                        <button type="button" id="attach" class="p-2 rounded-md hover:bg-slate-800/30" title="Attach (demo)">📎</button>
-                        <button id="sendBtn" type="submit" class="bg-gradient-to-r from-purple-600 to-cyan-400 px-4 py-2 rounded-xl font-semibold shadow hover:opacity-95">Send</button>
-                        <button type="button" onclick="clearAnswer()" id="clearAnswerButton" class="p-2 rounded-md hover:bg-slate-800/30" title="Clear Answer">🗑️</button>
+                        <button type="button" id="attach" class="p-2 rounded-md" title="Attach (demo)" style="color:var(--text-secondary)">📎</button>
+                        <button id="sendBtn" type="submit" class="send-btn px-4 py-2 rounded-xl font-semibold shadow">Send</button>
+                        <button type="button" onclick="clearAnswer()" id="clearAnswerButton" class="p-2 rounded-md" title="Clear Answer" style="color:var(--text-secondary)">🗑️</button>
                     </div>
                 </div>
             </form>
 
         </div>
 
-        <div class="mt-3 text-xs text-slate-400">Tip: Press Enter to send, Shift+Enter for newline.</div>
+        <div class="mt-3 text-xs" style="color:var(--text-muted)">Tip: Press Enter to send, Shift+Enter for newline.</div>
     </main>
 </div>
 
-<div id="contextModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
-        <h2 class="text-xl font-semibold text-white mb-4">Add Vector Search Context</h2>
+<div id="contextModal" class="fixed inset-0 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4" style="background:rgba(15,23,36,0.80)">
+    <div class="rounded-2xl w-full max-w-lg p-6 shadow-2xl" style="background:var(--panel-bg);border:1px solid var(--border)">
+        <h2 class="text-xl font-semibold mb-4" style="color:var(--text-primary)">Add Vector Search Context</h2>
         <form id="contextForm" class="space-y-4">
             <div>
-                <label for="modalPrompt" class="block text-sm font-medium text-slate-300 mb-1">Prompt</label>
-                <input type="text" id="modalPrompt" placeholder="e.g., Was Tanzu GemFire 10 dedicated to anyone?" class="w-full bg-slate-950 text-white border border-slate-800 rounded-xl p-3 focus:outline-none focus:border-purple-500">
+                <label for="modalPrompt" class="block text-sm font-medium mb-1" style="color:var(--text-secondary)">Prompt</label>
+                <input type="text" id="modalPrompt" placeholder="e.g., Was Tanzu GemFire 10 dedicated to anyone?" class="w-full rounded-xl p-3 focus:outline-none" style="background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border)">
             </div>
             <div>
-                <label for="modalContext" class="block text-sm font-medium text-slate-300 mb-1">Context URL / String</label>
-                <input type="text" id="modalContext" required placeholder="e.g., https://blogs.vmware.com/..." class="w-full bg-slate-950 text-white border border-slate-800 rounded-xl p-3 focus:outline-none focus:border-purple-500">
+                <label for="modalContext" class="block text-sm font-medium mb-1" style="color:var(--text-secondary)">Context URL / String</label>
+                <input type="text" id="modalContext" required placeholder="e.g., https://blogs.vmware.com/..." class="w-full rounded-xl p-3 focus:outline-none" style="background:var(--input-bg);color:var(--text-primary);border:1px solid var(--input-border)">
             </div>
             <div class="flex justify-end gap-3 pt-2">
-                <button type="button" id="closeModalBtn" class="px-4 py-2 rounded-xl text-slate-400 hover:bg-slate-800/50 font-medium transition">Cancel</button>
-                <button type="submit" class="bg-gradient-to-r from-purple-600 to-cyan-400 px-5 py-2 rounded-xl text-white font-semibold shadow hover:opacity-95 transition">Submit Context</button>
+                <button type="button" id="closeModalBtn" class="px-4 py-2 rounded-xl font-medium transition" style="color:var(--text-secondary)">Cancel</button>
+                <button type="submit" class="send-btn px-5 py-2 rounded-xl font-semibold shadow transition">Submit Context</button>
             </div>
         </form>
     </div>
@@ -309,19 +398,12 @@
         inputEl.focus();
     }));
 
-    // Theme toggle (simple inversion)
-    let dark = true;
-    themeToggle.addEventListener('click', ()=>{
+    // Theme toggle — Light Mode (default) / Dark Mode
+    let dark = false;
+    themeToggle.addEventListener('click', () => {
         dark = !dark;
-        if(!dark){
-            document.documentElement.style.setProperty('--bg','#f8fafc');
-            document.documentElement.style.setProperty('--panel','#ffffff');
-            document.body.style.color = '#0f1724';
-        } else {
-            document.documentElement.style.setProperty('--bg','#0f1724');
-            document.documentElement.style.setProperty('--panel','#0b1220');
-            document.body.style.color = '';
-        }
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+        themeToggle.textContent = dark ? 'Light Mode' : 'Dark Mode';
     });
 
     async function clearAnswer(){
@@ -360,7 +442,7 @@
 
             let questionButtons = '';
             data.forEach(item => {
-                questionButtons += `<button onclick="askPreloadedQuestionFromButton(this)" class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">${item}</button>`;
+                questionButtons += `<button onclick="askPreloadedQuestionFromButton(this)" class="example-chip text-left p-3 rounded-lg">${item}</button>`;
             });
             resultsDiv.innerHTML = questionButtons;
 
