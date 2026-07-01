@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Chat UI — ChatGPT Look & Feel (Single File)</title>
+    <title>GemFire Chat UI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Small custom tweaks on top of Tailwind for more precise look */
@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<div id="app" class="min-h-screen flex items-stretch p-6">
+<div id="app" class="h-screen overflow-hidden flex items-stretch p-6">
 
     <aside class="w-80 mr-6 hidden md:flex flex-col glass rounded-2xl p-4 text-slate-200" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
         <div class="flex items-center gap-3 mb-4">
@@ -45,11 +45,10 @@
             <button class="example-chip text-left p-3 rounded-lg bg-slate-800/40 hover:bg-slate-800/60">Create a shopping list for a week of dinners</button>
         </div>
 
-        <div class="mt-auto text-xs text-slate-500">This is a single-file demo UI inspired by ChatGPT's look and feel. Customize behavior or connect to an API to power responses.</div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-[80vh] max-h-[1000px]">
-        <div class="glass rounded-2xl flex-1 p-4 flex flex-col" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+    <main class="flex-1 flex flex-col min-h-0">
+        <div class="glass rounded-2xl flex-1 p-4 flex flex-col min-h-0" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
 
             <header class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
