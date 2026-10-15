@@ -13,7 +13,6 @@ Create Region
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "connect"  -e "create region --name=Items --type=PARTITION --enable-statistics=true"
 ```
 
-
 run mySQL
 
 ```shell

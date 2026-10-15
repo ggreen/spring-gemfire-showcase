@@ -6,17 +6,15 @@ import org.apache.geode.cache.client.ClientCache;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.core.GenericTransformer;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.jdbc.dsl.Jdbc;
-import javax.sql.DataSource;
-import org.springframework.integration.gemfire.outbound.CacheWritingMessageHandler;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -34,20 +32,28 @@ public class IntegrationConfig {
     }
 
 
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 
     @Bean
-    public IntegrationFlow gemFireInboundFlow(DataSource dataSource, ClientCache clientCache) {
+    public IntegrationFlow gemFireInboundFlow(DataSource dataSource, ClientCache clientCache,
+                                              PlatformTransactionManager transactionManager) {
 
         return IntegrationFlow
                 .from(Jdbc.inboundAdapter(dataSource, "select * from item where status=2")
                                 .updateSql("update item set status=10 where id in (:id)"),
-                        e -> e.poller(Pollers.fixedDelay(5000)))
+                        e -> e.poller(Pollers.fixedDelay(5000)
+                                .transactional(transactionManager)))
+
                 .split()
                         .handle( (Map<Object,Object> map, MessageHeaders header) -> {
 
                              log.info("Captured Payload: {}",map.toString());
 
                             Region<Object,Map<Object,Object>> region = clientCache.getRegion("Items");
+
                             region.put(map.get("id"),new HashMap<>(map));
                             return null;
         } )
