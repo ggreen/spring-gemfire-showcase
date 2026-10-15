@@ -33,12 +33,14 @@
         <module>applications/server/locator</module>
         <module>applications/sink/gemfire-vector-sink</module>
         <module>applications/web/vector-web-app</module>
+        <module>applications/patterns/repointing-config/account-repoint-config</module>
         <module>applications/listener/client/cache-listener-audit</module>
         <module>applications/listener/client/cq-listener-audit</module>
         <module>applications/web/ai-mcp-server-app</module>
         <module>applications/cli/gemfire-vectordb-perftest</module>
         <module>applications/cli/postgres-vectordb-perftest</module>
         <module>applications/patterns/circuit-breaker/account-circuit-breaker</module>
+        <module>applications/patterns/integration/account-gemfire-integration</module>
     </modules>
     <build>
         <pluginManagement>
