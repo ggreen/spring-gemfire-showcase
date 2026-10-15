@@ -76,8 +76,6 @@ SELECT id, name, status, created_at FROM item WHERE status = 2;
 update item set status = 2;
 ```
 
-
-
 ```gfsh
 query --query="select value.get('name') from /Items.entries"
 ```
