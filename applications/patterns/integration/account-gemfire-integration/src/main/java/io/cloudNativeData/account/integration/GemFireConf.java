@@ -18,10 +18,11 @@ import java.util.Map;
 public class GemFireConf
 {
     @Bean("Items")
-    ClientRegionFactoryBean<String, Map<Object,Object>> account(ClientCache gemFireCache)
+    ClientRegionFactoryBean<String, Map<Object,Object>> items(ClientCache gemFireCache)
     {
         var bean = new ClientRegionFactoryBean<String, Map<Object,Object>>();
         bean.setCache(gemFireCache);
+        bean.setName("Items");
         bean.setDataPolicy(DataPolicy.EMPTY);
         return bean;
     }

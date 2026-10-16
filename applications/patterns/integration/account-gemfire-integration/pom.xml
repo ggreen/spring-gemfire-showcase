@@ -17,8 +17,14 @@
 		<java.version>17</java.version>
 		<springIntegrationForGemFire.version>1.0.1</springIntegrationForGemFire.version>
 		<vmwareGemFire.version>10.2.3</vmwareGemFire.version>
+		<springBootForGemFire.version>2.0.1</springBootForGemFire.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.vmware.gemfire</groupId>
+			<artifactId>spring-boot-4.1-gemfire-10.2</artifactId>
+			<version>${springBootForGemFire.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.vmware.gemfire</groupId>
 			<artifactId>spring-integration-7.1-gemfire-10.2</artifactId>
@@ -29,10 +35,19 @@
 			<artifactId>gemfire-core</artifactId>
 			<version>${vmwareGemFire.version}</version>
 		</dependency>
+		<!--if using continuous queries-->
 		<dependency>
 			<groupId>com.vmware.gemfire</groupId>
 			<artifactId>gemfire-cq</artifactId>
 			<version>${vmwareGemFire.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
